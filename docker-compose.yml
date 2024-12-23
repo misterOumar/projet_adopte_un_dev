@@ -24,12 +24,14 @@ services:
   db:
     image: mysql:latest
     container_name: symfony_db
+    ports:
+    - "3306:3306"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: symfony_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: adopte_un_dev
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
     volumes:
       - db_data:/var/lib/mysql
 
@@ -41,7 +43,6 @@ services:
       - "8081:80"  # Accède à phpMyAdmin via http://localhost:8081
     environment:
       PMA_HOST: db  # Indique le nom du service de base de données
-      PMA_USER: user  # Utilisateur MySQL
       PMA_PASSWORD: password  # Mot de passe MySQL
 
 volumes:
