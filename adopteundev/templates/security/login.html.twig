@@ -25,8 +25,9 @@
 								{% if app.user %}
 									<div class="mb-3">
 										Vous êtes déjà connecté
-										{{ app.user.userIdentifier }}, vous pouvez <a class="text-primary" href="{{ path('app_logout') }}">vous déconnecter</a>
-										
+										{{ app.user.userIdentifier }}, vous pouvez
+										<a class="text-primary" href="{{ path('app_logout') }}">vous déconnecter</a>
+
 									</div>
 								{% endif %}
 
@@ -60,7 +61,9 @@
 
 											<label for="html">Rester connecté</label>
 										</div>
-										<a href="#" class="forgot-pass">Mot de passe oublié ?</a>
+										<a href="{{ path('app_forgot_password_request') }}" class="forgot-pass">Mot de passe oublié ?</a>
+
+
 									</div>
 								</div>
 								<div class="col-lg-12">
@@ -68,8 +71,8 @@
 										<button class="primry-btn-2" type="submit">Connexion</button>
 									</div>
 								</div>
-								<h6>Don’t have an account?
-									<a href="register.html">Sign Up</a>
+								<h6>Vous n'avez pas de compte ? <a href="{{ path('app_login') }}">Inscrivez-vous ici !</a>
+									
 								</h6>
 							</div>
 						</form>
