@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     unzip \
-    && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-install pdo pdo_mysql \
+    && rm -rf /var/lib/apt/lists/* 
 
 # Installer Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
