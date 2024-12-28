@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,8 +23,12 @@ class Categorie
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $created_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'cat', targetEntity: Developer::class)]
+    private Collection $developer;
+
     public function __construct()
     {
+        $this->developer = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Remplit automatiquement la date de création
     }
 
@@ -46,5 +52,10 @@ class Categorie
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->created_at;
+    }
+
+    public function getDevelopers(): Collection
+    {
+        return $this->developer;
     }
 }
