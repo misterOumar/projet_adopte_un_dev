@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Entity\User;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
@@ -16,9 +18,7 @@ class EmailService
     
          private MailerInterface $mailer,
         private UrlGeneratorInterface $router,
-        private Environment $twig,
-        private array $fromEmail,
-        private string $usePhpMail){}
+        private Environment $twig){}
     
 
     /**
@@ -42,13 +42,34 @@ class EmailService
         $this->sendEmail($to, $subject, $template, $context);
     }
 
-    public function sendEmail(string $to, string $subject, string $content): void
+    /**
+     * envoyer un email de confirmation après inscription
+     * 
+     * @param User $user
+     */
+    public function sendConfirmationEmail(User $user): void
     {
-        $email = (new Email())
-            ->from('coulibalyoumartc@gmail.com') // Adresse expéditrice
+        $template = 'email/confirmation.email.html.twig';
+        
+        $url = $this->router->generate('app_verify_email', ['token' =>base64_encode($user->getEmail()),], UrlGeneratorInterface::ABSOLUTE_URL);
+        
+        $context = ['userEmail' => $user->getEmail(), 'activationLink' => $url];
+        
+        $to = $user->getEmail();
+        
+        $subject = 'Confirmation de votre adresse email!';
+        
+        $this->sendEmail($to, $subject, $template, $context);
+    }
+
+    public function sendEmail(string $to, string $subject, string $template, $context): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address('coulibalyoumartc@gmail.com', 'AdopteUnDev Bot'))
             ->to($to)
             ->subject($subject)
-            ->html($content);
+            ->htmlTemplate($template)
+            ->context($context);
 
         $this->mailer->send($email);
     }

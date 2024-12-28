@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Company register
+{% endblock %}
+
+{% block body %}
+	<div class="register-area pt-80 mb-120">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-wrapper">
+						<div class="form-title">
+							<h3>Création de votre compte Entreprise</h3>
+						</div>
+						{{ form_start(form) }}
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-inner mb-25">
+									<label for="firstname">Nom ou raison sociale*</label>
+									<div class="input-area">
+										<img src="{{asset('assets/images/icon/user-2.svg')}}" alt="">
+										{{ form_widget(form.nom) }}
+									</div>
+									<small class="text-danger">
+										{{ form_errors(form.nom) }}</small>
+
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-inner mb-25">
+									<label for="email">Email *</label>
+									<div class="input-area">
+										<img src="{{asset('assets/images/icon/email-2.svg')}}" alt="">
+										{{ form_widget(form.user.email) }}
+									</div>
+									<small class="text-danger">{{ form_errors(form.user.email) }}</small>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-inner mb-25">
+									<label for="lastname">Numéro de téléphone*</label>
+									<div class="input-area">
+										<img src="{{asset('assets/images/icon/phone-2.svg')}}" alt="">
+										{{ form_widget(form.phone) }}
+									</div>
+									<small class="text-danger">{{ form_errors(form.phone) }}</small>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-inner mb-25">
+									<label for="username">Ville *</label>
+									<div class="input-area">
+										<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+										{{ form_widget(form.ville) }}
+									</div>
+									<small class="text-danger">{{ form_errors(form.ville) }}</small>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-inner mb-25">
+									<label for="username">Adresse
+									</label>
+									<div class="input-area">
+										<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+										{{ form_widget(form.adresse) }}
+									</div>
+									<small class="text-danger">{{ form_errors(form.adresse) }}</small>
+								</div>
+							</div>
+
+
+							<div class="col-md-6">
+								<div class="form-inner mb-25">
+									<label for="password">Mot de passe *</label>
+									{{ form_widget(form.user.password.first) }}
+									<i class="bi bi-eye-slash" id="togglePassword3"></i>
+								</div>
+								<small class="text-danger">{{ form_errors(form.user.password.first) }}</small>
+							</div>
+							<div class="col-md-6">
+								<div class="form-inner">
+									<label for="password4">Confirmer le mot de passe*</label>
+									{{ form_widget(form.user.password.second) }}
+
+									<i class="bi bi-eye-slash" id="togglePassword4"></i>
+								</div>
+								<small class="text-danger">{{ form_errors(form.user.password.second) }}</small>
+
+							</div>
+							<div class="col-md-12">
+								<div class="form-agreement form-inner d-flex justify-content-between flex-wrap">
+									<div class="form-group two">
+										<input type="checkbox" id="html">
+										<label for="html">
+											J'accepte les conditions d'utilisation et la politique de confidentialité</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-inner">
+									<button class="primry-btn-2" type="submit">S'inscrire</button>
+								</div>
+							</div>
+							<h6>
+								Vous avez déjà un compte ?
+								<a href="{{ path('app_login') }}">Se connecter</a>
+							</h6>
+						</h6>
+
+					</div>
+					{{ form_end(form) }}
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}
