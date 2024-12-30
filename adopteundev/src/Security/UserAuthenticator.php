@@ -48,6 +48,18 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        // https://stackoverflow.com/questions/66123030/symfony-5-how-to-make-login-redirect-to-different-pages-deppending-on-role # commentaire de dbrumann
+        // the $token holds the user object. You might have stumbled upon this in the context of the service `security.token_storage`
+        $user = $token->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_technologie_index'));
+        }
+        
+        if (in_array('ROLE_COMPANY', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_company_dashboard'));
+        }
+
+
         // For example:
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
 
