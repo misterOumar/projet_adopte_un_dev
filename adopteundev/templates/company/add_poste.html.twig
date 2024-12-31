@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ajouter un poste!
+{% endblock %}
+
+{% block body %}
+	<!-- ========== add poste Area end============= -->
+	<div class="inner-banner">
+    
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="banner-content text-center">
+						<h1>Publier une offre d'emploi</h1>
+						<span></span>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="index.html">Home</a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Publier une offre d'emploi</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ========== Inner Banner end============= -->
+	<!-- ========== Login Area end============= -->
+	<div class="job-post-area pt-120 mb-120">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-wrapper">
+                    
+                    {{form_start(form_add)}}
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="section-title2">
+										<h5>Informations sur le poste:</h5>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label for="jobtitle">Titre du poste*</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/company-2.svg ')}}" alt="">
+											{{ form_widget(form_add.titre)}}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.titre) }}</small>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label>Catégorie du poste*</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/category-2.svg')}}" alt="">
+											{{ form_widget(form_add.categorie) }}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.categorie) }}</small>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner">
+										<div class="salary-wrap">
+											<label class="label">Budget/Salaire*</label>
+											<div class="input-area">
+												<img src="{{asset('assets/images/icon/salary-2.svg')}}" alt="">
+												{{ form_widget(form_add.salaireMin)}}
+											</div>
+                                            <small class="text-danger">{{ form_errors(form_add.salaireMin) }}</small>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label>Type de poste*</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/company-2.svg')}}" alt="">
+											{{ form_widget(form_add.type)}}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.type) }}</small>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label for="experiences">Experience requis*</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/email-2.svg')}}" alt="">
+											{{ form_widget(form_add.experienceRequis)}}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.experienceRequis) }}</small>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label for="ville">Ville*</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+											{{ form_widget(form_add.ville)}}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.ville) }}</small>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label for="adresse">Adresse</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+											{{ form_widget(form_add.adresse)}}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.adresse) }}</small>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-inner mb-25">
+										<label for="datepicker9">Date limite*</label>
+										<div class="input-area">
+											<img src="{{asset('assets/images/icon/calender2.svg')}}" alt="">
+											{{ form_widget(form_add.dateLimite)}}
+										</div>
+                                        <small class="text-danger">{{ form_errors(form_add.dateLimite) }}</small>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-inner mb-30">
+										<label for="summernote1">Description du poste</label>
+                                        {{ form_widget(form_add.description)}}
+										{# <textarea name="editordata" id="summernote1" placeholder="Something Write Yourself...."></textarea> #}
+									</div>
+                                    <small class="text-danger">{{ form_errors(form_add.description) }}</small>
+								</div>
+								<div class="col-md-12">
+									<div class="form-agreement form-inner d-flex justify-content-between flex-wrap">
+										<div class="form-group two">
+											<input type="checkbox" id="html">
+											<label for="html">Here, I accepted company terms & conditions.</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-inner">
+										<button class="primry-btn-2 lg-btn w-unset" type="submit">Poster maintenant</button>
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+                  {{ form_end(form_add)}}
+			</div>
+		</div>
+	</div>
+	<!-- ========== add poste Area end============= -->
+{% endblock %}
