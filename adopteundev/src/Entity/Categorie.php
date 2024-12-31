@@ -26,10 +26,17 @@ class Categorie
     #[ORM\OneToMany(mappedBy: 'cat', targetEntity: Developer::class)]
     private Collection $developer;
 
+    /**
+     * @var Collection<int, Poste>
+     */
+    #[ORM\OneToMany(targetEntity: Poste::class, mappedBy: 'categorie')]
+    private Collection $postes;
+
     public function __construct()
     {
         $this->developer = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Remplit automatiquement la date de création
+        $this->postes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,5 +64,35 @@ class Categorie
     public function getDevelopers(): Collection
     {
         return $this->developer;
+    }
+
+    /**
+     * @return Collection<int, Poste>
+     */
+    public function getPostes(): Collection
+    {
+        return $this->postes;
+    }
+
+    public function addPoste(Poste $poste): static
+    {
+        if (!$this->postes->contains($poste)) {
+            $this->postes->add($poste);
+            $poste->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoste(Poste $poste): static
+    {
+        if ($this->postes->removeElement($poste)) {
+            // set the owning side to null (unless already changed)
+            if ($poste->getCategorie() === $this) {
+                $poste->setCategorie(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Form\CompanyRegistrationType;
-use App\Service\EmailService;
+use App\Services\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

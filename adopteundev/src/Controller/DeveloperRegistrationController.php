@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Developer;
 use App\Form\DeveloperRegistrationType;
-use App\Service\EmailService;
+use App\Services\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/register')]
 class DeveloperRegistrationController extends AbstractController
 {
-    #[Route('', name: 'app_register')]
-    public function register()
-    {
-        return $this->render('security/pre-register.html.twig');
-    }
     #[Route('/developer', name: 'app_developer_registration')]
-
     public function registerDeveloper(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, EmailService $emailService): Response
     {
         $dev = new Developer();
