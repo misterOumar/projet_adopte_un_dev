@@ -27,7 +27,7 @@ class PosteFormType extends AbstractType
                 '4 ans' => 4,
                 '5 ans ou plus' => 5,
             ],
-            'placeholder' => 'Choisissez le nombre d\'expérience',
+            'placeholder' => 'Choisissez le niveau d\'expérience',
             'required' => true,
             'attr' => [
                 'class' => 'select1', // Classe CSS pour le style
@@ -58,7 +58,7 @@ class PosteFormType extends AbstractType
                     'rows' => 8,
                     'id' => 'summernote1',
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
