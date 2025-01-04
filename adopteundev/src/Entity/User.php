@@ -50,6 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $modifiedAt = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Fichier $avatar = null;
+
     public function __construct()
     {
         $this->uuid = Uuid::v7();
@@ -202,6 +205,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setModifiedAt(\DateTimeImmutable $modifiedAt): static
     {
         $this->modifiedAt = $modifiedAt;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Fichier
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Fichier $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

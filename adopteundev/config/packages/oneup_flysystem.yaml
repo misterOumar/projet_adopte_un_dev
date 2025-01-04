@@ -1,0 +1,51 @@
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle
+oneup_flysystem:
+    adapters:
+        default_adapter:
+            local:
+                location: '%kernel.project_dir%/var/files/default'
+
+        fonds_adapter:
+            local:
+                location: '%kernel.project_dir%/public/files/fonds'
+
+        entreprise_adapter:
+            local:
+                location: '%kernel.project_dir%/public/files/entreprises'
+
+        user_adapter:
+            local:
+                location: '%kernel.project_dir%/public/images/avatar'
+
+        documentation_adapter:
+            local:
+                location: '%kernel.project_dir%/var/files/documentations'
+
+        pipeline_adapter:
+            local:
+                location: '%kernel.project_dir%/var/files/pipeline'
+    filesystems:
+        default:
+            adapter: default_adapter
+            alias: default_filesystem
+
+        fonds:
+            adapter: fonds_adapter
+            alias: fonds_filesystem
+
+        entreprise:
+            adapter: entreprise_adapter
+            alias: entreprise_filesystem
+
+        user:
+            adapter: user_adapter
+            alias: user_filesystem
+
+        documentation:
+            adapter: documentation_adapter
+            alias: documentation_filesystem
+
+
+        pipeline:
+            adapter: pipeline_adapter
+            alias: pipeline_filesystem

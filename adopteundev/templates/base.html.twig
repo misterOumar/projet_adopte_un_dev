@@ -42,7 +42,7 @@
 
 
 		<!-- style css -->
-		<link rel="stylesheet" href={{ asset("assets/css/style.css") }}> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
+		<link rel="stylesheet" href={{ asset("assets/css/style.css") }}> {% block stylesheets %}{% endblock %}
 
 		</head>
 		<body>
@@ -395,6 +395,10 @@
 			 <script src={{ asset("assets/js/select2.min.js") }}></script>
 
 			 <script src={{ asset("assets/js/viewport.jquery.js") }}></script>
+
+			<!-- other javascript -->
+			{% block javascripts %}{% endblock %}
+
 
 			 <script src={{ asset("assets/js/main.js") }}></script>
 
