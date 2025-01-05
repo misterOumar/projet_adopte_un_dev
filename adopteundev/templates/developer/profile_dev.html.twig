@@ -20,61 +20,6 @@
 						<div class="single-widget mb-60">
 							{% include "developer/menu_dev.html.twig" %}
 						</div>
-						<div class="single-widget">
-							<div class="widget-title">
-								<h6>Recent Activity:</h6>
-							</div>
-							<ul class="recent-activitys">
-								<li>
-									<div class="company-img">
-										<img src="assets/images/bg/company-logo/recent-activity-01.png" alt="">
-									</div>
-									<div class="content">
-										<h6>
-											<a href="blog-details.html">Your application has accepted in 2 vacancies.</a>
-										</h6>
-										<span><img src="assets/images/icon/clock-1.svg" alt="">
-											7 hour ago</span>
-									</div>
-								</li>
-								<li>
-									<div class="company-img">
-										<img src="assets/images/bg/company-logo/recent-activity-02.png" alt="">
-									</div>
-									<div class="content">
-										<h6>
-											<a href="blog-details.html">1 Day Left For Your Premium Package To Expire.</a>
-										</h6>
-										<span><img src="assets/images/icon/clock-1.svg" alt="">
-											5 hour ago</span>
-									</div>
-								</li>
-								<li>
-									<div class="company-img">
-										<img src="assets/images/bg/company-logo/recent-activity-03.png" alt="">
-									</div>
-									<div class="content">
-										<h6>
-											<a href="blog-details.html">Your Job Posted Published On Position WordPress.</a>
-										</h6>
-										<span><img src="assets/images/icon/clock-1.svg" alt="">
-											1 hour ago</span>
-									</div>
-								</li>
-								<li>
-									<div class="company-img">
-										<img src="assets/images/bg/company-logo/recent-activity-04.png" alt="">
-									</div>
-									<div class="content">
-										<h6>
-											<a href="blog-details.html">Your Job Posted Published On Position Frontend Developer.</a>
-										</h6>
-										<span><img src="assets/images/icon/clock-1.svg" alt="">
-											1 hour ago</span>
-									</div>
-								</li>
-							</ul>
-						</div>
 					</div>
 				</div>
 				<div class="col-lg-9">
@@ -329,27 +274,44 @@
 								</div>
 								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 									<div class="form-wrapper">
-										<form class="profile-form">
-											<div class="section-title2">
-												<h5 class="d-flex align-items-baseline gap-1"><img src="{{asset('assets/images/icon/profile-settings.svg')}}" alt="">
-													Paramètres de mon profil
+										{{ form_start(formSetting, {'attr': {'class': 'profile-form'}}) }}
 
-												</h5>
-											</div>
-											<div class="change-password-area mb-40">
-												<div class="row">
-													<div class="col-lg-12">
-														<div class="info-title">
-															<h6>Changer mon mot de passe</h6>
-															<div class="dash"></div>
-														</div>
+
+										<div class="section-title2">
+											<h5 class="d-flex align-items-baseline gap-1"><img src="{{asset('assets/images/icon/profile-settings.svg')}}" alt="">
+												Paramètres de mon profil
+
+											</h5>
+										</div>
+										<div class="change-password-area mb-40">
+											<div class="row">
+												<div class="col-lg-12">
+													<div class="info-title">
+														<h6>Changer mon mot de passe</h6>
+														<div class="dash"></div>
 													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-inner mb-25">
+														<label for="password">Mot de passe actuel *</label>
+														<div class="input-area">
+															<img src="assets/images/icon/lock-2.svg" alt="">
+															{# <input type="password" name="password" id="password" placeholder="Password"> #}
+																{{ form_widget(formSetting.currentPassword) }}
+															<i class="bi bi-eye-slash" id="togglePassword"></i>
+														</div>
+
+													</div>
+												</div>
+
+												<div class="row">
 													<div class="col-md-6">
 														<div class="form-inner mb-25">
-															<label for="password">New Password*</label>
+															<label for="password">Nouveau mot de passe *</label>
 															<div class="input-area">
 																<img src="assets/images/icon/lock-2.svg" alt="">
-																<input type="password" name="password" id="password" placeholder="Password">
+																{# <input type="password" name="password" id="password" placeholder="Password"> #}
+																{{ form_widget(formSetting.plainPassword.first) }}
 																<i class="bi bi-eye-slash" id="togglePassword"></i>
 															</div>
 
@@ -357,76 +319,78 @@
 													</div>
 													<div class="col-md-6">
 														<div class="form-inner mb-25">
-															<label for="password2">Confirm Password*</label>
+															<label for="password2">Confirmer le nouveau mot de passe*</label>
+
 															<div class="input-area">
 																<img src="assets/images/icon/lock-2.svg" alt="">
-																<input type="password" name="confirmpassword" id="password2" placeholder="Confirm Password"/>
+																{# <input type="password" name="confirmpassword" id="password2" placeholder="Confirm Password"/> #}
+																{{ form_widget(formSetting.plainPassword.second) }}
 																<i class="bi bi-eye-slash" id="togglePassword2"></i>
 															</div>
 
 														</div>
 													</div>
-													<div class="col-md-12 pt-10">
-														<div class="form-inner">
-															<button class="primry-btn-1 lg-btn w-unset" type="submit">Update Change</button>
-														</div>
+												</div>
+												<div class="col-md-12 pt-10">
+													<div class="form-inner">
+														<button class="primry-btn-1 lg-btn w-unset" type="submit">Mettre à jour mon mot de passe</button>
 													</div>
 												</div>
+											</div>
 
-											</div>
-											<div class="privacy-security-area">
-												<div class="row">
-													<div class="col-lg-12">
-														<div class="info-title">
-															<h6>Vie privée et sécurité</h6>
+										</div>
+										<div class="privacy-security-area">
+											<div class="row">
+												<div class="col-lg-12">
+													<div class="info-title">
+														<h6>Vie privée et sécurité</h6>
 
-															<div class="dash"></div>
+														<div class="dash"></div>
+													</div>
+												</div>
+												<div class="col-lg-12">
+													<div class="single-permission mb-2">
+														<div class="title">
+															<h6>Disponibilité</h6>
+														</div>
+														<div
+															class="form-check form-switch">
+															{# <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault1"> #}
+															{{ form_widget(formSetting.isDisponible) }}
+
 														</div>
 													</div>
-													<div class="col-lg-12">
-														<div class="single-permission mb-2">
-															<div class="title">
-																<h6>All Job Alert</h6>
-															</div>
-															<div class="form-check form-switch">
-																<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault1">
-															</div>
+													<div class="single-permission mb-2">
+														<div class="title">
+															<h6>Numéro de téléphone visible</h6>
 														</div>
-														<div class="single-permission mb-30">
-															<div class="title">
-																<h6>Resume Visibility</h6>
-															</div>
-															<div class="form-check form-switch">
-																<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault2">
-															</div>
+														<div class="form-check form-switch">
+															{{ form_widget(formSetting.mobileVisible) }}
+
+
 														</div>
-														<div class="single-permission mb-3">
-															<div class="title">
-																<h6>Disable Account</h6>
-																<p>If you log in again you will able to see all the match jobs and get all information.</p>
-															</div>
-															<div class="form-check form-switch">
-																<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault3">
-															</div>
+													</div>
+													<div class="single-permission mb-3">
+														<div class="title">
+															<h6>Salaire souhaité visible</h6>
+															<p>If you log in again you will able to see all the match jobs and get all information.</p>
 														</div>
-														<div class="single-permission align-items-start">
-															<div class="title">
-																<h6>Delete Account</h6>
-																<p>If you delete your account, you will no longer be able to get information about the matched jobs.</p>
-															</div>
-															<div class="delete-btn">
-																<button type="reset">Delete Account</button>
-															</div>
+														<div class="form-check form-switch">
+															{{ form_widget(formSetting.salaireVisible) }}
+
+
 														</div>
 													</div>
 												</div>
 											</div>
-											<div class="col-md-12 pt-50">
-												<div class="form-inner">
-													<button class="primry-btn-2 lg-btn w-unset" type="submit">Update Change</button>
-												</div>
+										</div>
+										<div class="col-md-12 pt-50">
+											<div class="form-inner">
+												<button class="primry-btn-2 lg-btn w-unset" type="submit">Mettre à jour</button>
 											</div>
-										</form>
+										</div>
+										{# </form> #}
+										{{ form_end(formSetting) }}
 									</div>
 
 								</div>
@@ -438,217 +402,6 @@
 					</div>
 
 
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="featured-jobs-area">
-						<div class="section-title">
-							<h4>Featured Jobs:</h4>
-						</div>
-					</div>
-				</div>
-				<div class="swiper feature-slider2">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide">
-							<div class="feature-card2">
-								<div class="company-area">
-									<span></span>
-									<div class="logo">
-										<img src="assets/images/bg/company-logo/company-02.png" alt="">
-
-									</div>
-									<div class="company-details">
-										<div class="name-location">
-											<h5>
-												<a href="job-details.html">UI/UX Engineer</a>
-												<span>Full Time, Remote<span></span>
-												</span>
-											</h5>
-											<ul>
-												<li>
-													<a href="company-details.html">Norland Company</a>
-												</li>
-												<li class="verified"><img src="assets/images/icon/verified.svg" alt="">
-													Verified Company</li>
-											</ul>
-										</div>
-										<div class="bookmark">
-											<i class="bi bi-bookmark-fill"></i>
-										</div>
-									</div>
-								</div>
-								<div class="job-discription">
-									<ul class="one">
-										<li>
-											<p>
-												<span class="title">Location:</span>
-												Chicago, Australia</p>
-										</li>
-										<li>
-											<p>
-												<span class="title">Salary:</span>
-												$90-$140 /
-												<span class="time">Per Hour</span>
-											</p>
-										</li>
-									</ul>
-									<ul>
-										<li>
-											<p>
-												<span class="title">Experience:</span>
-												2-3 Years</p>
-										</li>
-										<li>
-											<p>
-												<span class="title">Deadline:</span>
-												<span class="time">
-													3 February, 2023</span>
-											</p>
-										</li>
-									</ul>
-								</div>
-								<div class="job-type-apply">
-									<div class="apply-btn">
-										<a href="job-details.html">
-											<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="feature-card2">
-								<div class="company-area">
-									<span></span>
-									<div class="logo">
-										<img src="assets/images/bg/company-logo/company-03.png" alt="">
-
-									</div>
-									<div class="company-details">
-										<div class="name-location">
-											<h5>
-												<a href="job-details.html">React JS Developer</a>
-												<span>Full Time, Remote<span></span>
-												</span>
-											</h5>
-											<ul>
-												<li>
-													<a href="company-details.html">UX.UI Company</a>
-												</li>
-												<li class="verified"><img src="assets/images/icon/verified.svg" alt="">
-													Verified Company</li>
-											</ul>
-										</div>
-										<div class="bookmark">
-											<i class="bi bi-bookmark-fill"></i>
-										</div>
-									</div>
-								</div>
-								<div class="job-discription">
-									<ul class="one">
-										<li>
-											<p>
-												<span class="title">Location:</span>
-												Dhaka, Bangladesh</p>
-										</li>
-										<li>
-											<p>
-												<span class="title">Salary:</span>
-												$80K-$110K /
-												<span class="time">Per Month</span>
-											</p>
-										</li>
-									</ul>
-									<ul>
-										<li>
-											<p>
-												<span class="title">Experience:</span>
-												2-3 Years</p>
-										</li>
-										<li>
-											<p>
-												<span class="title">Deadline:</span>
-												<span class="time">
-													3 February, 2023</span>
-											</p>
-										</li>
-									</ul>
-								</div>
-								<div class="job-type-apply">
-									<div class="apply-btn">
-										<a href="job-details.html">
-											<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="swiper-slide">
-							<div class="feature-card2">
-								<div class="company-area">
-									<span></span>
-									<div class="logo">
-										<img src="assets/images/bg/company-logo/company-04.png" alt="">
-
-									</div>
-									<div class="company-details">
-										<div class="name-location">
-											<h5>
-												<a href="job-details.html">Receptionist</a>
-												<span>Full Time, Part Time<span></span>
-												</span>
-											</h5>
-											<ul>
-												<li>
-													<a href="company-details.html">Germaine Group Ltd</a>
-												</li>
-												<li class="verified"><img src="assets/images/icon/verified.svg" alt="">
-													Verified Company</li>
-											</ul>
-										</div>
-										<div class="bookmark">
-											<i class="bi bi-bookmark-fill"></i>
-										</div>
-									</div>
-								</div>
-								<div class="job-discription">
-									<ul class="one">
-										<li>
-											<p>
-												<span class="title">Location:</span>
-												West London, Uk</p>
-										</li>
-										<li>
-											<p>
-												<span class="title">Salary:</span>
-												$50K-$60K /
-												<span class="time">Per Hour</span>
-											</p>
-										</li>
-									</ul>
-									<ul>
-										<li>
-											<p>
-												<span class="title">Experience:</span>
-												2-2.5 Years</p>
-										</li>
-										<li>
-											<p>
-												<span class="title">Deadline:</span>
-												<span class="time">
-													4 February, 2023</span>
-											</p>
-										</li>
-									</ul>
-								</div>
-								<div class="job-type-apply">
-									<div class="apply-btn">
-										<a href="job-details.html">
-											<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -662,20 +415,20 @@
 
 
 	 <script>
-		
-			document.getElementById('developer_profile_avatar').addEventListener('change', (event) => {
-				
-						const file = event.target.files[0];
-						if (file) {
-							const reader = new FileReader();
-							reader.onload = (e) => {
-								document.getElementById('avatar-preview').src = e.target.result;
-							};
-							reader.readAsDataURL(file);
-						}
-					});					
-					
-	</script>
+												
+													document.getElementById('developer_profile_avatar').addEventListener('change', (event) => {
+														
+																const file = event.target.files[0];
+																if (file) {
+																	const reader = new FileReader();
+																	reader.onload = (e) => {
+																		document.getElementById('avatar-preview').src = e.target.result;
+																	};
+																	reader.readAsDataURL(file);
+																}
+															});					
+															
+											</script>
 
 
 {% endblock %}

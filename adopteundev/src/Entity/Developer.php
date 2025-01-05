@@ -27,7 +27,7 @@ class Developer
     #[ORM\Column(nullable: true)]
     private ?float $salaireMin = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?bool $isDisponible = null;
 
     #[ORM\Column(nullable: true)]
@@ -50,9 +50,23 @@ class Developer
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $cat = null;
 
+    #[ORM\Column]
+    private ?bool $mobileVisible = null;
+
+    #[ORM\Column]
+    private ?bool $salaireVisible = null;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
+
+    public function __construct()
+    {
+        $this->mobileVisible = true;
+        $this->salaireVisible = true;
+        $this->isDisponible = true;
+
+    }
 
     public function getId(): ?int
     {
@@ -112,7 +126,7 @@ class Developer
         return $this->isDisponible;
     }
 
-    public function setDisponible(?bool $isDisponible): static
+    public function setDisponible(bool $isDisponible): static
     {
         $this->isDisponible = $isDisponible;
 
@@ -187,6 +201,30 @@ class Developer
     public function setCat(Categorie $cat): static
     {
         $this->cat = $cat;
+
+        return $this;
+    }
+
+    public function isMobileVisible(): ?bool
+    {
+        return $this->mobileVisible;
+    }
+
+    public function setMobileVisible(bool $mobileVisible): static
+    {
+        $this->mobileVisible = $mobileVisible;
+
+        return $this;
+    }
+
+    public function isSalaireVisible(): ?bool
+    {
+        return $this->salaireVisible;
+    }
+
+    public function setSalaireVisible(bool $salaireVisible): static
+    {
+        $this->salaireVisible = $salaireVisible;
 
         return $this;
     }
