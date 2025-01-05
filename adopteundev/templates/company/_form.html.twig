@@ -1,0 +1,160 @@
+<div class="inner-banner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="banner-content text-center">
+					<h1>
+						{% if app.request.get('_route')=='app_add_poste' %}Publier une offre d'emploi
+						{% else %}
+							Modifier une offre d'emploi
+						{% endif %}
+					</h1>
+					<span></span>
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item">
+								<a href="index.html">Home</a>
+							</li>
+							<li class="breadcrumb-item active" aria-current="page">
+								{% if app.request.get('_route')=='app_add_poste' %}Publier une offre d'emploi
+								{% else %}
+									Modifier une offre d'emploi
+								{% endif %}
+							</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="job-post-area pt-120 mb-120">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-wrapper">
+					{{form_start(form)}}
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="section-title2">
+								<h5>Informations sur le poste:</h5>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label for="jobtitle">Titre du poste*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/company-2.svg ')}}" alt="">
+									{{ form_widget(form.titre)}}
+								</div>
+								<small class="text-danger">{{ form_errors(form.titre) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label>Catégorie du poste*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/category-2.svg')}}" alt="">
+									{{ form_widget(form.categorie) }}
+								</div>
+								<small class="text-danger">{{ form_errors(form.categorie) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner">
+								<div class="salary-wrap">
+									<label class="label">Budget/Salaire*</label>
+									<div class="input-area">
+										<img src="{{asset('assets/images/icon/salary-2.svg')}}" alt="">
+										{{ form_widget(form.salaireMin)}}
+									</div>
+									<small class="text-danger">{{ form_errors(form.salaireMin) }}</small>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label>Type de poste*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/company-2.svg')}}" alt="">
+									{{ form_widget(form.type)}}
+								</div>
+								<small class="text-danger">{{ form_errors(form.type) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label for="experiences">Experience requis*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/email-2.svg')}}" alt="">
+									{{ form_widget(form.experienceRequis)}}
+								</div>
+								<small class="text-danger">{{ form_errors(form.experienceRequis) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label for="ville">Ville*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+									{{ form_widget(form.ville)}}
+								</div>
+								<small class="text-danger">{{ form_errors(form.ville) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label for="adresse">Adresse</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+									{{ form_widget(form.adresse)}}
+								</div>
+								<small class="text-danger">{{ form_errors(form.adresse) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label for="datepicker9">Date limite*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/calender2.svg')}}" alt="">
+									{{ form_widget(form.dateLimite)}}
+								</div>
+								<small class="text-danger">{{ form_errors(form.dateLimite) }}</small>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-inner mb-30">
+								<label for="summernote1">Description du poste</label>
+								{{ form_widget(form.description)}}
+								{# <textarea name="editordata" id="summernote1" placeholder="Something Write Yourself...."></textarea> #}
+							</div>
+							{# <small class="text-danger">{{ form_errors(form.description) }}</small> #}
+						</div>
+						<div class="col-md-12">
+							<div class="form-agreement form-inner d-flex justify-content-between flex-wrap">
+								<div class="form-group two">
+									<input type="checkbox" id="html">
+									<label for="html">Here, I accepted company terms & conditions.</label>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form-inner">
+					<button class="primry-btn-2 lg-btn w-unset" type="submit">
+						{% if app.request.get('_route')=='app_add_poste' %}Poster Maintenant
+						{% else %}
+							Enregistrer
+						{% endif %}
+
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{ form_end(form)}}
+</div>
