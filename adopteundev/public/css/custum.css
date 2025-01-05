@@ -1,4 +1,4 @@
-.drag-area {
+.upload_avatar_area {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,22 +11,25 @@
     transition: background-color 0.3s ease;
 }
 
-.drag-area:hover {
+.upload_avatar_area:hover {
     background-color: #f1f1f1;
 }
 
-.avatar-preview {
-    width: 100px;
-    height: 100px;
+.upload_avatar_area img {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
     border: 2px solid #ddd;
 }
 
-.upload-btn {
+.upload_avatar_btn {
+    display: block;
+    display: flex;
+    width: 80px;
     background-color: #007bff;
-    color: #fff;
+    color: #1fc927;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -34,21 +37,9 @@
     transition: background-color 0.3s ease;
 }
 
-.upload-btn:hover {
+.upload_avatar_btn:hover {
     background-color: #0056b3;
 }
 
-.save-avatar-btn {
-    margin-top: 20px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-.save-avatar-btn:hover {
-    background-color: #218838;
-}
+

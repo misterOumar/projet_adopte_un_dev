@@ -28,7 +28,8 @@ class DeveloperProfileType extends AbstractType
                 'mapped' => false,
                 'required' => false, // Masque le label
                 'attr' => [
-                    // 'hidden' => true, // Classe CSS ajoutée pour le style
+                    'id' => 'upload-avatar-input', // Classe CSS ajoutée pour le style
+                    'hidden' => true, // Classe CSS ajoutée pour le style
                 ],
 
             ])

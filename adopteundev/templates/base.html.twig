@@ -47,6 +47,13 @@
 		</head>
 		<body>
 			<div class="eg-preloder"></div>
+			{% if app.user %}
+			
+			{% set avatar = app.user.avatar ? app.user.avatar.reference : 'default-avatar.png'  %}
+			{% endif %}
+			
+
+
 			<!-- ========== header============= -->
 			<header class="header-area style-5">
 				<div class="menu-area">
@@ -274,7 +281,7 @@
 			{% endfor %}
 			{% block body %}{% endblock %}
 
-			
+
 			<!-- ========== Home1 Footer area Start============= -->
 			<footer class="footer1 bg-dark pl-185 pr-185 style-6">
 				<div class="container-fluid">
@@ -372,7 +379,7 @@
 			<!-- ========== Home1 Footer area end============= -->
 
 
-		 <script src={{ asset("assets/js/jquery-3.6.0.min.js")}}></script>
+			 <script src={{ asset("assets/js/jquery-3.6.0.min.js")}}></script>
 			 <script src={{ asset("assets/js/jquery-ui.js") }}></script>
 
 			 <script src={{ asset("assets/js/bootstrap.bundle.min.js") }}></script>
@@ -396,8 +403,8 @@
 
 			 <script src={{ asset("assets/js/viewport.jquery.js") }}></script>
 
-			<!-- other javascript -->
-			{% block javascripts %}{% endblock %}
+			<!-- other javascript -->{% block javascripts %}
+		{% endblock %}
 
 
 			 <script src={{ asset("assets/js/main.js") }}></script>
