@@ -92,4 +92,19 @@ class DeveloperController extends AbstractController
             'formSetting' => $formSetting->createView(),
         ]);
     }
+
+    // page candidature du dev
+    #[Route('/candidature', name: 'candidature')]
+    public function candidature(): Response
+    {
+        return $this->render('developer/candidature_dev.html.twig');
+    }
+
+    //postes favoris
+    #[Route('/favoris', name: 'favoris')]
+    public function favoris(): Response
+    {
+        return $this->render('developer/poste_favoris_dev.html.twig');
+    }
+
 }
