@@ -85,7 +85,7 @@ class DeveloperController extends AbstractController
     }
 
 
-    #[Route('/developer/{uuid}', name: 'app_dev_details')]
+    #[Route('/devs/detail/{uuid}', name: 'app_dev_details')]
     public function details(string $uuid, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager, ): Response
     {
         if (!$this->getUser()) {
