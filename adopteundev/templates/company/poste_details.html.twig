@@ -11,8 +11,10 @@
 					<div class="job-details-and-counter-area mb-70">
 						<div class="job-title-and-action-btn-area mb-40">
 							<div class="job-title-area">
-								<h3> {{poste.titre}}
-									<span>- {{poste.categorie.nom}}</span>
+								<h3>
+									{{poste.titre}}
+									<span>-
+										{{poste.categorie.nom}}</span>
 								</h3>
 								<ul>
 									<li><img src="{{asset('assets/images/icon/calender2.svg')}}" alt=""><span>Publié le:</span>
@@ -23,8 +25,8 @@
 							</div>
 							<div class="action-btn-group">
 								<ul>
-									<li><a href="{{ path('app_company_poste_edit',  {'uuid':poste.uuid}) }}"><span><img src="{{asset('assets/images/icon/edit2.svg')}}" alt=""></span>Edit</a></li>
-									<li><a href="#"><span><img src="{{asset('assets/images/icon/share2.svg')}}" alt=""></span>Share</a></li>
+									<li><a href="{{ path('app_company_poste_edit', {'uuid':poste.uuid}) }}"><span><img src="{{asset('assets/images/icon/edit2.svg')}}" alt=""></span>Modifier</a></li>
+									<li><a href="#"><span><img src="{{asset('assets/images/icon/share2.svg')}}" alt=""></span>Partager</a></li>
 								</ul>
 							</div>
 						</div>
@@ -171,12 +173,12 @@
 														<div class="job-discription">
 															<ul class="one">
 																<li>
-																	<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+																	<img src="{{asset('assets/images/icon/home-2.svg')}}" alt="">
 																	<p>
 																		<span class="title">Ville:</span>
 																		{{poste.ville}}</p>
 																</li>
-                                                                <li>
+																<li>
 																	<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
 																	<p>
 																		<span class="title">adresse:</span>
@@ -200,26 +202,21 @@
 																	<img src="{{asset('assets/images/icon/salary-2.svg')}}" alt="">
 																	<p>
 																		<span class="title">Salaire:</span>
-																		{{poste.salaireMin}} euro/Mois</p>
+																		{{poste.salaireMin}}
+																		euro/Mois</p>
 																</li>
 															</ul>
 														</div>
 													</div>
 													<p>
 														<span>Description du poste:</span><br>
-														{{poste.description}}</p>
+														{{poste.description|raw}}</p>
 													<br>
-													
+
 												</div>
 											</div>
 											<div class="col-lg-4">
 												<div class="job-details-sidebar">
-													<div class="save-apply-btn d-flex justify-content-end mb-50">
-														<ul>
-															<li><a class="save-btn" href="#">Save Job<span><i class="bi bi-bookmark-fill"></i></span></a></li>
-															<li><a class="primry-btn-2 lg-btn" href="#">Apply Position</a></li>
-														</ul>
-													</div>
 													<div class="job-summary-area mb-50">
 														<div class="pin"><img src="assets/images/icon/pin.svg" alt=""></div>
 														<div class="job-summary-title">
@@ -231,15 +228,21 @@
 																	<span class="title">Titre du poste:</span>
 																	{{poste.titre}}</p>
 															</li>
-															{# <li>
-																<p>
-																	<span class="title">Vacancy:</span>
-																	07 Person</p>
-															</li> #}
 															<li>
 																<p>
 																	<span class="title">Experiences:</span>
-																	{{poste.experienceRequis}} an(s)</p>
+																	{{poste.experienceRequis}}
+																	an(s)</p>
+															</li>
+
+
+															<li>
+																<p>
+																	<span class="title">technologies demandée:</span>
+																	{% for technologie in poste.technologie %}
+																		{{technologie.nom}},
+																	{% endfor %}
+																</p>
 															</li>
 															<li>
 																<p>
@@ -254,7 +257,8 @@
 															<li>
 																<p>
 																	<span class="title">Salaire proposé:</span>
-																	{{poste.salaireMin}} euro/<span class="time">Mois</span>
+																	{{poste.salaireMin}}
+																	euro/<span class="time">Mois</span>
 																</p>
 															</li>
 															<li>
