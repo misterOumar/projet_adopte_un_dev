@@ -18,3 +18,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # installer OPcache qui est un accélerateur PHP qui améliore les performances
 RUN docker-php-ext-install opcache 
+
+# Installer les dépendances pour l'extension intl
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    && docker-php-ext-install intl \
+    && docker-php-ext-enable intl

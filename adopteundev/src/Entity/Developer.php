@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DeveloperRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,7 +29,7 @@ class Developer
     #[ORM\Column(nullable: true)]
     private ?float $salaireMin = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?bool $isDisponible = null;
 
     #[ORM\Column(nullable: true)]
@@ -50,9 +52,30 @@ class Developer
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $cat = null;
 
+    #[ORM\Column]
+    private ?bool $mobileVisible = null;
+
+    #[ORM\Column]
+    private ?bool $salaireVisible = null;
+
+    /**
+     * @var Collection<int, Cv>
+     */
+    #[ORM\OneToMany(targetEntity: Cv::class, mappedBy: 'developer')]
+    private Collection $cvs;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
+
+    public function __construct()
+    {
+        $this->mobileVisible = true;
+        $this->salaireVisible = true;
+        $this->isDisponible = true;
+        $this->cvs = new ArrayCollection();
+
+    }
 
     public function getId(): ?int
     {
@@ -112,7 +135,7 @@ class Developer
         return $this->isDisponible;
     }
 
-    public function setDisponible(?bool $isDisponible): static
+    public function setDisponible(bool $isDisponible): static
     {
         $this->isDisponible = $isDisponible;
 
@@ -187,6 +210,60 @@ class Developer
     public function setCat(Categorie $cat): static
     {
         $this->cat = $cat;
+
+        return $this;
+    }
+
+    public function isMobileVisible(): ?bool
+    {
+        return $this->mobileVisible;
+    }
+
+    public function setMobileVisible(bool $mobileVisible): static
+    {
+        $this->mobileVisible = $mobileVisible;
+
+        return $this;
+    }
+
+    public function isSalaireVisible(): ?bool
+    {
+        return $this->salaireVisible;
+    }
+
+    public function setSalaireVisible(bool $salaireVisible): static
+    {
+        $this->salaireVisible = $salaireVisible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cv>
+     */
+    public function getCvs(): Collection
+    {
+        return $this->cvs;
+    }
+
+    public function addCv(Cv $cv): static
+    {
+        if (!$this->cvs->contains($cv)) {
+            $this->cvs->add($cv);
+            $cv->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCv(Cv $cv): static
+    {
+        if ($this->cvs->removeElement($cv)) {
+            // set the owning side to null (unless already changed)
+            if ($cv->getDeveloper() === $this) {
+                $cv->setDeveloper(null);
+            }
+        }
 
         return $this;
     }
