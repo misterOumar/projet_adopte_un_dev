@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{developer.nom}} {{developer.prenom}}
+{% endblock %}
+
+{% block body %}
+
+	<!-- ========== Job Details Start============= -->
+    <div class="job-details-pages pt-120 mb-120">
+        <div class="container">
+            <div class="row g-lg-4 gy-5">
+                <div class="col-lg-8">
+                    <div class="job-details-content">
+                        <div class="job-list-content">
+                            <div class="company-area">
+                                <div class="logo">
+                                    <img src="assets/images/bg/company-logo/company-01.png" alt="">
+                                </div>
+                                <div class="company-details">
+                                    <div class="name-location">
+                                        <h5> {{developer.nom}} {{developer.prenom}}</h5>
+                                        <p> {{developer.cat.nom}} </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="job-discription">
+                                <ul class="one">
+                                    <li>
+                                        <img src="{{asset('assets/images/icon/map-2.svg')}}" alt=""/>
+                                        <p><span class="title">Location:</span> {{developer.ville}}</p>
+                                    </li>
+                                    <li>
+                                        <img src="{{asset('assets/images/icon/phone-2.svg')}}" alt="">
+                                        <p><span class="title">Telephone :</span> {{developer.mobile}} </p>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <img src="{{asset('assets/images/icon/company-2.svg')}}" alt="">
+                                        <p><span class="title">Email :</span> {{developer.user.email}}</p>
+                                    </li>
+                                    <li>
+                                        <img src="{{asset('assets/images/icon/salary-2.svg')}}" alt="">
+                                        <p><span class="title">Salary:</span> Minimum {{developer.salaireMin}} €</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h6>Biographie :</h6> 
+                         <p>{{developer.biographie}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="job-details-sidebar mb-120">
+                        <div class="save-apply-btn d-flex justify-content-end mb-50">
+                            <ul>
+                                <li><a class="save-btn" href="#">Ranking :</a></li>
+                                <li><a class="primry-btn-2 lg-btn" href="#">Apply Position</a></li>
+                            </ul>
+                        </div>
+                        {# <div class="job-summary-area mb-50">
+                            <div class="job-summary-title">
+                                <h6>Job Summary:</h6>
+                            </div>
+                            <ul>
+                                <li><p><span class="title">Job Posted:</span> 02 February, 2023.</p></li>
+                                <li><p><span class="title">Expiration:</span> 03 March, 2023.</p></li>
+                                <li><p><span class="title">Vacancy:</span> 07 Person.</p></li>
+                                <li><p><span class="title">Experiences:</span> 2-3 Years.</p></li>
+                                <li><p><span class="title">Education:</span> Bachelor Degree.</p></li>
+                                <li><p><span class="title">Gender:</span> Both.</p></li>
+                            </ul>
+                        </div> #}
+                        <div class="email-area mb-50">
+                            <div class="title">
+                                <h6><img src="assets/images/icon/email-2.svg" alt="">Email Now</h6>
+                            </div>
+                            <p>Send your resume at <a href="/cdn-cgi/l/email-protection#4920272f26092c31282439252c672a2624"><span class="__cf_email__" data-cfemail="90f9fef6ffd0f5e8f1fde0fcf5bef3fffd">[email&#160;protected]</span></a></p>
+                        </div>
+                        
+                        <div class="job-share-area mb-50">
+                            <h6>Social Link :</h6>
+                            <ul>
+                                <li><a href="#"><i class='bx bx-link' ></i></a></li>
+                                <li><a href="https://www.facebook.com/"><i class='bx bxl-facebook'></i></a></li>
+                                <li><a href="https://twitter.com/"><i class='bx bxl-twitter' ></i></a></li>
+                                <li><a href="https://www.linkedin.com/"><i class='bx bxl-linkedin' ></i></a></li>
+                                <li><a href="https://www.instagram.com/"><i class='bx bxl-instagram-alt' ></i></a></li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
