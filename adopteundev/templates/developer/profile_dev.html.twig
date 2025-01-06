@@ -11,6 +11,8 @@
 
 
 {% block body %}
+	{% include "developer/_modal_add_cv.html.twig" %}
+
 	<!-- ========== Dashboard Area end============= -->
 	<div class="dashboard-area pt-120 mb-120">
 		<div class="container">
@@ -30,6 +32,10 @@
 								<li class="nav-item" role="presentation">
 									<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
 										<span></span>Informations personnelles:</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link" id="cv-tab" data-bs-toggle="tab" data-bs-target="#cv" type="button" role="tab" aria-controls="cv" aria-selected="false">
+										<span></span>Mes CV</button>
 								</li>
 								<li class="nav-item" role="presentation">
 									<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
@@ -392,6 +398,78 @@
 										{# </form> #}
 										{{ form_end(formSetting) }}
 									</div>
+
+								</div>
+								<div class="tab-pane fade" id="cv" role="tabpanel" aria-labelledby="cv-tab">
+
+
+									<div class="form-wrapper">
+										<form class="edit-profile-form profile-form">
+											<div class="section-title2">
+												<h5>J'organise mes CV pour candidater et être visible auprès des recruteurs:</h5>
+											</div>
+											
+											
+											<div class="table-wrapper">
+												<div class="d-flex mb-2 align-items-center justify-content-end">
+												
+
+													<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#modalAddCV" type="button">
+														<i class='bx bx-plus-circle me-2'></i>
+														Nouveau CV
+													</button>
+
+												</div>
+												<div class="scroll-table">
+													<table class="eg-table table category-table mb-0">
+														<thead>
+															<tr>
+																<th>Nom</th>
+																<th>Date de creation</th>
+																<th>Actions</th>
+															</tr>
+														</thead>
+														<tbody>
+															{% for cv in developer.cvs %}
+																<tr>
+																	<td>
+																		<a class="view-btn" href="{{ asset('uploads/cvs/' ~ cv.fichier.reference) }}" target="_blank">
+																			{{ cv.fichier.nom }}																			
+																		</a>
+																	</td>
+																	<td>{{ cv.fichier.createdAt|date('d-m-Y à H:i') }}</td>
+																	<td>
+																		
+																		<a href="{{ asset('uploads/cvs/' ~ cv.fichier.reference) }}" target="_blank">
+																			<i class='bx bx-show eg-btn purple-btn'></i>
+																		</a>
+
+																		<a href="{{ path('cv_delete', {id: cv.id}) }}" >
+																			<i class='bx bx-trash-alt eg-btn orenge-btn'></i>
+																		</a>
+
+
+																	</td>
+
+																</tr>
+															{% else %}
+																<tr>
+																	<td colspan="3">Vous n'avez pas de CV, vous pouvez en créer un en cliquant sur le bouton ci-dessus</td>
+																</tr>
+															{% endfor %}
+
+
+														</tbody>
+													</table>
+												</div>
+
+											</div>
+											
+										</fo>
+
+									</div>
+
+
 
 								</div>
 							</div>

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DeveloperRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -56,6 +58,12 @@ class Developer
     #[ORM\Column]
     private ?bool $salaireVisible = null;
 
+    /**
+     * @var Collection<int, Cv>
+     */
+    #[ORM\OneToMany(targetEntity: Cv::class, mappedBy: 'developer')]
+    private Collection $cvs;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
@@ -65,6 +73,7 @@ class Developer
         $this->mobileVisible = true;
         $this->salaireVisible = true;
         $this->isDisponible = true;
+        $this->cvs = new ArrayCollection();
 
     }
 
@@ -225,6 +234,36 @@ class Developer
     public function setSalaireVisible(bool $salaireVisible): static
     {
         $this->salaireVisible = $salaireVisible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cv>
+     */
+    public function getCvs(): Collection
+    {
+        return $this->cvs;
+    }
+
+    public function addCv(Cv $cv): static
+    {
+        if (!$this->cvs->contains($cv)) {
+            $this->cvs->add($cv);
+            $cv->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCv(Cv $cv): static
+    {
+        if ($this->cvs->removeElement($cv)) {
+            // set the owning side to null (unless already changed)
+            if ($cv->getDeveloper() === $this) {
+                $cv->setDeveloper(null);
+            }
+        }
 
         return $this;
     }

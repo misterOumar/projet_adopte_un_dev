@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Cv;
 use App\Entity\Fichier;
+use App\Form\CVRegistrationType;
 use App\Form\DeveloperProfileType;
 use App\Form\DevelopperSettingType;
 use App\Repository\DeveloperRepository;
@@ -14,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[Route('/developer', name: 'app_developer_')]
 class DeveloperController extends AbstractController
@@ -87,9 +90,40 @@ class DeveloperController extends AbstractController
             $this->addFlash('success', 'Réglages du profil mis à jour avec succès.');
         }
 
+        // formulaire pour ajouter un CV
+        $cv = new Cv();
+        $cv->setDeveloper($developer);
+        $formCv = $this->createForm(CVRegistrationType::class, $cv);
+        $formCv->handleRequest($request);
+
+        if ($formCv->isSubmitted() && $formCv->isValid()) {
+            // Upload du fichier
+            $uploadedFile = $formCv->get('fichier')->getData();
+            $uuid = Uuid::v4();
+            $fileName = $uuid . '.' . $uploadedFile->guessExtension();
+            $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/cvs';
+            $uploadedFile->move($uploadDir, $fileName);
+
+            // Enregistrement en base
+            $fichier = new Fichier();
+            $fichier->setNom($uploadedFile->getClientOriginalName());
+            $fichier->setReference($fileName);
+
+            $entityManager->persist($fichier);
+
+            $cv->setFichier($fichier);
+            $entityManager->persist($cv);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'CV ajouté avec succès.');
+            return $this->redirectToRoute('app_developer_profile'); // Page du profil
+        }
+
         return $this->render('developer/profile_dev.html.twig', [
             'form' => $form->createView(),
             'formSetting' => $formSetting->createView(),
+            'formCv' => $formCv->createView(),
+            'developer' => $developer
         ]);
     }
 
