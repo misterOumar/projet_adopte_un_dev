@@ -95,8 +95,17 @@
 					<div class="job-details-sidebar mb-120">
 						<div class="save-apply-btn d-flex justify-content-end mb-50">
 							<ul>
-								<li><a class="save-btn" href="#">Save Job<span><i class="bi bi-bookmark-fill"></i></span></a></li>
-								<li><a class="primry-btn-2 lg-btn" href="#">Postuler</a></li>
+								<li>
+									<a class="save-btn" href="#">Save Job<span>
+											<i class="bi bi-bookmark-fill"></i>
+										</span>
+									</a>
+								</li>
+								<li>
+									<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#postulerModal">
+										Postuler
+									</button>
+								</li>
 							</ul>
 						</div>
 						<div class="job-summary-area mb-50">
@@ -420,6 +429,44 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal postuler -->
+	<div class="modal fade" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 50rem;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="postulerModalLabel">Formulaire de candidature</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form id="postuler-form" method="POST" action="{{ path('app_postuler', { 'uuid': poste.uuid }) }}">
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="dev-nom" class="form-label">Nom</label>
+								<input type="text" class="form-control" id="dev-nom" name="name" value="{{ developer.nom }}">
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="dev-prenom" class="form-label">Prenom</label>
+								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.prenom }}" required>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="dev-mobile" class="form-label">Mobile</label>
+								<input type="text" class="form-control" id="dev-prenom" name="mobile" value="{{ developer.mobile }}" required>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label for="dev-email" class="form-label">Email</label>
+								<input type="text" class="form-control" id="dev-email" name="email" value="{{ user.email }}" readonly required>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="submit" class="primry-btn-2 lg-btn w-unset">Postuler</button>
+							<button type="button" class="danger-btn-2 lg-btn w-unset " data-bs-dismiss="modal">Annuler</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

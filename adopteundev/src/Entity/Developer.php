@@ -63,7 +63,13 @@ class Developer
      */
     #[ORM\OneToMany(targetEntity: Cv::class, mappedBy: 'developer')]
     private Collection $cvs;
-
+    
+    /**
+     * @var Collection<int, Candidature>
+     */
+    #[ORM\OneToMany(targetEntity: Candidature::class, mappedBy: 'developer')]
+    private Collection $candidatures;
+  
     /**
      * @var Collection<int, Technologie>
      */
@@ -81,6 +87,7 @@ class Developer
         $this->isDisponible = true;
         $this->cvs = new ArrayCollection();
         $this->technologie = new ArrayCollection();
+        $this->candidatures = new ArrayCollection();
 
     }
 
@@ -295,6 +302,35 @@ class Developer
     public function removeTechnologie(Technologie $technologie): static
     {
         $this->technologie->removeElement($technologie);
+
+        return $this;
+    }
+    /**
+     * @return Collection<int, Candidature>
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidature $candidature): static
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures->add($candidature);
+            $candidature->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): static
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getDeveloper() === $this) {
+                $candidature->setDeveloper(null);
+            }
+        }
 
         return $this;
     }
