@@ -30,10 +30,17 @@ class Technologie
     #[ORM\ManyToMany(targetEntity: Poste::class, mappedBy: 'technologie')]
     private Collection $postes;
 
+    /**
+     * @var Collection<int, Developer>
+     */
+    #[ORM\ManyToMany(targetEntity: Developer::class, mappedBy: 'technologie')]
+    private Collection $developers;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable(); // Remplit automatiquement la date de création
         $this->postes = new ArrayCollection();
+        $this->developers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,6 +87,33 @@ class Technologie
     {
         if ($this->postes->removeElement($poste)) {
             $poste->removeTechnologie($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Developer>
+     */
+    public function getDevelopers(): Collection
+    {
+        return $this->developers;
+    }
+
+    public function addDeveloper(Developer $developer): static
+    {
+        if (!$this->developers->contains($developer)) {
+            $this->developers->add($developer);
+            $developer->addTechnologie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeveloper(Developer $developer): static
+    {
+        if ($this->developers->removeElement($developer)) {
+            $developer->removeTechnologie($this);
         }
 
         return $this;
