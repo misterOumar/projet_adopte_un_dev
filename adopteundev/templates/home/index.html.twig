@@ -286,51 +286,52 @@
 
                 <div class="section mt-5">
                     <h2>Derniers profils créés</h2>
-                    <div class="row">
+                    <div class="row g-4">
                         {% for developer in recentDevelopers %}
-                            <div class="job-list-card">
-                        <div class="urgent-batch">
-                            <span>Urgent</span>
-                        </div>
-                        <div class="company-area">
-                            <div class="logo">
-                                <img src="assets/images/bg/company-logo/company-01.png" alt="">
-                            </div>
-                            <div class="company-details">
-                                <div class="name-location">
-                                    <h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
-                                </div>
-                                <div class="bookmark">
-                                    <i class="bi bi-bookmark"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-discription">
-                            <ul>
-                                <li>
-                                    <p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
-                                </li>
-                                <li>
-                                    <p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
-                                </li>
+                            <div class="col-xl-4 col-lg-6">
+                    			<div class="job-list-card">
+                        			<div class="urgent-batch">
+                            			<span>Urgent</span>
+                        			</div>
+                        			<div class="company-area">
+                            			<div class="logo">
+                                			<img src="assets/images/bg/company-logo/company-01.png" alt="">
+                            			</div>
+                            			<div class="company-details">
+                                			<div class="name-location">
+                                    			<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
+                                			</div>
+                                			<div class="bookmark">
+                                    			<i class="bi bi-bookmark"></i>
+                                			</div>
+                            			</div>
+                        			</div>
+                        			<div class="job-discription">
+                            			<ul>
+                                			<li>
+                                    			<p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
+                                			</li>
+                                			<li>
+                                    			<p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
+                                			</li>
                                 
-                            </ul>
-                        </div>
-                        <div class="job-type-apply">
-                            <div class="apply-btn">
-                                <a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Voir plus</a>
-                            </div>
-                        </div>
-                    </div>
+                            			</ul>
+                        			</div>
+                        			<div class="job-type-apply">
+                            			<div class="apply-btn">
+                                			<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Voir plus</a>
+                            			</div>
+                        			</div>
+                    			</div>
+							</div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         
         {% endif %}
-    {% endif %}
-		</div>
-        <div class="container">
+		{% else %}
+		<div class="container">
             <div class="row mb-60">
                 <div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
                     <div class="section-title1">
@@ -386,6 +387,8 @@
 			{% endfor %}
             </div>
         </div>
+    {% endif %}
+		</div>
     </div>
     <!-- ========== Home Two Job list End============= -->
     <!-- ========== Home Two Working-Process Start============= -->
