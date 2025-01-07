@@ -42,16 +42,23 @@
 
 
 		<!-- style css -->
-		<link rel="stylesheet" href={{ asset("assets/css/style.css") }}> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
+		<link rel="stylesheet" href={{ asset("assets/css/style.css") }}> {% block stylesheets %}{% endblock %}
 
 		</head>
 		<body>
 			<div class="eg-preloder"></div>
+			{% if app.user %}
+			
+			{% set avatar = app.user.avatar ? app.user.avatar.reference : 'default-avatar.png'  %}
+			{% endif %}
+			
+
+
 			<!-- ========== header============= -->
 			<header class="header-area style-5">
 				<div class="menu-area">
 					<div class="header-logo">
-						<a href="index.html"><img alt="image" class="img-fluid" src="{{asset('assets/images/header1-logo.svg')}}"></a>
+						<a href="index.html"><img alt="image" class="img-fluid" src="{{asset('assets/images/logo.png')}}" width="60" ></a>
 					</div>
 					<div class="main-menu">
 						<div class="mobile-logo-area d-lg-none d-flex justify-content-between align-items-center">
@@ -68,7 +75,7 @@
 								<a href="{{ path('app_home') }}">Accueil</a>
 							</li>
 							<li>
-								<a href="{{ path('app_home') }}">Postes</a>
+								<a href="{{ path('app_poste_list') }}">Postes</a>
 							</li>
 							<li>
 								<a href="{{ path('app_home') }}">Profiles</a>
@@ -274,7 +281,7 @@
 			{% endfor %}
 			{% block body %}{% endblock %}
 
-			
+
 			<!-- ========== Home1 Footer area Start============= -->
 			<footer class="footer1 bg-dark pl-185 pr-185 style-6">
 				<div class="container-fluid">
@@ -372,7 +379,7 @@
 			<!-- ========== Home1 Footer area end============= -->
 
 
-		 <script src={{ asset("assets/js/jquery-3.6.0.min.js")}}></script>
+			 <script src={{ asset("assets/js/jquery-3.6.0.min.js")}}></script>
 			 <script src={{ asset("assets/js/jquery-ui.js") }}></script>
 
 			 <script src={{ asset("assets/js/bootstrap.bundle.min.js") }}></script>
@@ -395,6 +402,10 @@
 			 <script src={{ asset("assets/js/select2.min.js") }}></script>
 
 			 <script src={{ asset("assets/js/viewport.jquery.js") }}></script>
+
+			<!-- other javascript -->{% block javascripts %}
+		{% endblock %}
+
 
 			 <script src={{ asset("assets/js/main.js") }}></script>
 

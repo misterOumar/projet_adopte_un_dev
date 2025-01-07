@@ -1,0 +1,39 @@
+<!-- Modal add -->
+<div class="modal fade" id="modalAddCV" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog" style="max-width: 40rem;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Ajouter un nouveau CV</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			{{ form_start(formCv) }}
+			<div class="modal-body">
+				<div class="col-lg-12">
+
+					<div class="form-inner mb-25">
+						<label>Téléversé votre cv *</label>
+
+						<div class="input-area">
+							<img src="{{asset('assets/images/icon/company-2.svg')}}" alt="">
+							{{ form_widget(formCv.fichier) }}
+						</div>
+					</div>
+				</div>				
+
+
+			</div>
+			<div class="modal-footer">
+
+				<button type="submit" class="primry-btn-2 lg-btn w-unset">
+					Ajouter</button>
+
+				<button type="button" class="danger-btn-2 lg-btn w-unset " data-bs-dismiss="modal">
+					Annuler</button>
+
+
+			</div>
+			{{ form_end(formCv) }}
+		</div>
+
+	</div>
+</div>

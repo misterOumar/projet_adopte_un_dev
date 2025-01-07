@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Categorie;
 use App\Entity\Company;
 use App\Entity\Poste;
+use App\Entity\Technologie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -70,6 +71,15 @@ class PosteFormType extends AbstractType
                 ],
                 'label' => false, // Masque le label
             ])
+            ->add('technologie', EntityType::class, [
+                'class' => Technologie::class,
+                'required' => true,
+                'placeholder' => 'Choisissez des technologies',
+                'choice_label' => 'nom', // Affiche le champ "nom" dans le <select>
+                'multiple' => true, // Permet de sélectionner plusieurs technologies
+                'attr' => ['class' => 'js-states form-control select2'],
+                'label' => false,
+            ]);
         ;
     }
 

@@ -16,6 +16,47 @@ class DeveloperRepository extends ServiceEntityRepository
         parent::__construct($registry, Developer::class);
     }
 
+    // public function findAllQuery(): Query
+    // {
+    //     return $this->createQueryBuilder('d')
+    //         ->orderBy('d.experience', 'DESC')
+    //         ->getQuery();
+    // }
+
+
+    public function findByFilters(array $filters)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        // Vérification et ajout du filtre par nom
+        if (!empty($filters['nom'])) {
+            $qb->andWhere('d.nom LIKE :nom')
+                ->setParameter('nom', '%' . $filters['nom'] . '%');
+        }
+
+        // // Vérification et ajout du filtre par technologies
+        // if (!empty($filters['technologies']) && is_array($filters['technologies'])) {
+        //     $qb->join('d.technologies', 't')
+        //         ->andWhere('t.nom IN (:technologies)')
+        //         ->setParameter('technologies', $filters['technologies']);
+        // }
+
+        // Filtre par expérience (de 1 à 5)
+        if (!empty($filters['experience']) && in_array($filters['experience'], range(1, 5))) {
+            $qb->andWhere('d.experience = :experience')
+                ->setParameter('experience', $filters['experience']);
+        }
+
+        // Vérification et ajout du filtre par salaire minimum
+        if (!empty($filters['salaireMin']) && is_numeric($filters['salaireMin'])) {
+            $qb->andWhere('d.salaireMin >= :salaireMin')
+                ->setParameter('salaireMin', $filters['salaireMin']);
+        }
+
+        return $qb->getQuery();
+    }
+
+
     //    /**
     //     * @return Developer[] Returns an array of Developer objects
     //     */
