@@ -64,6 +64,12 @@ class Developer
     #[ORM\OneToMany(targetEntity: Cv::class, mappedBy: 'developer')]
     private Collection $cvs;
 
+    /**
+     * @var Collection<int, Technologie>
+     */
+    #[ORM\ManyToMany(targetEntity: Technologie::class, inversedBy: 'developers')]
+    private Collection $technologie;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
@@ -74,6 +80,7 @@ class Developer
         $this->salaireVisible = true;
         $this->isDisponible = true;
         $this->cvs = new ArrayCollection();
+        $this->technologie = new ArrayCollection();
 
     }
 
@@ -264,6 +271,30 @@ class Developer
                 $cv->setDeveloper(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Technologie>
+     */
+    public function getTechnologie(): Collection
+    {
+        return $this->technologie;
+    }
+
+    public function addTechnologie(Technologie $technologie): static
+    {
+        if (!$this->technologie->contains($technologie)) {
+            $this->technologie->add($technologie);
+        }
+
+        return $this;
+    }
+
+    public function removeTechnologie(Technologie $technologie): static
+    {
+        $this->technologie->removeElement($technologie);
 
         return $this;
     }

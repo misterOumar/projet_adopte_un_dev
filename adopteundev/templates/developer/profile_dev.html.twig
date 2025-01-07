@@ -4,10 +4,13 @@
 {% endblock %}
 
 {% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
 	<link rel="stylesheet" href={{ asset("css/custum.css") }}>
 
 
 {% endblock %}
+
+
 
 
 {% block body %}
@@ -131,19 +134,15 @@
 
 										<div class="col-md-6">
 											<div class="form-inner mb-25">
-												<label>Technologies *</label>
+												<label>Technologies requis *</label>
 												<div class="input-area">
-													<img src="assets/images/icon/qualification-2.svg" alt="">
-													<select class="select1">
-														<option value="0">Bachelor Degree in CSE</option>
-														<option value="1">IGCSE</option>
-														<option value="2">AS</option>
-														<option value="4">A Level</option>
-														<option value="5">Matriculated</option>
-													</select>
+													<img src="{{asset('assets/images/icon/language-2.svg')}}" alt="">
+													{{ form_widget(form.technologie) }}
 												</div>
+												<small class="text-danger">{{ form_errors(form.technologie) }}</small>
 											</div>
 										</div>
+
 
 
 										<div class="col-md-6">
@@ -490,6 +489,7 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="{{asset('assets/js/select2.min.js')}}"></script>
 
 
 	 <script>
