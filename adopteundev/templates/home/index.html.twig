@@ -227,167 +227,168 @@
     <div class="home2-job-list-area mb-120">
 		<div class="container">
 			{% if app.user %}
-        {% if is_granted('ROLE_COMPANY') %}
-            <div class="company-section">
+        		{% if is_granted('ROLE_COMPANY') %}
+            		<div class="company-section">
 
-                <div class="section">
-                    <h2>Développeurs les plus consultés</h2>
-                    <div class="row">
-                        {% for developer in mostViewedDevelopers %}
-                            <div class="col-lg-4 col-md-6">
-                                <div class="profile-card">
-                                    <h4>{{ developer.nom }} {{ developer.prenom }}</h4>
-                                    <p>Ville : {{ developer.ville }}</p>
-                                    <p>Expérience : {{ developer.experience }} ans</p>
-                                    <!--<p>Vues : {{ developer.views }}</p>-->
-                                </div>
-                            </div>
-							<div class="col-xl-4 col-lg-6">
-                    <div class="job-list-card">
-                        <div class="urgent-batch">
-                            <span>Urgent</span>
-                        </div>
-                        <div class="company-area">
-                            <div class="logo">
-                                <img src="assets/images/bg/company-logo/company-01.png" alt="">
-                            </div>
-                            <div class="company-details">
-                                <div class="name-location">
-                                    <h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
-                                </div>
-                                <div class="bookmark">
-                                    <i class="bi bi-bookmark"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-discription">
-                            <ul>
-                                <li>
-                                    <p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
-                                </li>
-                                <li>
-                                    <p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
-                                </li>
-                                <li>
-                                    <!--<p><span class="title">Nombre de vues:</span> <span>{{ developer.views }}</span></p>-->
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="job-type-apply">
-                            <div class="apply-btn">
-                                <a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                		<div class="section">
+                    		<h2>Développeurs les plus consultés</h2>
+							<div class="row">
+								{% for developer in mostViewedDevelopers %}
+									<div class="col-lg-4 col-md-6">
+										<div class="profile-card">
+											<h4>{{ developer.nom }} {{ developer.prenom }}</h4>
+											<p>Ville : {{ developer.ville }}</p>
+											<p>Expérience : {{ developer.experience }} ans</p>
+											<!--<p>Vues : {{ developer.views }}</p>-->
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-6">
+                    					<div class="job-list-card">
+                        					<div class="urgent-batch">
+                            					<span>Urgent</span>
+                        					</div>
+                        					<div class="company-area">
+                            					<div class="logo">
+                                					<img src="assets/images/bg/company-logo/company-01.png" alt="">
+                            					</div>
+                            					<div class="company-details">
+                                					<div class="name-location">
+                                    					<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
+                                					</div>
+                                					<div class="bookmark">
+                                    					<i class="bi bi-bookmark"></i>
+                                					</div>
+                            					</div>
+                        					</div>
+                        					<div class="job-discription">
+                            					<ul>
+                                					<li>
+                                    					<p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
+                                					</li>
+                                					<li>
+                                    					<p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
+                                					</li>
+                                					<li>
+                                    					<!--<p><span class="title">Nombre de vues:</span> <span>{{ developer.views }}</span></p>-->
+                                					</li>
+                            					</ul>
+                        					</div>
+                        					<div class="job-type-apply">
+                            					<div class="apply-btn">
+                                					<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
+                            					</div>
+                        					</div>
+                    					</div>
+                					</div>
+                        		{% endfor %}
+                    		</div>
+                		</div>
 
-                <div class="section mt-5">
-                    <h2>Derniers profils créés</h2>
-                    <div class="row g-4">
-                        {% for developer in recentDevelopers %}
-                            <div class="col-xl-4 col-lg-6">
-                    			<div class="job-list-card">
-                        			<div class="urgent-batch">
-                            			<span>Urgent</span>
-                        			</div>
-                        			<div class="company-area">
-                            			<div class="logo">
-                                			<img src="assets/images/bg/company-logo/company-01.png" alt="">
-                            			</div>
-                            			<div class="company-details">
-                                			<div class="name-location">
-                                    			<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
-                                			</div>
-                                			<div class="bookmark">
-                                    			<i class="bi bi-bookmark"></i>
-                                			</div>
-                            			</div>
-                        			</div>
-                        			<div class="job-discription">
-                            			<ul>
-                                			<li>
-                                    			<p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
-                                			</li>
-                                			<li>
-                                    			<p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
-                                			</li>
-                                
-                            			</ul>
-                        			</div>
-                        			<div class="job-type-apply">
-                            			<div class="apply-btn">
-                                			<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Voir plus</a>
-                            			</div>
-                        			</div>
-                    			</div>
+                		<div class="section mt-5">
+                    		<h2>Derniers profils créés</h2>
+							<div class="row g-4">
+								{% for developer in recentDevelopers %}
+									<div class="col-xl-4 col-lg-6">
+										<div class="job-list-card">
+											<div class="urgent-batch">
+												<span>Urgent</span>
+											</div>
+											<div class="company-area">
+												<div class="logo">
+													<img src="assets/images/bg/company-logo/company-01.png" alt="">
+												</div>
+												<div class="company-details">
+													<div class="name-location">
+														<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
+													</div>
+													<div class="bookmark">
+														<i class="bi bi-bookmark"></i>
+													</div>
+												</div>
+											</div>
+											<div class="job-discription">
+												<ul>
+													<li>
+														<p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
+													</li>
+													<li>
+														<p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
+													</li>
+										
+												</ul>
+											</div>
+											<div class="job-type-apply">
+												<div class="apply-btn">
+													<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Voir plus</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
 							</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        
-        {% endif %}
-		{% else %}
-		<div class="container">
-            <div class="row mb-60">
-                <div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
-                    <div class="section-title1">
-                        <h2>Postes les plus recents</h2>
-                        <p>To choose your trending job dream &amp; to make future bright.</p>
-                    </div>
-                    <div class="explore-btn">
-                        <a href="{{ path('app_register') }}">Voir Plus <span><img src="assets/images/icon/explore-elliose.svg" alt=""></span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="row g-4">
-			{% for poste in postes %}
-                <div class="col-xl-4 col-lg-6">
-                    <div class="job-list-card">
-                        <div class="urgent-batch">
-                            <span>Urgent</span>
-                        </div>
-                        <div class="company-area">
-                            <div class="logo">
-                                <img src="assets/images/bg/company-logo/company-01.png" alt="">
-                            </div>
-                            <div class="company-details">
-                                <div class="name-location">
-                                    <h5><a href="job-details.html">{{poste.titre}}</a></h5>
-                                    <p><a href="company-details.html">{{poste.company.nom}}</a></p>
-                                </div>
-                                <div class="bookmark">
-                                    <i class="bi bi-bookmark"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="job-discription">
-                            <ul>
-                                <li>
-                                    <p><span class="title">Salaire:</span> {{poste.salaireMin}} $ / <span class="time">Par mois</span></p>
-                                </li>
-                                <li>
-                                    <p><span class="title">Type:</span> <span> {{poste.type}}</span></p>
-                                </li>
-                                <li>
-                                    <p><span class="title">Date limite:</span> <span class="time">{{ poste.dateLimite|date('d/m/Y') }}</span></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="job-type-apply">
-                            <div class="apply-btn">
-                                <a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-			{% endfor %}
-            </div>
-        </div>
-    {% endif %}
+                		</div>
+            		</div>
+        		
+				{% else %}
+					<div class="container">
+						<div class="row mb-60">
+							<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+								<div class="section-title1">
+									<h2>Postes les plus recents</h2>
+									<p>To choose your trending job dream &amp; to make future bright.</p>
+								</div>
+								<div class="explore-btn">
+									<a href="{{ path('app_register') }}">Voir Plus <span><img src="assets/images/icon/explore-elliose.svg" alt=""></span></a>
+								</div>
+							</div>
+						</div>
+						<div class="row g-4">
+						{% for poste in postes %}
+							<div class="col-xl-4 col-lg-6">
+								<div class="job-list-card">
+									<div class="urgent-batch">
+										<span>Urgent</span>
+									</div>
+									<div class="company-area">
+										<div class="logo">
+											<img src="assets/images/bg/company-logo/company-01.png" alt="">
+										</div>
+										<div class="company-details">
+											<div class="name-location">
+												<h5><a href="job-details.html">{{poste.titre}}</a></h5>
+												<p><a href="company-details.html">{{poste.company.nom}}</a></p>
+											</div>
+											<div class="bookmark">
+												<i class="bi bi-bookmark"></i>
+											</div>
+										</div>
+									</div>
+									<div class="job-discription">
+										<ul>
+											<li>
+												<p><span class="title">Salaire:</span> {{poste.salaireMin}} $ / <span class="time">Par mois</span></p>
+											</li>
+											<li>
+												<p><span class="title">Type:</span> <span> {{poste.type}}</span></p>
+											</li>
+											<li>
+												<p><span class="title">Date limite:</span> <span class="time">{{ poste.dateLimite|date('d/m/Y') }}</span></p>
+											</li>
+										</ul>
+									</div>
+									<div class="job-type-apply">
+										<div class="apply-btn">
+											<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+						</div>
+						i
+					</div>
+				{% endif %}
+    		{% endif %}
 		</div>
     </div>
     <!-- ========== Home Two Job list End============= -->

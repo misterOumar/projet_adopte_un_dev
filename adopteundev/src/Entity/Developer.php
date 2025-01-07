@@ -76,6 +76,10 @@ class Developer
     #[ORM\ManyToMany(targetEntity: Technologie::class, inversedBy: 'developers')]
     private Collection $technologie;
 
+    
+    #[ORM\OneToMany(mappedBy: 'developer', targetEntity: SavedPost::class, cascade: ['persist', 'remove'])]
+    private Collection $savedPosts;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
@@ -88,6 +92,7 @@ class Developer
         $this->cvs = new ArrayCollection();
         $this->technologie = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
+        $this->savedPosts = new ArrayCollection();
 
     }
 
@@ -334,4 +339,31 @@ class Developer
 
         return $this;
     }
+        
+    public function getSavedPosts(): Collection
+    {
+        return $this->savedPosts;
+    }
+
+    public function addSavedPost(SavedPost $savedPost): static
+    {
+        if (!$this->savedPosts->contains($savedPost)) {
+            $this->savedPosts->add($savedPost);
+            $savedPost->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSavedPost(SavedPost $savedPost): static
+    {
+        if ($this->savedPosts->removeElement($savedPost)) {
+            if ($savedPost->getDeveloper() === $this) {
+                $savedPost->setDeveloper(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
