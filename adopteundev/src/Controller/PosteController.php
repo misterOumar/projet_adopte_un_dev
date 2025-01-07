@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidature;
 use App\Entity\Poste;
 use App\Form\PosteFormType;
+use App\Repository\CandidatureRepository;
 use App\Repository\CompanyRepository;
+use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PosteController extends AbstractController
 {
-    public function __construct(private CompanyRepository $companyRepository, private PosteRepository $posteRepository) {}
+    public function __construct(private CompanyRepository $companyRepository, private PosteRepository $posteRepository, private DeveloperRepository $developerRepository) {}
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/new', name: 'app_add_poste')]
@@ -185,16 +187,37 @@ class PosteController extends AbstractController
 
     // #[IsGranted('ROLE_DEV')]
     #[Route('/poste/details/{uuid}', name: 'app_poste_details')]
-    public function posteDetail(string $uuid)
+    public function posteDetail(string $uuid, CandidatureRepository $candidature)
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
-        if (!$this->getUser()) {
+        $user = $this->getUser();
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+        if (!$developer) {
             // Redirige vers la page de connexion si non connecté
             return $this->redirectToRoute('app_login');
         }
-        if (!$poste) {
-            throw $this->createNotFoundException('Poste introuvable');
-        }
-        return $this->render('poste/poste_details.html.twig', ['poste' => $poste]);
+
+        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user]);
+    }
+
+    #[IsGranted('ROLE_DEV')]
+    #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
+    public function postuler(string $uuid, EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
+    {
+        $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
+
+        $user = $this->getUser();
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+
+        // Créer une nouvelle candidature
+        $candidature = new Candidature();
+        $candidature->setStatut("En cours");
+        $candidature->setPoste($poste);
+        $candidature->setDeveloper($developer);
+        $entityManager->persist($candidature);
+        $entityManager->flush();
+        $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
+
+        return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid, 'developer' => $developer]);
     }
 }

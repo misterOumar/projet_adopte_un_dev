@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DeveloperRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,6 +51,17 @@ class Developer
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'developer')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $cat = null;
+
+    /**
+     * @var Collection<int, Candidature>
+     */
+    #[ORM\OneToMany(targetEntity: Candidature::class, mappedBy: 'developer')]
+    private Collection $candidatures;
+
+    public function __construct()
+    {
+        $this->candidatures = new ArrayCollection();
+    }
 
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
@@ -187,6 +200,36 @@ class Developer
     public function setCat(Categorie $cat): static
     {
         $this->cat = $cat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Candidature>
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidature $candidature): static
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures->add($candidature);
+            $candidature->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): static
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getDeveloper() === $this) {
+                $candidature->setDeveloper(null);
+            }
+        }
 
         return $this;
     }

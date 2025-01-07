@@ -67,6 +67,12 @@ class Poste
     #[ORM\ManyToMany(targetEntity: Technologie::class, inversedBy: 'postes')]
     private Collection $technologie;
 
+    /**
+     * @var Collection<int, Candidature>
+     */
+    #[ORM\OneToMany(targetEntity: Candidature::class, mappedBy: 'poste')]
+    private Collection $candidatures;
+
     public function __construct()
     {
         $this->uuid = Uuid::v7();
@@ -74,6 +80,7 @@ class Poste
         $this->createdAt = new \DateTimeImmutable();
         $this->modifiedAt = new \DateTimeImmutable();
         $this->technologie = new ArrayCollection();
+        $this->candidatures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,6 +276,36 @@ class Poste
     public function removeTechnologie(Technologie $technologie): static
     {
         $this->technologie->removeElement($technologie);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Candidature>
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidature $candidature): static
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures->add($candidature);
+            $candidature->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): static
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getPoste() === $this) {
+                $candidature->setPoste(null);
+            }
+        }
 
         return $this;
     }
