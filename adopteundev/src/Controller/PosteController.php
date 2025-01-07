@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidature;
 use App\Entity\Poste;
 use App\Form\PosteFormType;
+use App\Repository\CandidatureRepository;
 use App\Repository\CompanyRepository;
+use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PosteController extends AbstractController
 {
-    public function __construct(private CompanyRepository $companyRepository, private PosteRepository $posteRepository) {}
+    public function __construct(private CompanyRepository $companyRepository, private PosteRepository $posteRepository, private DeveloperRepository $developerRepository) {}
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/new', name: 'app_add_poste')]
@@ -47,7 +50,7 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/list', name: 'app_company_poste_list')]
-    public function posteList()
+    public function companyPosteList()
     {
         // Récupérer la `Company` actuellement connectée ou liée
         $user = $this->getUser();
@@ -59,19 +62,21 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/details/{uuid}', name: 'app_company_poste_details')]
-    public function posteDetail(string $uuid)
+    public function companyPosteDetail(string $uuid)
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
         if (!$poste) {
             throw $this->createNotFoundException('Poste introuvable');
         }
+        // dd($poste);
         return $this->render('company/poste_details.html.twig', ['poste' => $poste]);
     }
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/edit/{uuid}', name: 'app_company_poste_edit')]
-    public function posteEdit(string $uuid, Request $request, EntityManagerInterface $entityManager): Response {
+    public function posteEdit(string $uuid, Request $request, EntityManagerInterface $entityManager): Response
+    {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
         $user = $this->getUser();
@@ -98,5 +103,121 @@ class PosteController extends AbstractController
             'form' => $form->createView(),
             'poste' => $poste,
         ]);
+    }
+
+    #[Route('/postes', name: 'app_poste_list')]
+    public function posteList(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        //recupération des catégories associés à un poste
+        $categories = $entityManager->createQuery(
+            'SELECT c.id, c.nom, COUNT(p.id) AS nbPostes FROM App\Entity\Categorie c LEFT JOIN c.postes p GROUP BY c.id'
+        )->getResult();
+
+        // récupération des type de poste
+        $types = $entityManager->createQuery(
+            'SELECT p.type, COUNT(p.id) AS nbPostes
+             FROM App\Entity\Poste p
+             GROUP BY p.type'
+        )->getResult();
+        // Récupérer la sélection de la période via les paramètres GET
+        $selectedDateFilter = $request->query->get('dateFilter', null);
+
+        // Calculer la plage de dates en fonction de la sélection
+        $now = new \DateTimeImmutable();
+        $startDate = null;
+
+        switch ($selectedDateFilter) {
+            case 'today':
+                $startDate = $now->setTime(0, 0, 0); // Début de la journée
+                break;
+            case 'yesterday':
+                $startDate = $now->modify('-1 day')->setTime(0, 0, 0); // Début d'hier
+                break;
+            case 'week':
+                $startDate = $now->modify('-1 week'); // Début de la semaine dernière
+                break;
+            case 'month':
+                $startDate = $now->modify('-1 month'); // Début du mois dernier
+                break;
+        }
+
+        // Requête pour récupérer les postes
+        $queryBuilder = $entityManager->getRepository(Poste::class)->createQueryBuilder('p');
+
+        if ($startDate) {
+            $queryBuilder
+                ->andWhere('p.createdAt >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+
+        // $postes = $queryBuilder->getQuery()->getResult();
+
+        // Compter les postes pour chaque période
+        $countByDate = [
+            'today' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
+                ->select('COUNT(p.id)')
+                ->where('p.createdAt >= :startOfDay')
+                ->setParameter('startOfDay', $now->setTime(0, 0, 0))
+                ->getQuery()
+                ->getSingleScalarResult(),
+            'yesterday' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
+                ->select('COUNT(p.id)')
+                ->where('p.createdAt >= :startOfYesterday')
+                ->andWhere('p.createdAt < :startOfToday')
+                ->setParameter('startOfYesterday', $now->modify('-1 day')->setTime(0, 0, 0))
+                ->setParameter('startOfToday', $now->setTime(0, 0, 0))
+                ->getQuery()
+                ->getSingleScalarResult(),
+            'week' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
+                ->select('COUNT(p.id)')
+                ->where('p.createdAt >= :startOfWeek')
+                ->setParameter('startOfWeek', $now->modify('-1 week'))
+                ->getQuery()
+                ->getSingleScalarResult(),
+            'month' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
+                ->select('COUNT(p.id)')
+                ->where('p.createdAt >= :startOfMonth')
+                ->setParameter('startOfMonth', $now->modify('-1 month'))
+                ->getQuery()
+                ->getSingleScalarResult(),
+        ];
+        $postes = $this->posteRepository->findAll();
+        return $this->render('poste/poste_liste.html.twig', ['postes' => $postes, 'categories' => $categories, 'types' => $types, 'countByDate' => $countByDate,]);
+    }
+
+    // #[IsGranted('ROLE_DEV')]
+    #[Route('/poste/details/{uuid}', name: 'app_poste_details')]
+    public function posteDetail(string $uuid, CandidatureRepository $candidature)
+    {
+        $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
+        $user = $this->getUser();
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+        if (!$developer) {
+            // Redirige vers la page de connexion si non connecté
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user]);
+    }
+
+    #[IsGranted('ROLE_DEV')]
+    #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
+    public function postuler(string $uuid, EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
+    {
+        $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
+
+        $user = $this->getUser();
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+
+        // Créer une nouvelle candidature
+        $candidature = new Candidature();
+        $candidature->setStatut("En cours");
+        $candidature->setPoste($poste);
+        $candidature->setDeveloper($developer);
+        $entityManager->persist($candidature);
+        $entityManager->flush();
+        $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
+
+        return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid, 'developer' => $developer]);
     }
 }

@@ -40,11 +40,8 @@ class CategorieRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-
-    
-    // Récupère les 3 catégories les plus utilisées dans les postes.
-     
-    public function findTopCategoriesByPostCount(int $limit = 3): array
+  
+   public function findTopCategoriesByPostCount(int $limit = 3): array
     {
         return $this->createQueryBuilder('c')
             ->select('c.nom, COUNT(p.id) AS post_count')

@@ -61,6 +61,16 @@
 							</div>
 						</div>
 						<div class="col-md-6">
+							<div class="form-inner mb-25">
+								<label>Technologies requis*</label>
+								<div class="input-area">
+									<img src="{{asset('assets/images/icon/language-2.svg')}}" alt="">
+									{{ form_widget(form.technologie) }}
+								</div>
+								<small class="text-danger">{{ form_errors(form.technologie) }}</small>
+							</div>
+						</div>
+						<div class="col-md-6">
 							<div class="form-inner">
 								<div class="salary-wrap">
 									<label class="label">Budget/Salaire*</label>
@@ -86,7 +96,7 @@
 							<div class="form-inner mb-25">
 								<label for="experiences">Experience requis*</label>
 								<div class="input-area">
-									<img src="{{asset('assets/images/icon/email-2.svg')}}" alt="">
+									<img src="{{asset('assets/images/icon/experiences-2.svg')}}" alt="">
 									{{ form_widget(form.experienceRequis)}}
 								</div>
 								<small class="text-danger">{{ form_errors(form.experienceRequis) }}</small>
@@ -96,7 +106,7 @@
 							<div class="form-inner mb-25">
 								<label for="ville">Ville*</label>
 								<div class="input-area">
-									<img src="{{asset('assets/images/icon/map-2.svg')}}" alt="">
+									<img src="{{asset('assets/images/icon/home-2.svg')}}" alt="">
 									{{ form_widget(form.ville)}}
 								</div>
 								<small class="text-danger">{{ form_errors(form.ville) }}</small>
@@ -125,10 +135,8 @@
 						<div class="col-md-12">
 							<div class="form-inner mb-30">
 								<label for="summernote1">Description du poste</label>
-								{{ form_widget(form.description)}}
-								{# <textarea name="editordata" id="summernote1" placeholder="Something Write Yourself...."></textarea> #}
+								{{ form_widget(form.description, {'id':'summernote1'})}}
 							</div>
-							{# <small class="text-danger">{{ form_errors(form.description) }}</small> #}
 						</div>
 						<div class="col-md-12">
 							<div class="form-agreement form-inner d-flex justify-content-between flex-wrap">
@@ -139,18 +147,18 @@
 							</div>
 						</div>
 
-					</div>
-				</div>
-			</div>
-			<div class="col-md-12">
-				<div class="form-inner">
-					<button class="primry-btn-2 lg-btn w-unset" type="submit">
-						{% if app.request.get('_route')=='app_add_poste' %}Poster Maintenant
-						{% else %}
-							Enregistrer
-						{% endif %}
+						<div class="col-md-12">
+							<div class="form-inner">
+								<button class="primry-btn-2 lg-btn w-unset" type="submit">
+									{% if app.request.get('_route')=='app_add_poste' %}Poster Maintenant
+									{% else %}
+										Enregistrer
+									{% endif %}
 
-					</button>
+								</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
