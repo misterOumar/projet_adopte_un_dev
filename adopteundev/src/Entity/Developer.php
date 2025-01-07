@@ -29,7 +29,7 @@ class Developer
     #[ORM\Column(nullable: true)]
     private ?float $salaireMin = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?bool $isDisponible = null;
 
     #[ORM\Column(nullable: true)]
@@ -52,20 +52,44 @@ class Developer
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $cat = null;
 
+    #[ORM\Column]
+    private ?bool $mobileVisible = null;
+
+    #[ORM\Column]
+    private ?bool $salaireVisible = null;
+
+    /**
+     * @var Collection<int, Cv>
+     */
+    #[ORM\OneToMany(targetEntity: Cv::class, mappedBy: 'developer')]
+    private Collection $cvs;
+    
     /**
      * @var Collection<int, Candidature>
      */
     #[ORM\OneToMany(targetEntity: Candidature::class, mappedBy: 'developer')]
     private Collection $candidatures;
-
-    public function __construct()
-    {
-        $this->candidatures = new ArrayCollection();
-    }
+  
+    /**
+     * @var Collection<int, Technologie>
+     */
+    #[ORM\ManyToMany(targetEntity: Technologie::class, inversedBy: 'developers')]
+    private Collection $technologie;
 
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
+
+    public function __construct()
+    {
+        $this->mobileVisible = true;
+        $this->salaireVisible = true;
+        $this->isDisponible = true;
+        $this->cvs = new ArrayCollection();
+        $this->technologie = new ArrayCollection();
+        $this->candidatures = new ArrayCollection();
+
+    }
 
     public function getId(): ?int
     {
@@ -125,7 +149,7 @@ class Developer
         return $this->isDisponible;
     }
 
-    public function setDisponible(?bool $isDisponible): static
+    public function setDisponible(bool $isDisponible): static
     {
         $this->isDisponible = $isDisponible;
 
@@ -204,6 +228,83 @@ class Developer
         return $this;
     }
 
+    public function isMobileVisible(): ?bool
+    {
+        return $this->mobileVisible;
+    }
+
+    public function setMobileVisible(bool $mobileVisible): static
+    {
+        $this->mobileVisible = $mobileVisible;
+
+        return $this;
+    }
+
+    public function isSalaireVisible(): ?bool
+    {
+        return $this->salaireVisible;
+    }
+
+    public function setSalaireVisible(bool $salaireVisible): static
+    {
+        $this->salaireVisible = $salaireVisible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cv>
+     */
+    public function getCvs(): Collection
+    {
+        return $this->cvs;
+    }
+
+    public function addCv(Cv $cv): static
+    {
+        if (!$this->cvs->contains($cv)) {
+            $this->cvs->add($cv);
+            $cv->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCv(Cv $cv): static
+    {
+        if ($this->cvs->removeElement($cv)) {
+            // set the owning side to null (unless already changed)
+            if ($cv->getDeveloper() === $this) {
+                $cv->setDeveloper(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Technologie>
+     */
+    public function getTechnologie(): Collection
+    {
+        return $this->technologie;
+    }
+
+    public function addTechnologie(Technologie $technologie): static
+    {
+        if (!$this->technologie->contains($technologie)) {
+            $this->technologie->add($technologie);
+        }
+
+        return $this;
+    }
+
+    public function removeTechnologie(Technologie $technologie): static
+    {
+        $this->technologie->removeElement($technologie);
+
+        return $this;
+    }
     /**
      * @return Collection<int, Candidature>
      */

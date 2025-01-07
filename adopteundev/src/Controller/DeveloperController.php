@@ -2,20 +2,25 @@
 
 namespace App\Controller;
 
+
 use App\Repository\DeveloperRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
 use App\Repository\CategorieRepository;
 use App\Form\DeveloperFilterType;
 use App\Entity\Developer;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
+
 
 class DeveloperController extends AbstractController
 {
-    #[Route('/devs', name: 'app_dev_list')]
+
+  
+   #[Route('/devs', name: 'app_dev_list')]
     public function listFiltered(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository,  PaginatorInterface $paginator): Response
     {
 
@@ -80,7 +85,7 @@ class DeveloperController extends AbstractController
     }
 
 
-    #[Route('/developer/{uuid}', name: 'app_dev_details')]
+    #[Route('/devs/detail/{uuid}', name: 'app_dev_details')]
     public function details(string $uuid, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager, ): Response
     {
         if (!$this->getUser()) {
@@ -103,4 +108,6 @@ class DeveloperController extends AbstractController
             'developer' => $developer,
         ]);
     }
+
+
 }
