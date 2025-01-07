@@ -1,69 +1,132 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta name="viewport" content="width=device-width"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title>Adopte Un Dev</title>
-	</head>
-	<body style="margin:0px; background: #f8f8f8; ">
-		<div width="100%" style="background: #f8f8f8; padding: 0px 0px; font-family:arial; line-height:28px; height:100%;  width: 100%; color: #514d6a;">
-			<div style="max-width: 700px; padding:50px 0;  margin: 0px auto; font-size: 14px">
-				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 20px">
-					<tbody>
-						<tr>
-							<td style="vertical-align: top; padding-bottom:30px;" align="center">
-								<h4>AdopteUnDev</h4>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div style="padding: 40px; background: #fff;">
-					<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
-						<tbody>
-							<tr>
-								<td style="border-bottom:1px solid #f6f6f6;">
-									<h1 style="font-size:14px; font-family:arial; margin:0px; font-weight:bold;">
-										Bienvenu sur AdopteUnDev
-									</h1>
-								</td>
-							</tr>
-							<tr>
-								<td style="padding:10px 0 30px 0;">
-									<p>
-										Merci de votre inscription à AdopteUnDev!, votre plateforme qui met en rélation les développeurs avec les entreprises pour les aider à trouver des solutions de développement web et mobile.
-									</p>
+<html xmlns="http://www.w3.org/1999/xhtml">	
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenue sur AdopteUnDev !</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+      color: #333;
+    }
 
+    .email-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
 
-									<p>Veuillez cliquer sur le lien suivant pour activer votre compte :</p>
-									<a style="display: inline-block; padding: 15px 30px; margin: 20px 0px 30px; font-size: 15px; color: #fff; background:rgb(13, 229, 236); text-decoration:none;" href="{{ activationLink }}">Activer mon compte</a>
+    /* Header Styles */
+    .header {
+      background-color: #00A7AC;
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+    }
 
+    .header img {
+      max-width: 80px;
+      margin-bottom: 10px;
+    }
 
-									<p>Si vous rencontrez des problèmes pour activer votre compte, vous pouvez utiliser le lien suivant pour vous connecter à votre compte et réinitialiser votre mot de passe :</p>
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
 
-									<p>
-										{{ activationLink }}
+    /* Content Styles */
+    .content {
+      padding: 20px;
+      text-align: center;
+    }
 
-									</p>
+    .content p {
+      margin: 15px 0;
+      line-height: 1.6;
+    }
 
-									<p>Si vous avez des questions ou si vous souhaitez plus d'information, n'hésitez pas à contacter notre équipe support à l'adresse suivante:</p>
-									<p>
-										<a href="mailto:support@adopteundev.com">support@adopteundev.com</a>
-									</p>
+    .content a.button {
+      display: inline-block;
+      padding: 12px 20px;
+      margin-top: 20px;
+      background-color: #00A7AC;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
 
-									<p>
-										A très bientôt !
-									</p>
+    .content a.button:hover {
+      background-color: #007f84;
+    }
 
-									<p>
-										AdopteUnDev Bot
-									</p>
-								</td>
-							</tr>
+    /* Footer Styles */
+    .footer {
+      padding: 10px 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+      font-size: 12px;
+      color: #666666;
+    }
 
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</body>
+    .footer a {
+      color: #00A7AC;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <!-- Header Section -->
+    <div class="header">
+      <img src="{{asset('assets/images/header1-logo.svg')}}" alt="Logo AdopteUnDev">
+      <h1>Bienvenue chez AdopteUnDev !</h1>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+      <p>Bonjour,</p>
+      <p>
+        Nous sommes ravis de vous compter parmi nous ! 🎉 Avec AdopteUnDev, vous êtes sur la bonne voie pour collaborer avec les meilleurs développeurs ou trouver des solutions de développement adaptées à vos besoins.
+      </p>
+      <p>
+        Pour commencer, il ne reste plus qu’une petite étape : activer votre compte. Cliquez sur le bouton ci-dessous pour finaliser votre inscription.
+      </p>
+      <a href="{{ activationLink }}" class="button">Activer mon compte</a>
+      <p>
+        Si le bouton ne fonctionne pas, vous pouvez copier et coller ce lien dans votre navigateur :
+      </p>
+      <p style="word-break: break-word; color: #007f84;">
+        <a href="{{ activationLink }}">{{ activationLink }}</a>
+      </p>
+      <p>
+        Vous avez une question ? Besoin d’aide ? Notre équipe est là pour vous répondre à tout moment. Contactez-nous à <a href="mailto:support@adopteundev.com">support@adopteundev.com</a>.
+      </p>
+      <p>
+        À très bientôt et bienvenue dans la communauté AdopteUnDev !  
+      </p>
+      <p style="font-weight: bold; margin-top: 30px;">L’équipe AdopteUnDev 🚀</p>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+      <p>© 2025 AdopteUnDev. Tous droits réservés.</p>
+      <p>
+        <a href="https://example.com/privacy-policy">Politique de confidentialité</a> | 
+        <a href="https://example.com/terms">Conditions générales</a>
+      </p>
+    </div>
+  </div>
+</body>
 </html>
