@@ -396,8 +396,23 @@
 											</ul>
 										</div>
 										<div class="bookmark">
-											<i class="bi bi-bookmark-fill"></i>
+											{% if poste in developer.favorites %}
+												<form action="{{ path('app_favorite_poste_remove', {uuid: poste.uuid}) }}" method="post">
+													<button type="submit" style="background:transparent">
+													<i class='bx bx-bookmark'></i>
+													</button>
+												</form>
+											{% else %}
+												<form action="{{ path('app_favorite_poste_add', {uuid: poste.uuid}) }}" method="post">
+													
+													<button type="submit" style="background:transparent">
+													<i class='bx bxs-bookmark'></i>
+
+													</button>
+												</form>
+											{% endif %}
 										</div>
+
 									</div>
 								</div>
 								<div class="job-discription">

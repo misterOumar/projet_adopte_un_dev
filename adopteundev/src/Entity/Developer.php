@@ -76,6 +76,10 @@ class Developer
     #[ORM\ManyToMany(targetEntity: Technologie::class, inversedBy: 'developers')]
     private Collection $technologie;
 
+    #[ORM\ManyToMany(targetEntity: Poste::class)]
+    #[ORM\JoinTable(name: 'developer_favorites')]
+    private Collection $favorites;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
@@ -88,6 +92,7 @@ class Developer
         $this->cvs = new ArrayCollection();
         $this->technologie = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
 
     }
 
@@ -331,6 +336,27 @@ class Developer
                 $candidature->setDeveloper(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Poste $poste): self
+    {
+        if (!$this->favorites->contains($poste)) {
+            $this->favorites->add($poste);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Poste $poste): self
+    {
+        $this->favorites->removeElement($poste);
 
         return $this;
     }
