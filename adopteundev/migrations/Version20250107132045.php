@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250107082032 extends AbstractMigration
+final class Version20250107132045 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,6 +20,7 @@ final class Version20250107082032 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE TABLE candidature (id INT AUTO_INCREMENT NOT NULL, poste_id INT DEFAULT NULL, developer_id INT NOT NULL, date DATE NOT NULL, statut VARCHAR(15) NOT NULL, reponse VARCHAR(255) DEFAULT NULL, INDEX IDX_E33BD3B8A0905086 (poste_id), INDEX IDX_E33BD3B864DD9267 (developer_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE categorie (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_497DD6346C6E55B5 (nom), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE company (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, nom VARCHAR(180) NOT NULL, phone VARCHAR(20) NOT NULL, ville VARCHAR(100) NOT NULL, adresse VARCHAR(180) DEFAULT NULL, localisation VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_4FBF094FA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE cv (id INT AUTO_INCREMENT NOT NULL, developer_id INT NOT NULL, fichier_id INT NOT NULL, INDEX IDX_B66FFE9264DD9267 (developer_id), INDEX IDX_B66FFE92F915CFE (fichier_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -31,6 +32,8 @@ final class Version20250107082032 extends AbstractMigration
         $this->addSql('CREATE TABLE reset_password_request (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', expires_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_7CE748AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE technologie (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_AD8136746C6E55B5 (nom), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, avatar_id INT DEFAULT NULL, uuid VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, reset_token VARCHAR(255) DEFAULT NULL, is_active TINYINT(1) NOT NULL, is_bloqued TINYINT(1) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', modified_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', UNIQUE INDEX UNIQ_8D93D64986383B10 (avatar_id), UNIQUE INDEX UNIQ_IDENTIFIER_UUID (uuid), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE candidature ADD CONSTRAINT FK_E33BD3B8A0905086 FOREIGN KEY (poste_id) REFERENCES poste (id)');
+        $this->addSql('ALTER TABLE candidature ADD CONSTRAINT FK_E33BD3B864DD9267 FOREIGN KEY (developer_id) REFERENCES developer (id)');
         $this->addSql('ALTER TABLE company ADD CONSTRAINT FK_4FBF094FA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE cv ADD CONSTRAINT FK_B66FFE9264DD9267 FOREIGN KEY (developer_id) REFERENCES developer (id)');
         $this->addSql('ALTER TABLE cv ADD CONSTRAINT FK_B66FFE92F915CFE FOREIGN KEY (fichier_id) REFERENCES fichier (id)');
@@ -49,6 +52,8 @@ final class Version20250107082032 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE candidature DROP FOREIGN KEY FK_E33BD3B8A0905086');
+        $this->addSql('ALTER TABLE candidature DROP FOREIGN KEY FK_E33BD3B864DD9267');
         $this->addSql('ALTER TABLE company DROP FOREIGN KEY FK_4FBF094FA76ED395');
         $this->addSql('ALTER TABLE cv DROP FOREIGN KEY FK_B66FFE9264DD9267');
         $this->addSql('ALTER TABLE cv DROP FOREIGN KEY FK_B66FFE92F915CFE');
@@ -62,6 +67,7 @@ final class Version20250107082032 extends AbstractMigration
         $this->addSql('ALTER TABLE poste_technologie DROP FOREIGN KEY FK_65277250261A27D2');
         $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D64986383B10');
+        $this->addSql('DROP TABLE candidature');
         $this->addSql('DROP TABLE categorie');
         $this->addSql('DROP TABLE company');
         $this->addSql('DROP TABLE cv');
