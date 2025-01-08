@@ -78,199 +78,69 @@
 									<h5>Liste de mes canditaures:</h5>
 								</div>
 							</div>
-							<table class="eg-table table category-table mb-30">
-								<thead>
-									<tr>
-										<th>Titre du poste</th>
-										<th>Date de candidature</th>
-										<th>Entreprise</th>
-										<th>Statut</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td data-label="Job Title">
-											<div class="company-info">
-												<div class="logo">
-													<img src="{{asset('assets/images/bg/company-logo/company-06.png')}}" alt="">
-												</div>
-												<div class="company-details">
-													<div class="top">
-														<h6>
-															<a href="job-details.html">Senior UI/UX Designer</a>
-														</h6>
-														<span><img src="{{asset('assets/images/icon/calender2.svg')}}" alt="">
-															1 days ago</span>
+							{% if candidatures is empty %}
+								<p>Vous n'avez pas encore postulé à un poste.</p>
+							{% else %}
+								<table class="eg-table table category-table mb-30">
+									<thead>
+										<tr>
+											<th>Titre du poste</th>
+											<th>Date de candidature</th>
+											<th>Entreprise</th>
+											<th>Statut</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for candidature in candidatures %}
+											<tr>
+												<td data-label="Job Title">
+													<div class="company-info">
+														<div class="logo">
+															<img src="{{asset('assets/images/bg/company-logo/company-06.png')}}" alt="">
+														</div>
+														<div class="company-details">
+															<div class="top">
+																<h6>
+																	<a href="{{ path('app_poste_details', { uuid: candidature.poste.uuid }) }}">
+																		{{ candidature.poste.titre }}
+																	</a>
+																</h6>
+															</div>
+															<ul>
+																<li><img src="{{asset('assets/images/icon/location.svg')}}" alt="">{{ candidature.poste.ville }},
+																	{{ candidature.poste.adresse }}
+																</li>
+																<li>
+																	<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+																	<p>
+																		<span class="title">Salaire:</span>
+																		{{ candidature.poste.salaireMin }}
+																		<span class="time">	€/Mois</span>
+																	</p>
+																</li>
+															</ul>
+														</div>
 													</div>
-													<ul>
-														<li><img src="{{asset('assets/images/icon/location.svg')}}" alt="">New-York, USA</li>
-														<li>
-															<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
-															<p>
-																<span class="title">Salaire:</span>
-																$60-$90 /
-																<span class="time">Per Hour</span>
-															</p>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</td>
-										<td data-label="Apply Job">03/07/2022</td>
-										<td data-label="Company">
-											<a class="view-btn" href="company-details.html">Tech.Bath Com...
-											</a>
-										</td>
-										<td data-label="Status">
-											<button class="eg-btn purple-btn">Vu</button>
-										</td>
-									</tr>
-									<tr>
-										<td data-label="Job Title">
-											<div class="company-info">
-												<div class="logo">
-													<img src="assets/images/bg/company-logo/company-02.png" alt="">
-												</div>
-												<div class="company-details">
-													<div class="top">
-														<h6>
-															<a href="job-details.html">React JS Developer</a>
-														</h6>
-														<span><img src="assets/images/icon/calender2.svg" alt="">
-															1 days ago</span>
-													</div>
-													<ul>
-														<li><img src="assets/images/icon/location.svg" alt="">Dhaka, Bangladesh</li>
-														<li>
-															<img src="assets/images/icon/arrow2.svg" alt="">
-															<p>
-																<span class="title">Salary:</span>
-																$80-$100 /
-																<span class="time">Per Hour</span>
-															</p>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</td>
-										<td data-label="Apply Job">07/07/2022</td>
-										<td data-label="Company">
-											<a class="view-btn" href="company-details.html">Gangster Group</a>
-										</td>
-										<td data-label="Status">
-											<button class="eg-btn yellow-btn">Interview</button>
-										</td>
-									</tr>
-									<tr>
-										<td data-label="Job Title">
-											<div class="company-info">
-												<div class="logo">
-													<img src="assets/images/bg/company-logo/company-03.png" alt="">
-												</div>
-												<div class="company-details">
-													<div class="top">
-														<h6>
-															<a href="job-details.html">WordPress Developer</a>
-														</h6>
-														<span><img src="assets/images/icon/calender2.svg" alt="">
-															2 days ago</span>
-													</div>
-													<ul>
-														<li><img src="assets/images/icon/location.svg" alt="">West London, UK</li>
-														<li>
-															<img src="assets/images/icon/arrow2.svg" alt="">
-															<p>
-																<span class="title">Salary:</span>
-																$30K-$40K /
-																<span class="time">Monthly</span>
-															</p>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</td>
-										<td data-label="Apply Job">10/07/2022</td>
-										<td data-label="Company">
-											<a class="view-btn" href="company-details.html">Zoomly.Co Ltd</a>
-										</td>
-										<td data-label="Status">
-											<button class="eg-btn orenge-btn">Canceled</button>
-										</td>
-									</tr>
-									<tr>
-										<td data-label="Job Title">
-											<div class="company-info">
-												<div class="logo">
-													<img src="assets/images/bg/company-logo/company-04.png" alt="">
-												</div>
-												<div class="company-details">
-													<div class="top">
-														<h6>
-															<a href="job-details.html">Mern-Stack Developer</a>
-														</h6>
-														<span><img src="assets/images/icon/calender2.svg" alt="">
-															1 week ago</span>
-													</div>
-													<ul>
-														<li><img src="assets/images/icon/location.svg" alt="">New-York, USA</li>
-														<li>
-															<img src="assets/images/icon/arrow2.svg" alt="">
-															<p>
-																<span class="title">Salary:</span>
-																$20-$50 /
-																<span class="time">Per Hour</span>
-															</p>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</td>
-										<td data-label="Apply Job">13/07/2022</td>
-										<td data-label="Company">
-											<a class="view-btn" href="company-details.html">Marko-land Ltd</a>
-										</td>
-										<td data-label="Status">
-											<button class="eg-btn purple-btn">Viewed</button>
-										</td>
-									</tr>
-									<tr>
-										<td data-label="Job Title">
-											<div class="company-info">
-												<div class="logo">
-													<img src="assets/images/bg/company-logo/company-05.png" alt="">
-												</div>
-												<div class="company-details">
-													<div class="top">
-														<h6>
-															<a href="job-details.html">PHP Developer</a>
-														</h6>
-														<span><img src="assets/images/icon/calender2.svg" alt="">
-															2 week ago</span>
-													</div>
-													<ul>
-														<li><img src="assets/images/icon/location.svg" alt="">New-York, USA</li>
-														<li>
-															<img src="assets/images/icon/arrow2.svg" alt="">
-															<p>
-																<span class="title">Salary:</span>
-																$40K-$60K /
-																<span class="time">Per Month</span>
-															</p>
-														</li>
-													</ul>
-												</div>
-											</div>
-										</td>
-										<td data-label="Apply Job">18/08/2022</td>
-										<td data-label="Company">
-											<a class="view-btn" href="company-details.html">Bistro.Tech Group</a>
-										</td>
-										<td data-label="Status">
-											<button class="eg-btn green-btn">Success</button>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+												</td>
+												<td data-label="Apply Job">{{ candidature.date|date('d/m/Y') }}</td>
+												<td data-label="Company">{{ candidature.poste.company.nom }}
+												</td>
+												<td data-label="Status">
+													{% if candidature.statut == 'accepted' %}
+														<span class="badge bg-success">Acceptée</span>
+													{% elseif candidature.statut == 'view' %}
+														<span class="badge bg-warning">Vue</span>
+													{% elseif candidature.statut == 'En cours' %}
+														<span class="badge bg-warning">En cours</span>
+													{% elseif candidature.statut == 'rejected' %}
+														<span class="badge bg-danger">Rejetée</span>
+													{% endif %}
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							{% endif %}
 							<div class="pagination-table-info">
 								<div class="table-info">
 									<span>06 Results Showing In 20 Jobs</span>

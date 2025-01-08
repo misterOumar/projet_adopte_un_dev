@@ -460,6 +460,15 @@
 								<label for="dev-email" class="form-label">Email</label>
 								<input type="text" class="form-control" id="dev-email" name="email" value="{{ user.email }}" readonly required>
 							</div>
+							<div class="col-md-6 mb-3 d-flex">
+								<label for="cv" class="form-label">Sélectionnez votre CV</label>
+								<select class="select1" id="cv" name="cv" required>
+									<option value="" disabled selected>Choisissez un CV</option>
+									{% for cv in cvs %}
+										<option value="{{ cv.id }}">{{ cv.fichier.nom }}</option>
+									{% endfor %}
+								</select>
+							</div>
 						</div>
 
 						<div class="modal-footer">
