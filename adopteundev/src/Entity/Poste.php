@@ -73,6 +73,12 @@ class Poste
     #[ORM\OneToMany(targetEntity: Candidature::class, mappedBy: 'poste')]
     private Collection $candidatures;
 
+    /**
+     * @var Collection<int, PostView>
+     */
+    #[ORM\OneToMany(targetEntity: PostView::class, mappedBy: 'poste')]
+    private Collection $views;
+
     public function __construct()
     {
         $this->uuid = Uuid::v7();
@@ -81,6 +87,7 @@ class Poste
         $this->modifiedAt = new \DateTimeImmutable();
         $this->technologie = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
+        $this->views = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -304,6 +311,41 @@ class Poste
             // set the owning side to null (unless already changed)
             if ($candidature->getPoste() === $this) {
                 $candidature->setPoste(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostView>
+     */
+    public function getViews(): Collection
+    {
+        return $this->views;
+    }
+
+    public function getViewCount(): int
+    {
+        return $this->views->count();
+    }
+
+    public function addView(PostView $view): static
+    {
+        if (!$this->views->contains($view)) {
+            $this->views->add($view);
+            $view->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(PostView $view): static
+    {
+        if ($this->views->removeElement($view)) {
+            // set the owning side to null (unless already changed)
+            if ($view->getPoste() === $this) {
+                $view->setPoste(null);
             }
         }
 

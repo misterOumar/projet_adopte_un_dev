@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Candidature;
 use App\Entity\Cv;
 use App\Entity\Poste;
+use App\Entity\PostView;
 use App\Form\PosteFormType;
 use App\Repository\CandidatureRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
+use App\Repository\PostViewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -188,18 +190,33 @@ class PosteController extends AbstractController
 
     // #[IsGranted('ROLE_DEV')]
     #[Route('/poste/details/{uuid}', name: 'app_poste_details')]
-    public function posteDetail(string $uuid, EntityManagerInterface $entityManager)
+    public function posteDetail(string $uuid, CandidatureRepository $candidature,
+        PostViewRepository $postViewRepository,
+        EntityManagerInterface $entityManager)
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
         $user = $this->getUser();
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
-
         $cvs = $entityManager->getRepository(Cv::class)->findBy(['developer' => $developer]);
-        if (!$developer) {
-            // Redirige vers la page de connexion si non connecté
+        if (!$user) {
+          // Redirige vers la page de connexion si non connecté
+            $this->addFlash('warning', 'Vous devez être connecté pour accéder aux détails du poste.');
             return $this->redirectToRoute('app_login');
         }
+        // Vérifier si l'utilisateur a déjà vu ce poste
+        $existingView = $postViewRepository->findOneBy([
+            'poste' => $poste,
+            'user' => $user,
+        ]);
 
+        if (!$existingView) {
+            $postView = new PostView();
+            $postView->setPoste($poste);
+            $postView->setUser($user);
+
+            $entityManager->persist($postView);
+            $entityManager->flush();
+        }
         return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user, 'cvs' => $cvs]);
     }
 

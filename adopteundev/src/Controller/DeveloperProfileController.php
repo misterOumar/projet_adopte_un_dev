@@ -159,6 +159,17 @@ class DeveloperProfileController extends AbstractController
     #[Route('/favoris', name: 'favoris')]
     public function favoris(): Response
     {
-        return $this->render('developer/poste_favoris_dev.html.twig');
+        $user = $this->getUser();
+
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+
+        if (!$developer) {
+            throw $this->createNotFoundException('Aucun profil de développeur associé à cet utilisateur.');
+        }
+        $poste_favoris = $developer->getFavorites();
+        
+        return $this->render('developer/poste_favoris_dev.html.twig',
+        ['poste_favoris' => $poste_favoris]
+    );
     }
 }
