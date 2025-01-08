@@ -62,4 +62,20 @@ class PosteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * recuperer les postes les plus consulté
+     * @param int $limite
+     * @return array POST
+     */
+    public function findMostViewedPosts(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.views', 'v')
+            ->groupBy('p.id')
+            ->orderBy('COUNT(v.id)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }
