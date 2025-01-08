@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Candidature;
+use App\Entity\Cv;
 use App\Entity\Poste;
+use App\Entity\PostView;
 use App\Form\PosteFormType;
 use App\Repository\CandidatureRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
+use App\Repository\PostViewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -187,35 +190,59 @@ class PosteController extends AbstractController
 
     // #[IsGranted('ROLE_DEV')]
     #[Route('/poste/details/{uuid}', name: 'app_poste_details')]
-    public function posteDetail(string $uuid, CandidatureRepository $candidature)
+    public function posteDetail(string $uuid, CandidatureRepository $candidature,
+        PostViewRepository $postViewRepository,
+        EntityManagerInterface $entityManager)
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
         $user = $this->getUser();
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
-        if (!$developer) {
-            // Redirige vers la page de connexion si non connecté
+        $cvs = $entityManager->getRepository(Cv::class)->findBy(['developer' => $developer]);
+        if (!$user) {
+          // Redirige vers la page de connexion si non connecté
+            $this->addFlash('warning', 'Vous devez être connecté pour accéder aux détails du poste.');
             return $this->redirectToRoute('app_login');
         }
+        // Vérifier si l'utilisateur a déjà vu ce poste
+        $existingView = $postViewRepository->findOneBy([
+            'poste' => $poste,
+            'user' => $user,
+        ]);
 
-        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user]);
+        if (!$existingView) {
+            $postView = new PostView();
+            $postView->setPoste($poste);
+            $postView->setUser($user);
+
+            $entityManager->persist($postView);
+            $entityManager->flush();
+        }
+        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user, 'cvs' => $cvs]);
     }
 
     #[IsGranted('ROLE_DEV')]
     #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
-    public function postuler(string $uuid, EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
+    public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
         $user = $this->getUser();
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
 
-        // Créer une nouvelle candidature
-        $candidature = new Candidature();
-        $candidature->setStatut("En cours");
-        $candidature->setPoste($poste);
-        $candidature->setDeveloper($developer);
-        $entityManager->persist($candidature);
-        $entityManager->flush();
+        if ($request->isMethod('POST')) {
+            // Récupérer les données du formulaire
+            $cvId = $request->request->get('cv'); // ID du CV sélectionné
+            $selectedCv = $entityManager->getRepository(Cv::class)->find($cvId);
+            
+            // Créer une nouvelle candidature
+            $candidature = new Candidature();
+            $candidature->setStatut("En cours");
+            $candidature->setPoste($poste);
+            $candidature->setDeveloper($developer);
+            $candidature->setFichier($selectedCv->getFichier());
+            $entityManager->persist($candidature);
+            $entityManager->flush();
+        }
         $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
 
         return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid, 'developer' => $developer]);

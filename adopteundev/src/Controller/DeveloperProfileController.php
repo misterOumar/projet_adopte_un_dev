@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Candidature;
 use App\Form\DeveloperProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Cv;
+use App\Entity\Developer;
 use App\Entity\Fichier;
 use App\Form\CVRegistrationType;
 use App\Form\DevelopperSettingType;
@@ -129,15 +131,45 @@ class DeveloperProfileController extends AbstractController
 
     // page candidature du dev
     #[Route('/candidature', name: 'candidature')]
-    public function candidature(): Response
+    public function candidature(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('developer/candidature_dev.html.twig');
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Veuillez vous connecter pour voir vos candidatures.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Récupérer le développeur lié à cet utilisateur
+        $developer = $entityManager->getRepository(Developer::class)->findOneBy(['user' => $user]);
+        if (!$developer) {
+            $this->addFlash('error', 'Vous devez être un développeur pour accéder à vos candidatures.');
+            return $this->redirectToRoute('app_home');
+        }
+
+        // Récupérer les candidatures liées à ce développeur
+        $candidatures = $entityManager->getRepository(Candidature::class)->findBy(['developer' => $developer]);
+
+        return $this->render('developer/candidature_dev.html.twig', [
+            'candidatures' => $candidatures,
+        ]);
     }
 
     //postes favoris
     #[Route('/favoris', name: 'favoris')]
     public function favoris(): Response
     {
-        return $this->render('developer/poste_favoris_dev.html.twig');
+        $user = $this->getUser();
+
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+
+        if (!$developer) {
+            throw $this->createNotFoundException('Aucun profil de développeur associé à cet utilisateur.');
+        }
+        $poste_favoris = $developer->getFavorites();
+        
+        return $this->render('developer/poste_favoris_dev.html.twig',
+        ['poste_favoris' => $poste_favoris]
+    );
     }
 }

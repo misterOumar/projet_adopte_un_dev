@@ -30,6 +30,10 @@ class Candidature
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reponse = null;
 
+    #[ORM\ManyToOne(inversedBy: 'candidature')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Fichier $fichier = null;
+
     public function __construct()
     {
         $this->date = new \DateTimeImmutable();
@@ -96,6 +100,18 @@ class Candidature
     public function setReponse(?string $reponse): static
     {
         $this->reponse = $reponse;
+
+        return $this;
+    }
+
+    public function getFichier(): ?Fichier
+    {
+        return $this->fichier;
+    }
+
+    public function setFichier(?Fichier $fichier): static
+    {
+        $this->fichier = $fichier;
 
         return $this;
     }
