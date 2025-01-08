@@ -40,13 +40,9 @@ class Company
     #[ORM\OneToMany(targetEntity: Poste::class, mappedBy: 'company')]
     private Collection $postes;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: SavedDeveloper::class, cascade: ['persist', 'remove'])]
-    private Collection $savedDevelopers;
-
     public function __construct()
     {
         $this->postes = new ArrayCollection();
-        $this->savedDevelopers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,32 +151,4 @@ class Company
 
         return $this;
     }
-
-    public function getSavedDevelopers(): Collection
-    {
-        return $this->savedDevelopers;
-    }
-
-    public function addSavedDeveloper(SavedDeveloper $savedDeveloper): static
-    {
-        if (!$this->savedDevelopers->contains($savedDeveloper)) {
-            $this->savedDevelopers->add($savedDeveloper);
-            $savedDeveloper->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSavedDeveloper(SavedDeveloper $savedDeveloper): static
-    {
-        if ($this->savedDevelopers->removeElement($savedDeveloper)) {
-            if ($savedDeveloper->getCompany() === $this) {
-                $savedDeveloper->setCompany(null);
-            }
-        }
-
-        return $this;
-    }
-
-
 }
