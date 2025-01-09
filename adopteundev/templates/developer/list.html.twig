@@ -413,10 +413,10 @@
 												<div class="company-details">
 													<div class="name-location">
 														<h5>
-															<a href="job-details.html">{{dev.nom}}</a>
+															<a href="job-details.html">{{dev.prenom}} {{ dev.nom|upper}}</a>
 														</h5>
 														<p>
-															<a href="company-details.html">Medico.co Ltd</a>
+															<a href="company-details.html">{{dev.cat.nom}}</a>
 														</p>
 													</div>
 												</div>
@@ -425,9 +425,8 @@
 												<ul>
 													<li>
 														<p>
-															<span class="title">Salary:</span>
-															$20K-$50K /
-															<span class="time">Per Month</span>
+															<span class="title">Expérience:</span>
+															{{dev.experience}} an(s)
 														</p>
 													</li>
 													<li>
@@ -443,14 +442,27 @@
 										</div>
 									</div>
 									<div class="job-type-apply">
-										<div class="job-type">
-											<span class="light-green">Full Time</span>
-											<span class="light-purple">Part Time</span>
-											<span class="light-blue">Remote</span>
+										{% if dev.isDisponible %}
+											<div class="job-type">
+												<span class="light-blue">Disponible</span>
+											</div>										
+										{% endif %}
+
+										<div class="">
+										
+												<span>4,3</span>
+										<i class='bx bxs-star' style="font-size:1.2rem; color:orange"></i>
+										<i class='bx bxs-star'></i>
+										<i class='bx bxs-star'></i>
+										<i class='bx bxs-star-half' ></i>
+										<i class='bx bx-star' ></i>
+												<span>(10 avis)</span>
+
 										</div>
+										
 										<div class="apply-btn">
-											<a href="job-details.html">
-												<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
+											<a href="{{path('app_dev_details', {'uuid':dev.uuid})}}">
+												<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir le profile</a>
 										</div>
 									</div>
 								</div>

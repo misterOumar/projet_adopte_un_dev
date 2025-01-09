@@ -12,6 +12,17 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_UUID', fields: ['uuid'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_COMPANY = 'ROLE_COMPANY';
+    const ROLE_DEV = 'ROLE_DEV';
+
+
+    const ROLES = [
+        'Administrateur' => self::ROLE_ADMIN,
+        'Entreprise' => self::ROLE_COMPANY,
+        'Développeur' => self::ROLE_DEV,
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
