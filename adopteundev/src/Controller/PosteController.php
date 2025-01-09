@@ -12,6 +12,7 @@ use App\Repository\CompanyRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use App\Repository\PostViewRepository;
+use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -222,7 +223,7 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_DEV')]
     #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
-    public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
+    public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature, NotificationService $notificationService): Response
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
@@ -242,6 +243,14 @@ class PosteController extends AbstractController
             $candidature->setFichier($selectedCv->getFichier());
             $entityManager->persist($candidature);
             $entityManager->flush();
+
+            // Notifier l'entreprise propriétaire du poste
+            $company = $poste->getCompany()->getUser();
+            $message = sprintf(
+                "Une nouvelle candidature a été soumise pour votre poste '%s'",
+                $poste->getTitre()
+            );
+            $notificationService->createNotification($company, $message, 'candidature');
         }
         $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
 
