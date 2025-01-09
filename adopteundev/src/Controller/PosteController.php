@@ -21,7 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PosteController extends AbstractController
 {
-    public function __construct(private CompanyRepository $companyRepository, private PosteRepository $posteRepository, private DeveloperRepository $developerRepository) {}
+    public function __construct(private CompanyRepository $companyRepository, private PosteRepository $posteRepository, private DeveloperRepository $developerRepository, private CandidatureRepository $candidatureRepository) {}
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/new', name: 'app_add_poste')]
@@ -65,15 +65,24 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('company/poste/details/{uuid}', name: 'app_company_poste_details')]
-    public function companyPosteDetail(string $uuid)
+    public function companyPosteDetail(string $uuid, EntityManagerInterface $entityManager)
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
         if (!$poste) {
             throw $this->createNotFoundException('Poste introuvable');
         }
-        // dd($poste);
-        return $this->render('company/poste_details.html.twig', ['poste' => $poste]);
+        $candidatures = $poste->getCandidatures();
+
+        // Compter le nombre de candidatures pour ce poste
+        $candidaturesCount = $entityManager->getRepository(Candidature::class)
+            ->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.poste = :poste')
+            ->setParameter('poste', $poste)
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $this->render('company/poste_details.html.twig', ['poste' => $poste, 'candidatures' => $candidatures, 'totalCandidatures' => $candidaturesCount]);
     }
 
     #[IsGranted('ROLE_COMPANY')]
@@ -107,6 +116,41 @@ class PosteController extends AbstractController
             'poste' => $poste,
         ]);
     }
+
+    #[IsGranted('ROLE_COMPANY')]
+    #[Route('/candidature/{uuid}/accepter', name: 'app_candidature_accepter', methods: ['POST'])]
+    public function accepter(string $uuid, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+        $candidature =  $this->candidatureRepository->findOneBy(['uuid' => $uuid]);
+        if ($this->getUser() !== $candidature->getPoste()->getCompany()->getUser()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier cette candidature.');
+        }
+
+        $candidature->setStatut('acceptée');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La candidature a été acceptée avec succès.');
+        return $this->redirectToRoute('app_company_dashboard');
+    }
+
+    #[IsGranted('ROLE_COMPANY')]
+    #[Route('/candidature/{uuid}/rejeter', name: 'app_candidature_rejeter', methods: ['POST'])]
+    public function rejeter(string $uuid, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_COMPANY');
+        $candidature =  $this->candidatureRepository->findOneBy(['uuid' => $uuid]);
+        if ($this->getUser() !== $candidature->getPoste()->getCompany()->getUser()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier cette candidature.');
+        }
+
+        $candidature->setStatut('rejetée');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La candidature a été rejetée avec succès.');
+        return $this->redirectToRoute('app_company_dashboard');
+    }
+
 
     #[Route('/postes', name: 'app_poste_list')]
     public function posteList(Request $request, EntityManagerInterface $entityManager): Response
@@ -190,16 +234,18 @@ class PosteController extends AbstractController
 
     // #[IsGranted('ROLE_DEV')]
     #[Route('/poste/details/{uuid}', name: 'app_poste_details')]
-    public function posteDetail(string $uuid, CandidatureRepository $candidature,
+    public function posteDetail(
+        string $uuid,
+        CandidatureRepository $candidature,
         PostViewRepository $postViewRepository,
-        EntityManagerInterface $entityManager)
-    {
+        EntityManagerInterface $entityManager
+    ) {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
         $user = $this->getUser();
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
         $cvs = $entityManager->getRepository(Cv::class)->findBy(['developer' => $developer]);
         if (!$user) {
-          // Redirige vers la page de connexion si non connecté
+            // Redirige vers la page de connexion si non connecté
             $this->addFlash('warning', 'Vous devez être connecté pour accéder aux détails du poste.');
             return $this->redirectToRoute('app_login');
         }
@@ -222,7 +268,7 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_DEV')]
     #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
-    public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
+    public function postuler(string $uuid, Request $request, EntityManagerInterface $entityManager, CandidatureRepository $candidature): Response
     {
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
@@ -233,7 +279,7 @@ class PosteController extends AbstractController
             // Récupérer les données du formulaire
             $cvId = $request->request->get('cv'); // ID du CV sélectionné
             $selectedCv = $entityManager->getRepository(Cv::class)->find($cvId);
-            
+
             // Créer une nouvelle candidature
             $candidature = new Candidature();
             $candidature->setStatut("En cours");
