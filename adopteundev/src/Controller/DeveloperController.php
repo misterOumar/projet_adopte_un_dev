@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\CategorieRepository;
 use App\Form\DeveloperFilterType;
 use App\Entity\Developer;
+use App\Entity\DeveloperRating;
+use App\Form\DeveloperRatingType;
 use Knp\Component\Pager\PaginatorInterface;
 
 
@@ -96,26 +98,56 @@ class DeveloperController extends AbstractController
 
 
     #[Route('/devs/detail/{uuid}', name: 'app_dev_details')]
-    public function details(string $uuid, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager,): Response
+    public function details(string $uuid,Request $request, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager,): Response
     {
-        if (!$this->getUser()) {
-
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('warning', 'Vous devez être connecté pour accéder au detail du dev');
             return $this->redirectToRoute('app_login');
         }
-        $developer = $entityManager->getRepository(Developer::class)
-            ->createQueryBuilder('d')
-            ->innerJoin('d.user', 'u')
-            ->where('u.uuid = :uuid')
-            ->setParameter('uuid', $uuid)
-            ->getQuery()
-            ->getOneOrNullResult();
+
+        $developer = $developerRepository->findOneBy(['uuid' => $uuid]);            
 
         if (!$developer) {
-            throw $this->createNotFoundException('Développeur non trouvé');
+            $this->addFlash('error', 'Développeur non trouvé');
+            return $this->redirectToRoute('app_dev_list');
         }
+
+        $ratedDeveloper = $developer; // developpeur noté
+
+        $ratingDeveloper = $developerRepository->findOneBy(['user' => $user]); // developpeur noté par l'utilisateur
+        // Empêcher un développeur de s'auto-évaluer
+        if ($ratingDeveloper === $developer) {
+            $form = null;
+        } else {
+            $existingRating = $entityManager->getRepository(DeveloperRating::class)
+                ->findOneBy(['rateDeveloper' => $developer, 'ratingDeveloper' => $ratingDeveloper]);
+
+            $developerRating = $existingRating ?? new DeveloperRating();
+            $developerRating->setRateDeveloper($developer);
+            $developerRating->setRatingDeveloper($ratingDeveloper);
+
+            $form = $this->createForm(DeveloperRatingType::class, $developerRating);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($developerRating);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Votre évaluation a été enregistrée.');
+                return $this->redirectToRoute('app_dev_details', ['uuid' => $ratedDeveloper->getUuid()]);
+            }
+        }
+// -------------------------------
+
+        
+
 
         return $this->render('developer/details.html.twig', [
             'developer' => $developer,
+            'ratingDeveloper' => $ratingDeveloper,
+            'form' => $form ? $form->createView() : null,
+
         ]);
     }
 }
