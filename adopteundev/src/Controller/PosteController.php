@@ -121,7 +121,7 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('/candidature/{uuid}/accepter', name: 'app_candidature_accepter', methods: ['POST'])]
-    public function accepter(string $uuid, EntityManagerInterface $entityManager): Response
+    public function accepter(string $uuid, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
     {
         $this->denyAccessUnlessGranted('ROLE_COMPANY');
         $candidature =  $this->candidatureRepository->findOneBy(['uuid' => $uuid]);
@@ -132,13 +132,20 @@ class PosteController extends AbstractController
         $candidature->setStatut('acceptée');
         $entityManager->flush();
 
+        $developer = $candidature->getDeveloper()->getUser();
+        $message = sprintf(
+            "Le statut d'une candidature a changé."
+        );
+        $notificationService->createNotification($developer, $message, 'acceptée');
+
+
         $this->addFlash('success', 'La candidature a été acceptée avec succès.');
         return $this->redirectToRoute('app_company_dashboard');
     }
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('/candidature/{uuid}/rejeter', name: 'app_candidature_rejeter', methods: ['POST'])]
-    public function rejeter(string $uuid, EntityManagerInterface $entityManager): Response
+    public function rejeter(string $uuid, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
     {
         $this->denyAccessUnlessGranted('ROLE_COMPANY');
         $candidature =  $this->candidatureRepository->findOneBy(['uuid' => $uuid]);
@@ -148,6 +155,13 @@ class PosteController extends AbstractController
 
         $candidature->setStatut('rejetée');
         $entityManager->flush();
+
+        $developer = $candidature->getDeveloper()->getUser();
+        $message = sprintf(
+            "Le statut d'une candidature a changé."
+        );
+        $notificationService->createNotification($developer, $message, 'rejetée');
+
 
         $this->addFlash('success', 'La candidature a été rejetée avec succès.');
         return $this->redirectToRoute('app_company_dashboard');
