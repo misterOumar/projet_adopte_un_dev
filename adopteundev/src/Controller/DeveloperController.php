@@ -15,10 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DeveloperController extends AbstractController
 {
+    public function __construct(private DeveloperRepository $developerRepository) {}
     #[Route('/devs', name: 'app_dev_list')]
-    public function listFiltered(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository,  PaginatorInterface $paginator): Response
+    public function listFiltered(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository, PaginatorInterface $paginator): Response
     {
-
         $categories = $categorieRepository->findAll();
         $categoryChoices = [];
         foreach ($categories as $category) {
@@ -30,11 +30,13 @@ class DeveloperController extends AbstractController
             'categories' => $categoryChoices,
         ]);
 
-        // Traiter la soumission du formulaire
         $form->handleRequest($request);
 
-        // Récupérer les filtres du formulaire
         $filters = $form->getData() ?? [];
+
+        // Récupérer les paramètres de tri
+        $sortField = $request->query->get('sortField', 'd.nom'); // Par défaut, trier par nom
+        $sortDirection = $request->query->get('sortDirection', 'ASC'); // Par défaut, ordre croissant
 
         // Appliquer les filtres à la requête de recherche des développeurs
         $queryBuilder = $developerRepository->createQueryBuilder('d')
@@ -45,7 +47,7 @@ class DeveloperController extends AbstractController
             $queryBuilder->andWhere(
                 'd.nom LIKE :valeur OR d.prenom LIKE :valeur OR d.experience LIKE :valeur OR d.salaire LIKE :valeur'
             )
-            ->setParameter('valeur', '%'.$filters['valeur'].'%');
+                ->setParameter('valeur', '%' . $filters['valeur'] . '%');
         }
 
         if (!empty($filters['categorie'])) {
@@ -59,43 +61,42 @@ class DeveloperController extends AbstractController
         }
 
         if (!empty($filters['salaireMin'])) {
-            $queryBuilder->andWhere('d.salaire >= :salaireMin')
+            $queryBuilder->andWhere('d.salaireMin >= :salaireMin')
                 ->setParameter('salaireMin', $filters['salaireMin']);
         }
 
+        $queryBuilder->orderBy($sortField, $sortDirection);
+
         // Appliquer la pagination
         $pagination = $paginator->paginate(
-            $queryBuilder, 
+            $queryBuilder,
             $request->query->getInt('page', 1), // Page actuelle (par défaut page 1)
             5 // Nombre d'éléments par page
         );
 
-        
         return $this->render('developer/list.html.twig', [
             'form' => $form->createView(),
             'pagination' => $pagination,
+            'sortField' => $sortField,
+            'sortDirection' => $sortDirection,
+            'filters' => $filters,
         ]);
-    
     }
 
 
-    #[Route('/developer/{uuid}', name: 'app_dev_details')]
-    public function details(string $uuid, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager, ): Response
+
+    #[Route('/devs/details/{uuid}', name: 'app_dev_details')]
+    public function details(string $uuid, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager,): Response
     {
-        if (!$this->getUser()) {
-            
-            return $this->redirectToRoute('app_login');
-        }
-        $developer = $entityManager->getRepository(Developer::class)
-            ->createQueryBuilder('d')
-            ->innerJoin('d.user', 'u')
-            ->where('u.uuid = :uuid')
-            ->setParameter('uuid', $uuid)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $developer = $developerRepository->findOneBy(['uuid' => $uuid]);
 
         if (!$developer) {
-            throw $this->createNotFoundException('Développeur non trouvé');
+            throw $this->createNotFoundException('Developer introuvable');
+        }
+
+        if (!$this->getUser()) {
+
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('developer/details.html.twig', [

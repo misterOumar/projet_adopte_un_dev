@@ -6,7 +6,7 @@
 
 {% block body %}
 
-{# <div class="eg-preloder"></div> #}
+
 <!-- ========== Inner Banner Start============= -->
 	<div class="inner-banner"> <div class="container">
 		<div class="row">
@@ -132,16 +132,17 @@
 						<div class="col-lg-6 d-flex align-items-center justify-content-lg-end">
 							<div class="grid-select-area">
 								<div class="select-area">
-									<select class="select1">
-										<option value="0">Sort By(Default)</option>
-										<option value="1">Full Time</option>
-										<option value="2">Part Time</option>
-										<option value="3">Remote</option>
-										<option value="3">Internship</option>
-										<option value="3">Freelance</option>
+									<select class="select1" onchange="location = this.value;">
+										<option value="{{ path('app_dev_list', { 'sortField': 'd.nom', 'sortDirection': 'ASC' }) }}" {% if sortField == 'd.nom' and sortDirection == 'ASC' %} selected {% endif %}>Trier par Nom (A-Z)</option>
+										<option value="{{ path('app_dev_list', { 'sortField': 'd.nom', 'sortDirection': 'DESC' }) }}" {% if sortField == 'd.nom' and sortDirection == 'DESC' %} selected {% endif %}>Trier par Nom (Z-A)</option>
+										<option value="{{ path('app_dev_list', { 'sortField': 'd.salaireMin', 'sortDirection': 'ASC' }) }}" {% if sortField == 'd.salaireMin' and sortDirection == 'ASC' %} selected {% endif %}>Trier par Salaire (Ascendant)</option>
+										<option value="{{ path('app_dev_list', { 'sortField': 'd.salaireMin', 'sortDirection': 'DESC' }) }}" {% if sortField == 'd.salaireMin' and sortDirection == 'DESC' %} selected {% endif %}>Trier par Salaire (Descendant)</option>
+										<option value="{{ path('app_dev_list', { 'sortField': 'd.experience', 'sortDirection': 'ASC' }) }}" {% if sortField == 'd.experience' and sortDirection == 'ASC' %} selected {% endif %}>Trier par Expérience (Débutant)</option>
+										<option value="{{ path('app_dev_list', { 'sortField': 'd.experience', 'sortDirection': 'DESC' }) }}" {% if sortField == 'd.experience' and sortDirection == 'DESC' %} selected {% endif %}>Trier par Expérience (Avancé)</option>
 									</select>
 								</div>
 							</div>
+
 						</div>
 					</div>
 
@@ -219,9 +220,7 @@
 		</div>
 		<div class="job-type-apply">
 			<div class="job-type">
-				<span class="light-green">Full Time</span>
-				<span class="light-purple">Part Time</span>
-				<span class="light-blue">Remote</span>
+				
 			</div>
 			<div class="apply-btn">
 				<a href="{{ path('app_dev_details', {'uuid': developer.user.uuid}) }}">
@@ -229,7 +228,8 @@
 			</div>
 		</div>
 	</div>
-</div>{% endfor %}{% else %}<!-- Message si aucun développeur trouvé --><div class="alert alert-warning text-center w-100">
+</div>{% endfor %}{% else %}
+<!-- Message si aucun développeur trouvé --><div class="alert alert-warning text-center w-100">
 <i class="fas fa-exclamation-circle"></i>
 Aucun développeur ne correspond à votre recherche.</div>{% endif %}
 
@@ -261,5 +261,4 @@ Aucun développeur ne correspond à votre recherche.</div>{% endif %}
 </div></div></div></div></div></div>
 
 <!-- ========== Job Listing e nd============= -->
-
 {% endblock %}
