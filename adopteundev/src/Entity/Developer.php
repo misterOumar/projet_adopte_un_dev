@@ -90,6 +90,12 @@ class Developer
     #[ORM\OneToMany(targetEntity: DeveloperRating::class, mappedBy: 'rateDeveloper')]
     private Collection $ratings;
 
+    /**
+     * @var Collection<int, DeveloperView>
+     */
+    #[ORM\OneToMany(targetEntity: DeveloperView::class, mappedBy: 'developer')]
+    private Collection $views;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
@@ -105,6 +111,7 @@ class Developer
         $this->candidatures = new ArrayCollection();
         $this->favorites = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->views = new ArrayCollection();
         
 
     }
@@ -426,6 +433,42 @@ class Developer
             // set the owning side to null (unless already changed)
             if ($rating->getRateDeveloper() === $this) {
                 $rating->setRateDeveloper(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, DeveloperView>
+     */
+    public function getViews(): Collection
+    {
+        return $this->views;
+    }
+
+    public function getViewCount(): int
+    {
+        return $this->views->count();
+    }
+
+    public function addView(DeveloperView $view): static
+    {
+        if (!$this->views->contains($view)) {
+            $this->views->add($view);
+            $view->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeView(DeveloperView $view): static
+    {
+        if ($this->views->removeElement($view)) {
+            // set the owning side to null (unless already changed)
+            if ($view->getDeveloper() === $this) {
+                $view->setDeveloper(null);
             }
         }
 

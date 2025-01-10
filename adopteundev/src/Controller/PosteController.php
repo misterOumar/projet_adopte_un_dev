@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Candidature;
 use App\Entity\Cv;
 use App\Entity\Notification;
+use App\Entity\Fichier;
 use App\Entity\Poste;
 use App\Entity\PostView;
+use App\Form\CVRegistrationType;
 use App\Form\PosteFormType;
 use App\Repository\CandidatureRepository;
 use App\Repository\CompanyRepository;
+use App\Repository\CvRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use App\Repository\PostViewRepository;
@@ -20,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 class PosteController extends AbstractController
 {
@@ -169,7 +173,7 @@ class PosteController extends AbstractController
 
 
     #[Route('/postes', name: 'app_poste_list')]
-    public function posteList(Request $request, EntityManagerInterface $entityManager): Response
+    public function posteList(Request $request, EntityManagerInterface $entityManager, PosteRepository $posteRepository): Response
     {
         //recupération des catégories associés à un poste
         $categories = $entityManager->createQuery(
@@ -244,7 +248,27 @@ class PosteController extends AbstractController
                 ->getQuery()
                 ->getSingleScalarResult(),
         ];
-        $postes = $this->posteRepository->findAll();
+
+        // Récupérer les filtres depuis la requête
+        $category = $request->query->get('category');
+        $experience = $request->query->get('experience');
+
+        // Récupérer les postes en fonction des critères
+        $queryBuilder = $posteRepository->createQueryBuilder('p');
+
+        if ($category) {
+            $queryBuilder->andWhere('p.categorie = :category')
+                ->setParameter('category', $category);
+        }
+
+        if ($experience) {
+            $queryBuilder->andWhere('p.experience = :experience')
+                ->setParameter('experience', $experience);
+        }
+
+        $postes = $queryBuilder->getQuery()->getResult();
+
+        // Récupérer toutes les catégories pour afficher les options
         return $this->render('poste/poste_liste.html.twig', ['postes' => $postes, 'categories' => $categories, 'types' => $types, 'countByDate' => $countByDate,]);
     }
 
@@ -284,9 +308,15 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_DEV')]
     #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
+
     public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature, NotificationService $notificationService): Response
     {
+
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
+
+        if (!$poste) {
+            throw $this->createNotFoundException('Le poste demandé est introuvable.');
+        }
 
         $user = $this->getUser();
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
@@ -312,10 +342,83 @@ class PosteController extends AbstractController
                 $poste->getTitre()
             );
             $notificationService->createNotification($company, $message, 'candidature');
+
+        if (!$developer) {
+            throw $this->createAccessDeniedException('Vous devez être un développeur pour postuler.');
         }
+
+        // Vérifier si un fichier a été uploadé
+        $uploadedFile = $request->files->get('fichier');
+
+        if ($uploadedFile) {
+            // Validation du fichier
+            if ($uploadedFile->getSize() > 5242880) { // Taille max : 5 Mo
+                $this->addFlash('error', 'Le fichier est trop volumineux (max : 5 Mo).');
+                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+            }
+
+            if ($uploadedFile->getMimeType() !== 'application/pdf') { // Type MIME valide
+                $this->addFlash('error', 'Veuillez uploader un fichier PDF valide.');
+                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+            }
+
+            // Enregistrer le fichier
+            $uuidFile = Uuid::v4();
+            $newFilename = $uuidFile . '.' . $uploadedFile->guessExtension();
+            $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/cvs';
+            $uploadedFile->move($uploadDir, $newFilename);
+
+            // Créer une entité Fichier
+            $fichier = new Fichier();
+            $fichier->setNom($uploadedFile->getClientOriginalName());
+            $fichier->setReference($newFilename);
+            $fichier->setCreatedAt(new \DateTimeImmutable());
+
+            $entityManager->persist($fichier);
+
+            // Créer une entité CV associée au développeur
+            $cv = new Cv();
+            $cv->setDeveloper($developer);
+            $cv->setFichier($fichier);
+
+            $entityManager->persist($cv);
+
+            // Associer ce CV à la candidature
+            $selectedCv = $cv;
+        } else {
+            // Si aucun fichier n'est uploadé, récupérer le CV existant
+            $cvId = $request->request->get('cv');
+            if (!$cvId) {
+                $this->addFlash('error', 'Veuillez sélectionner ou uploader un CV.');
+                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+            }
+
+            // Vérifier si le CV appartient au développeur
+            $selectedCv = $cvRepository->findOneBy([
+                'id' => $cvId,
+                'developer' => $developer,
+            ]);
+
+            if (!$selectedCv) {
+                $this->addFlash('error', 'Le CV sélectionné est invalide.');
+                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+            }
+        }
+
+        // Créer une nouvelle candidature
+        $candidature = new Candidature();
+        $candidature->setStatut("En cours");
+        $candidature->setPoste($poste);
+        $candidature->setDeveloper($developer);
+        $candidature->setFichier($selectedCv->getFichier());
+        $candidature->setDate(new \DateTimeImmutable());
+
+        $entityManager->persist($candidature);
+        $entityManager->flush();
+
         $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
 
-        return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid, 'developer' => $developer]);
+        return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
     }
 
    /*  public function markAsRead(Notification $notification, EntityManagerInterface $em): Response
@@ -328,3 +431,4 @@ class PosteController extends AbstractController
 } */
 
 }
+

@@ -14,9 +14,12 @@ use App\Repository\CategorieRepository;
 use App\Form\DeveloperFilterType;
 use App\Entity\Developer;
 use App\Entity\DeveloperRating;
+use App\Entity\DeveloperView;
 use App\Form\DeveloperRatingType;
+use App\Repository\CompanyRepository;
+use App\Repository\DeveloperViewRepository;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DeveloperController extends AbstractController
 {
@@ -87,18 +90,21 @@ class DeveloperController extends AbstractController
     //     }
 
     #[Route('/devs', name: 'app_dev_list')]
-    public function listDevelopers(Request $request, DeveloperRepository $developerRepository)
+    public function listDevelopers(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository)
     {
+        // pour le filtre
+        $categories = $categorieRepository->findAll();
         $developers = $developerRepository->findAll();
         return $this->render('developer/list.html.twig', [
             'devs' => $developers,
+            'categories' => $categories,
         ]);
     }
 
 
 
     #[Route('/devs/detail/{uuid}', name: 'app_dev_details')]
-    public function details(string $uuid,Request $request, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager,): Response
+    public function details(string $uuid,Request $request,CompanyRepository $companyRepository, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager, DeveloperViewRepository $developerViewRepository): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -138,16 +144,55 @@ class DeveloperController extends AbstractController
                 return $this->redirectToRoute('app_dev_details', ['uuid' => $ratedDeveloper->getUuid()]);
             }
         }
-// -------------------------------
+        
+        // Vu de profile 
+        // Vérifier si l'utilisateur a déjà vu ce poste
+        $existingView = $developerViewRepository->findOneBy([
+            'developer' => $developer,
+            'user' => $user,
+        ]);
+        
+        // vérificier que l'utilisateur n'a pas encore vu le profile et qu'il s'agit pas du dev lui même
+        if (!$existingView && $developer !== $ratingDeveloper ) {
+            $developerView = new DeveloperView();
+            $developerView->setDeveloper($developer);
+            $developerView->setUser($user);
+            
+            $entityManager->persist($developerView);
+            $entityManager->flush();
+
+        }
+        
+        $company = $companyRepository->findOneBy(['user' => $user]); // developpeur noté par l'utilisateur
+        // dd($company);
 
         
-
-
         return $this->render('developer/details.html.twig', [
+            'company' => $company,
             'developer' => $developer,
             'ratingDeveloper' => $ratingDeveloper,
             'form' => $form ? $form->createView() : null,
 
+        ]);
+    }
+
+    #[Route('/filter-developers', name: 'filter_developers', methods: ['GET'])]
+    public function filterDevelopers(Request $request, DeveloperRepository $developerRepository): JsonResponse
+    {
+        // Récupérer les paramètres de la requête
+        $categorie = $request->query->get('categorie');
+        $experience = $request->query->get('experience',);
+        $salaryMin = $request->query->get('salary_min', 0);
+        $salaryMax = $request->query->get('salary_max', 100000);
+
+        // Construire la requête avec le repository
+        $developers = $developerRepository->findByFilters2($categorie, $experience, $salaryMin, $salaryMax);
+
+        // Rendu d'une vue partielle ou retour JSON des résultats
+        return $this->json([
+            'html' => $this->renderView('developer/dev_list_partial.html.twig', [
+                'devs' => $developers,
+            ]),
         ]);
     }
 }

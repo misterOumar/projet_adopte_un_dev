@@ -41,5 +41,7 @@
     background-color: #0056b3;
 }
 
-
-
+i.star-rating {
+    font-size: 1.2rem;
+    color: orange
+}

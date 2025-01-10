@@ -56,6 +56,28 @@ class DeveloperRepository extends ServiceEntityRepository
         return $qb->getQuery();
     }
 
+    public function findByFilters2($categorie, $experience, $salaryMin, $salaryMax)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        if ($categorie) {
+            $qb->andWhere('d.cat.nom = :categorie')
+            ->setParameter('categorie', $categorie);
+        }
+
+        if ($experience) {
+            $qb->andWhere('d.experience = :experience')
+            ->setParameter('experience', $experience);
+        }
+
+        // Filtrer par plage de salaire
+        $qb->andWhere('d.salaireMin BETWEEN :min AND :max')
+        ->setParameter('min', $salaryMin)
+            ->setParameter('max', $salaryMax);
+
+        return $qb->getQuery()->getResult();
+    }
+
 
     //    /**
     //     * @return Developer[] Returns an array of Developer objects
