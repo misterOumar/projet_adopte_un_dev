@@ -26,6 +26,7 @@ class DeveloperFilterType extends AbstractType
             ->add('categorie', ChoiceType::class, [
                 'label' => 'Catégorie',
                 'choices' => $options['categories'],
+                'attr' => ['class' => 'checkmark'],
                 'multiple' => false,
                 'expanded' => true,
                 'required' => false

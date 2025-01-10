@@ -44,8 +44,9 @@
 								<label class="containerss">
 									<input type="text">
 									<span class="text">INPUT POUR UNE PAR FIELD</span>
-
+									{{ form_widget(form.valeur) }}
 								</label>
+								<div class="input-area"></div>
 							</div>
 						</div>
 					</div>
@@ -57,7 +58,7 @@
 									{% for choice in form.categorie  %}
 										<li>
 											<label class="containerss">
-
+												<input type="checkbox">
 												<span class="checkmark"></span>
 												{{ form_widget(choice) }}
 												<span class="text">{{ choice.vars.label }}</span>
@@ -108,18 +109,14 @@
 							<h5 class="job-widget-title mb-15">Salaire Minimum</h5>
 
 							<div class="salary-container">
-								<label class="containerss">
-									{{ form_widget(form.salaireMin) }}
-									{# <span class="qty">(30)</span> #}
+								<label
+									class="containerss">{# <span class="qty">(30)</span> #}
 								</label>
-
+								{{ form_widget(form.salaireMin) }}
 							</div>
 						</div>
 					</div>
 
-					{# <div class="job-widget-btn">
-											<button type="submit" class="primry-btn-2 lg-btn text-center">{{ form.submit.vars.label }}</button>
-										</div> #}
 				</div>
 				{{ form_end(form) }}
 			</div>
@@ -153,8 +150,8 @@
 
 					<!-- Liste des développeurs -->
 					<div class="row ">
-						{% if developers|length > 0 %}
-							{% for developer in developers %}
+						{% if pagination|length > 0 %}
+							{% for developer in pagination %}
 								<div class="col-lg-12 mb-30">
 									<div class="job-listing-card">
 										<div class="job-top">
@@ -192,7 +189,7 @@
 													</p>
 													<p>
 														{{developer.salaireMin}}
-														fdd</p>
+													</p>
 												</li>
 											</p>
 										</li>
@@ -202,7 +199,7 @@
 											</p>
 											<p>
 												{{developer.mobile}}
-												fdd</p>
+											</p>
 										</li>
 									</p>
 								</li>
@@ -212,7 +209,7 @@
 									</p>
 									<p>
 										{{developer.user.email}}
-										fdd</p>
+									</p>
 								</li>
 							</p>
 						</li>
@@ -240,9 +237,8 @@
 Aucun développeur ne correspond à votre recherche.</div>{% endif %}<div class="col-lg-12 d-flex justify-content-center"><div class="pagination-area">
 
 <div class="navigation mb-8">
-					{{ knp_pagination_render(pagination) }}
-				</div>
-
+	{{ knp_pagination_render(pagination) }}
+</div>
 
 
 {# <nav aria-label="...">
@@ -263,8 +259,4 @@ Aucun développeur ne correspond à votre recherche.</div>{% endif %}<div class=
 			<a class="page-link" href="#"></a>
 		</li>
 	</ul>
-</nav> #}
-
-</div>
-</div>
-</div></div></div></div></div></div><!-- ========== Job Listing e nd============= -->{% endblock %}
+</nav> #}</div></div></div></div></div></div></div></div><!-- ========== Job Listing e nd============= -->{% endblock %}

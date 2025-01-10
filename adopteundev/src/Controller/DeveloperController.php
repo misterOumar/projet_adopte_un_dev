@@ -72,7 +72,6 @@ class DeveloperController extends AbstractController
 
         
         return $this->render('developer/list.html.twig', [
-            'developers' => $pagination->getItems(),
             'form' => $form->createView(),
             'pagination' => $pagination,
         ]);
