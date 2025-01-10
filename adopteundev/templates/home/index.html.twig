@@ -249,7 +249,8 @@
                         </div>
                         <div class="company-area">
                             <div class="logo">
-                                <img src="assets/images/bg/company-logo/company-01.png" alt="">
+                                {% set avatarC = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+								<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
                             </div>
                             <div class="company-details">
                                 <div class="name-location">
@@ -275,7 +276,7 @@
                         </div>
                         <div class="job-type-apply">
                             <div class="apply-btn">
-                                <a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
+                                <a href="{{path('app_poste_details', {'uuid':poste.uuid})}}"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
                             </div>
                         </div>
                     </div>
@@ -295,11 +296,12 @@
                         			</div>
                         			<div class="company-area">
                             			<div class="logo">
-                                			<img src="assets/images/bg/company-logo/company-01.png" alt="">
+                                			{% set avatarC = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+														<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
                             			</div>
                             			<div class="company-details">
                                 			<div class="name-location">
-                                    			<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
+                                    			<h5><a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">{{ developer.nom }} {{ developer.prenom }}</a></h5>
                                 			</div>
                                 			<div class="bookmark">
                                     			<i class="bi bi-bookmark"></i>
@@ -352,7 +354,8 @@
                         </div>
                         <div class="company-area">
                             <div class="logo">
-                                <img src="assets/images/bg/company-logo/company-01.png" alt="">
+                                {% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+								<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
                             </div>
                             <div class="company-details">
                                 <div class="name-location">
@@ -379,7 +382,7 @@
                         </div>
                         <div class="job-type-apply">
                             <div class="apply-btn">
-                                <a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
+                                <a href="{{path('app_poste_details', {'uuid':poste.uuid})}}"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
                             </div>
                         </div>
                     </div>
@@ -410,7 +413,7 @@
                             <span></span>
                         </div>
                         <div class="working-process-content">
-                            <h5><a href="register.html">Créer votre compte</a></h5>
+                            <h5><a href="{{ path('app_register') }}">Créer votre compte</a></h5>
                             <p>To create your account be confident & safely.</p>
                         </div>
                     </div>
@@ -422,7 +425,7 @@
                             <span></span>
                         </div>
                         <div class="working-process-content">
-                            <h5><a href="edit-profile.html">Mettre à jour vos informations</a></h5>
+                            <h5><a href="#">Mettre à jour vos informations</a></h5>
                             <p>To create your account be confident & safely.</p>
                         </div>
                     </div>
@@ -434,7 +437,7 @@
                             <span></span>
                         </div>
                         <div class="working-process-content">
-                            <h5><a href="job-listing1.html">Faire vos recherches</a></h5>
+                            <h5><a href="#">Faire vos recherches</a></h5>
                             <p>To create your account be confident & safely.</p>
                         </div>
                     </div>
@@ -446,7 +449,7 @@
                             <span></span>
                         </div>
                         <div class="working-process-content">
-                            <h5><a href="job-listing1.html">Postuler ou Recruter</a></h5>
+                            <h5><a href="#">Postuler ou Recruter</a></h5>
                             <p>To create your account be confident & safely.</p>
                         </div>
                     </div>

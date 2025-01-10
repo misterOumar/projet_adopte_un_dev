@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profile !
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+	<link rel="stylesheet" href={{ asset("css/custum.css") }}>
+
+{% endblock %}
+
+
+{% block body %}
+
+	<!-- ========== Dashboard Area end============= -->
+	<div class="dashboard-area company-dashboard pt-120 mb-120">
+		<div class="container">
+			<div class="row g-lg-4">
+				    {% include "company/menu_company.html.twig" %}
+				<div class="col-lg-12">
+					<div class="edit-profile-inner">
+
+						<div class="form-wrapper">
+							<ul class="nav nav-tabs" id="myTab" role="tablist">
+								<li class="nav-item" role="presentation">
+									<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+										<span></span>Informations personnelles:</button>
+								</li>
+							</ul>
+							<div class="tab-content" id="myTabContent">
+
+								<div
+									class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+									{# <form class="edit-profile-form profile-form  mb-60"> #}
+									{{ form_start(form,  {'attr': {'class': 'edit-profile-form profile-form  mb-60'}}) }}
+
+
+									<div class="row">
+
+										<div class="col-xxl-12 col-lg-12 position-relative mb-4">
+											<div class="upload_avatar_area">
+												<img src="{{asset('images/avatar/' ~ avatar)}}" alt="avatar" id="avatar-preview">
+
+												<label for="company_profile_avatar" class="primry-btn-2 lg-btn w-unset d-flex align-items-center cursor upload-avatar-btn">
+													Modifier
+													<i class='bx bx-pencil ms-2'></i>
+
+												</label>
+												{{ form_widget(form.avatar) }}
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-inner mb-25">
+												<label for="firstname1">Nom*</label>
+												<div class="input-area">
+													<img
+													src="{{asset('assets/images/icon/user-2.svg')}}" alt="">
+													{# <input type="text" id="firstname1" name="firstname" placeholder="Mrs. Jacoline"> #}
+													{{ form_widget(form.nom) }}
+												</div>
+												<small class="text-danger">{{ form_errors(form.nom) }}</small>
+
+
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-inner mb-25">
+												<label for="email1">Email*</label>
+												<div class="input-area">
+													<img src="{{asset('assets/images/icon/email-2.svg')}}" alt="">
+													<input type="email" disabled value={{app.user.email}}>
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-inner mb-25">
+												<label for="phonenumber">N° Téléphone*</label>
+												<div class="input-area">
+													<img
+													src="{{asset('assets/images/icon/phone-2.svg')}}" alt="">
+													{{ form_widget(form.phone) }}
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-inner mb-25">
+												<label for="jobplace">Ville *</label>
+												<div class="input-area">
+													<img src="{{asset('assets/images/icon/location.svg')}}" alt="">
+
+													{{ form_widget(form.ville) }}
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-inner mb-25">
+												<label for="jobplace">Adresse *</label>
+												<div class="input-area">
+													<img src="{{asset('assets/images/icon/location.svg')}}" alt="">
+													{{ form_widget(form.adresse) }}
+												</div>
+											</div>
+										</div>
+
+
+										<div class="col-md-12">
+											<div class="form-inner mb-50">
+												<label for="description">localisation</label>
+												{# <textarea name="description" id="description" placeholder="Something Write Yourself...."></textarea> #}
+												{{ form_widget(form.localisation) }}
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-inner">
+												<button class="primry-btn-2 lg-btn w-unset" type="submit">Mettre à jour mon profile</button>
+											</div>
+										</div>
+
+									</div>
+									{{ form_end(form) }}
+									{# </form> #}
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ========== Dashboard Area end============= -->
+
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{asset('assets/js/select2.min.js')}}"></script>
+	<script>
+
+		document.getElementById('company_profile_avatar').addEventListener('change', (event) => {
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+            document.getElementById('avatar-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        });
+	</script>
+{% endblock %}
