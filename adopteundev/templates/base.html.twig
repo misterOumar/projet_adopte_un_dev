@@ -174,37 +174,25 @@
 											<span>5</span>
 										</div>
 										<div class="notifacion-card dropdown-menu" aria-labelledby="dropdownMenuButton2">
-											<h6 class="title">5 Notifications</h6>
+											<h6 class="title">Notifications</h6>
 											<ul>
-												<li>
-													<div class="icon">
-														<img src="{{asset('assets/images/bg/company-logo/notifacion-1.png')}}" alt="">
+												{% if app.user.notifications %}
+													
+													{% for notification in app.user.notifications %}
+														<li>
+															<strong>{{ notification.createdAt|date('d/m/Y H:i') }}</strong> - 
+															{{ notification.message }}
+															{% if not notification.isRead %}
+																<span class="badge bg-warning">Non lu</span>
+															{% endif %}
+														</li>
+													{% endfor %}
+												{% else %}
+													<div class="view-all">
+														<p>Pas de Notifications</p>
 													</div>
-													<div class="content">
-														<h6>
-															<a href="#">Your application has accepted in 5 vacancies.</a>
-														</h6>
-														<span><img src="{{asset('assets/images/icon/clock-1.svg')}}" alt="">
-															10 min ago</span>
-													</div>
-												</li>
-												<li>
-													<div class="icon">
-														<img src="{{asset('assets/images/bg/company-logo/notifacion-2.png')}}" alt="">
-													</div>
-													<div class="content">
-														<h6>
-															<a href="#">Your application has accepted in 5 vacancies.</a>
-														</h6>
-														<span><img src="assets/images/icon/clock-1.svg" alt="">
-															10 min ago</span>
-													</div>
-												</li>
-
+												{% endif %}
 											</ul>
-											<div class="view-all">
-												<a href="#">See All Notifications</a>
-											</div>
 										</div>
 									</div>
 								</li>

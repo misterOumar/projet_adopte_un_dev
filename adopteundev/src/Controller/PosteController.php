@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Candidature;
 use App\Entity\Cv;
+use App\Entity\Notification;
 use App\Entity\Fichier;
 use App\Entity\Poste;
 use App\Entity\PostView;
@@ -15,6 +16,7 @@ use App\Repository\CvRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use App\Repository\PostViewRepository;
+use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -123,7 +125,7 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('/candidature/{uuid}/accepter', name: 'app_candidature_accepter', methods: ['POST'])]
-    public function accepter(string $uuid, EntityManagerInterface $entityManager): Response
+    public function accepter(string $uuid, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
     {
         $this->denyAccessUnlessGranted('ROLE_COMPANY');
         $candidature =  $this->candidatureRepository->findOneBy(['uuid' => $uuid]);
@@ -134,13 +136,20 @@ class PosteController extends AbstractController
         $candidature->setStatut('acceptée');
         $entityManager->flush();
 
+        $developer = $candidature->getDeveloper()->getUser();
+        $message = sprintf(
+            "Le statut d'une candidature a changé."
+        );
+        $notificationService->createNotification($developer, $message, 'acceptée');
+
+
         $this->addFlash('success', 'La candidature a été acceptée avec succès.');
         return $this->redirectToRoute('app_company_dashboard');
     }
 
     #[IsGranted('ROLE_COMPANY')]
     #[Route('/candidature/{uuid}/rejeter', name: 'app_candidature_rejeter', methods: ['POST'])]
-    public function rejeter(string $uuid, EntityManagerInterface $entityManager): Response
+    public function rejeter(string $uuid, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
     {
         $this->denyAccessUnlessGranted('ROLE_COMPANY');
         $candidature =  $this->candidatureRepository->findOneBy(['uuid' => $uuid]);
@@ -150,6 +159,13 @@ class PosteController extends AbstractController
 
         $candidature->setStatut('rejetée');
         $entityManager->flush();
+
+        $developer = $candidature->getDeveloper()->getUser();
+        $message = sprintf(
+            "Le statut d'une candidature a changé."
+        );
+        $notificationService->createNotification($developer, $message, 'rejetée');
+
 
         $this->addFlash('success', 'La candidature a été rejetée avec succès.');
         return $this->redirectToRoute('app_company_dashboard');
@@ -292,12 +308,10 @@ class PosteController extends AbstractController
 
     #[IsGranted('ROLE_DEV')]
     #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
-    public function postuler(
-        string $uuid,
-        Request $request,
-        EntityManagerInterface $entityManager,
-        CvRepository $cvRepository
-    ): Response {
+
+    public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature, NotificationService $notificationService): Response
+    {
+
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
 
         if (!$poste) {
@@ -306,6 +320,28 @@ class PosteController extends AbstractController
 
         $user = $this->getUser();
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
+
+        if ($request->isMethod('POST')) {
+            // Récupérer les données du formulaire
+            $cvId = $request->request->get('cv'); // ID du CV sélectionné
+            $selectedCv = $entityManager->getRepository(Cv::class)->find($cvId);
+
+            // Créer une nouvelle candidature
+            $candidature = new Candidature();
+            $candidature->setStatut("En cours");
+            $candidature->setPoste($poste);
+            $candidature->setDeveloper($developer);
+            $candidature->setFichier($selectedCv->getFichier());
+            $entityManager->persist($candidature);
+            $entityManager->flush();
+
+            // Notifier l'entreprise propriétaire du poste
+            $company = $poste->getCompany()->getUser();
+            $message = sprintf(
+                "Une nouvelle candidature a été soumise pour votre poste '%s'",
+                $poste->getTitre()
+            );
+            $notificationService->createNotification($company, $message, 'candidature');
 
         if (!$developer) {
             throw $this->createAccessDeniedException('Vous devez être un développeur pour postuler.');
@@ -384,4 +420,15 @@ class PosteController extends AbstractController
 
         return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
     }
+
+   /*  public function markAsRead(Notification $notification, EntityManagerInterface $em): Response
+{
+    $notification->setIsRead(true);
+    $em->flush();
+
+    $this->addFlash('success', 'Notification marquée comme lue.');
+    return $this->redirectToRoute('dashboard');
+} */
+
 }
+

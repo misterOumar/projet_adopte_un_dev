@@ -33,7 +33,7 @@ class Developer
     #[ORM\Column(nullable: true)]
     private ?float $salaireMin = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $isDisponible = null;
 
     #[ORM\Column(nullable: true)]
@@ -174,7 +174,7 @@ class Developer
         return $this->isDisponible;
     }
 
-    public function setDisponible(bool $isDisponible): static
+    public function setDisponible(?bool $isDisponible): static
     {
         $this->isDisponible = $isDisponible;
 
@@ -438,6 +438,7 @@ class Developer
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, DeveloperView>
