@@ -178,20 +178,21 @@
 											<ul>
 												{% if app.user.notifications %}
 													
-												{% for notification in app.user.notifications %}
-													<li>
-														<strong>{{ notification.createdAt|date('d/m/Y H:i') }}</strong> - 
-														{{ notification.message }}
-														{% if not notification.isRead %}
-															<span class="badge bg-warning">Non lu</span>
-														{% endif %}
-													</li>
-												{% endfor %}
+													{% for notification in app.user.notifications %}
+														<li>
+															<strong>{{ notification.createdAt|date('d/m/Y H:i') }}</strong> - 
+															{{ notification.message }}
+															{% if not notification.isRead %}
+																<span class="badge bg-warning">Non lu</span>
+															{% endif %}
+														</li>
+													{% endfor %}
+												{% else %}
+													<div class="view-all">
+														<p>Pas de Notifications</p>
+													</div>
 												{% endif %}
 											</ul>
-											<div class="view-all">
-												<a href="#">See All Notifications</a>
-											</div>
 										</div>
 									</div>
 								</li>
