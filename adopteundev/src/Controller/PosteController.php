@@ -157,7 +157,7 @@ class PosteController extends AbstractController
 
 
     #[Route('/postes', name: 'app_poste_list')]
-    public function posteList(Request $request, EntityManagerInterface $entityManager): Response
+    public function posteList(Request $request, EntityManagerInterface $entityManager, PosteRepository $posteRepository): Response
     {
         //recupération des catégories associés à un poste
         $categories = $entityManager->createQuery(
@@ -232,7 +232,27 @@ class PosteController extends AbstractController
                 ->getQuery()
                 ->getSingleScalarResult(),
         ];
-        $postes = $this->posteRepository->findAll();
+
+        // Récupérer les filtres depuis la requête
+        $category = $request->query->get('category');
+        $experience = $request->query->get('experience');
+
+        // Récupérer les postes en fonction des critères
+        $queryBuilder = $posteRepository->createQueryBuilder('p');
+
+        if ($category) {
+            $queryBuilder->andWhere('p.categorie = :category')
+                ->setParameter('category', $category);
+        }
+
+        if ($experience) {
+            $queryBuilder->andWhere('p.experience = :experience')
+                ->setParameter('experience', $experience);
+        }
+
+        $postes = $queryBuilder->getQuery()->getResult();
+
+        // Récupérer toutes les catégories pour afficher les options
         return $this->render('poste/poste_liste.html.twig', ['postes' => $postes, 'categories' => $categories, 'types' => $types, 'countByDate' => $countByDate,]);
     }
 

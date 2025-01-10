@@ -11,14 +11,14 @@ $(document).ready(function() {
     var moneyFormat = wNumb({
       decimals: 0,
       thousand: ',',
-      prefix: '$'
+      prefix: ''
     });
     noUiSlider.create(rangeSlider, {
-      start: [10, 700],
+      start: [100, 600],
       step: 1,
       range: {
         'min': [1],
-        'max': [1500]
+        'max': [2000]
       },
       format: moneyFormat,
       connect: true

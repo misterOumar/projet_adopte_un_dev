@@ -4,6 +4,11 @@
 	Developpeurs
 {% endblock %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href={{ asset("css/custum.css") }}>
+{% endblock %}
+
+
 {% block body %}
 
 	<!-- ========== Inner Banner Start============= -->
@@ -12,14 +17,14 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="banner-content text-center">
-						<h1>Job Listing</h1>
+						<h1>Développeurs</h1>
 						<span></span>
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item">
-									<a href="index.html">Home</a>
+									<a href="{{path('app_home')}}">Accueil</a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Job Listing
+								<li class="breadcrumb-item active" aria-current="page">Liste des développeurs
 								</li>
 							</ol>
 						</nav>
@@ -34,343 +39,79 @@
 		<div class="container">
 			<div class="row g-lg-4 gy-5">
 				<div class="col-lg-4 order-lg-1 order-2">
-					<div class="job-sidebar">
-						<div class="job-widget style-1 mb-20">
-							<div class="check-box-item">
-								<h5 class="job-widget-title">Job Category</h5>
-								<div class="checkbox-container">
-									<ul>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Health Care</span>
-												<span class="qty">(80)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Account & Finance</span>
-												<span class="qty">(80)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Transportation</span>
-												<span class="qty">(100)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Medical & Finance</span>
-												<span class="qty">(120)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Development</span>
-												<span class="qty">(30)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Engineering</span>
-												<span class="qty">(10)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Receptionist</span>
-												<span class="qty">(70)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Non-Profit Org.</span>
-												<span class="qty">(100)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Health Care</span>
-												<span class="qty">(80)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Account & Finance</span>
-												<span class="qty">(80)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Transportation</span>
-												<span class="qty">(100)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Medical & Finance</span>
-												<span class="qty">(120)</span>
-											</label>
-										</li>
-									</ul>
+						<div class="job-sidebar">
+							<div class="job-widget style-1 mb-20">
+								<div class="check-box-item">
+									<h5 class="job-widget-title">Catégorie</h5>
+							<select id="filter-category" class="form-control">
+								<option value="">Toutes</option>
+								{% for category in categories %}
+									<option value="{{ category.nom }}">{{ category.nom }}</option>
+								{% endfor %}
+							</select>
 
 								</div>
 							</div>
-						</div>
-						<div class="job-widget mb-20">
-							<div class="check-box-item">
-								<h5 class="job-widget-title">Type of Employments</h5>
-								<div class="checkbox-container">
-									<ul>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Full Time</span>
-												<span class="qty">(30)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Freelance</span>
-												<span class="qty">(10)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Part Time</span>
-												<span class="qty">(100)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Remote</span>
-												<span class="qty">(60)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Temporary</span>
-												<span class="qty">(40)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Permanent</span>
-												<span class="qty">(30)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Internship</span>
-												<span class="qty">(80)</span>
-											</label>
-										</li>
-									</ul>
+							<div class="job-widget mb-20">
+								<div class="check-box-item">
+									<h5 class="job-widget-title">Expérience (année)</h5>
+									<select id="filter-experience" class="form-control">
+										<option value="">Toutes</option>
+										<option value="1">1 an</option>
+										<option value="2">2 ans</option>
+										<option value="3">3 ans</option>
+										<option value="4">4 ans</option>
+										<option value="5">5 ans</option>
+									</select>
 
-								</div>
-							</div>
-						</div>
-						<div class="job-widget mb-20">
-							<div class="check-box-item">
-								<h5 class="job-widget-title">Date of Post</h5>
-								<div class="checkbox-container">
-									<ul>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Today</span>
-												<span class="qty">(80)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Last week ago</span>
-												<span class="qty">(100)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">Last month ago</span>
-												<span class="qty">(100)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">3 month ago</span>
-												<span class="qty">(30)</span>
-											</label>
-										</li>
-										<li>
-											<label class="containerss">
-												<input type="checkbox">
-												<span class="checkmark"></span>
-												<span class="text">1 year ago</span>
-												<span class="qty">(30)</span>
-											</label>
-										</li>
-									</ul>
+									<div class="checkbox-container">
+										<ul>
+											<li>
+												<label class="containerss">
+													<input type="checkbox">
+													<span class="checkmark"></span>
+													<span class="text">1</span>
+													<span class="qty">(80)</span>
+												</label>
+											</li>
+											<li>
+												<label class="containerss">
+													<input type="checkbox">
+													<span class="checkmark"></span>
+													<span class="text">2</span>
+													<span class="qty">(80)</span>
+												</label>
+											</li>			
+														
+										</ul>
 
-								</div>
-							</div>
-						</div>
-						<div class="job-widget mb-20">
-							<div class="check-box-item">
-								<h5 class="job-widget-title mb-15">Salary Range</h5>
-								<div class="range-wrap">
-									<div class="slider-labels">
-										<div class="caption">
-											<span id="slider-range-value1"></span>K
-										</div>
-										-
-										<div class="text-right caption">
-											<span id="slider-range-value2"></span>K
-										</div>
 									</div>
-									<div class="row">
-										<div class="col-sm-12">
-											<form>
-												<input type="hidden" name="min-value" value="">
-												<input type="hidden" name="max-value" value="">
-											</form>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-sm-12">
-											<div id="slider-range"></div>
-										</div>
-									</div>
-
-								</div>
-								<div class="salary-container">
-									<ul>
-										<li>
-											<input class="form-check-input" type="radio" id="salary-1" name="showInputBox" value="salary-1">
-											<div class="content">
-												<span class="text">$5K-$15K</span>
-												<span class="qty">(80)</span>
-											</div>
-										</li>
-										<li>
-											<input class="form-check-input" type="radio" id="salary-2" name="showInputBox" value="salary-2">
-											<div class="content">
-												<span class="text">$20K-$30K</span>
-												<span class="qty">(100)</span>
-											</div>
-										</li>
-										<li>
-											<input class="form-check-input" type="radio" id="salary-3" name="showInputBox" value="salary-3">
-											<div class="content">
-												<span class="text">$35K-$50K</span>
-												<span class="qty">(100)</span>
-											</div>
-										</li>
-										<li>
-											<input class="form-check-input" type="radio" id="salary-4" name="showInputBox" value="salary-4">
-											<div class="content">
-												<span class="text">$55K-$70K</span>
-												<span class="qty">(120)</span>
-											</div>
-										</li>
-										<li>
-											<input class="form-check-input" type="radio" id="salary-5" name="showInputBox" value="salary-5">
-											<div class="content">
-												<span class="text">$75K-$100K</span>
-												<span class="qty">(30)</span>
-											</div>
-										</li>
-									</ul>
-
 								</div>
 							</div>
-						</div>
-						<div class="job-widget mb-20">
-							<div class="check-box-item">
-								<h5 class="job-widget-title mb-10">Date of Post</h5>
-								<ul class="tags">
-									<li>
-										<a href="job-listing1.html">Technology,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Marketing,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Sales,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Transport,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Medical,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Design,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Data Analyst,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Development,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Non-Profit,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Manager,</a>
-									</li>
-									<li>
-										<a href="job-listing1.html">Health,</a>
-									</li>
-								</ul>
+<!-- Salaire minimum -->
+<div class="job-widget mb-20">
+	<div class="check-box-item">
+		<h5 class="job-widget-title mb-15">Salaire minimum</h5>
+		<div class="range-wrap">
+			<div class="slider-labels">
+				<div class="caption">
+					<span id="slider-range-value1">10</span>€
+				</div>
+				-
+				<div class="text-right caption">
+					<span id="slider-range-value2">50</span>€
+				</div>
+			</div>
+			<input type="range" id="salary-min" min="0" max="100" value="10">
+			<input type="range" id="salary-max" min="0" max="100" value="50">
+		</div>
+	</div>
+</div>
+
+							<div class="job-widget-btn">
+								<button class="primry-btn-2 lg-btn text-center" id="apply-filters">Filtrer les Devs</button>
 							</div>
 						</div>
-						<div class="job-widget-btn">
-							<a class="primry-btn-2 lg-btn text-center" href="#">Go to Job Alert</a>
-						</div>
-					</div>
 				</div>
 				<div class="col-lg-8 order-lg-2 order-1">
 					<div class="job-listing-wrrap">
@@ -399,100 +140,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="row ">
-						{% for dev in devs %}
-							<div class="col-lg-12 mb-30">
-								<div class="job-listing-card">
-									<div class="job-top">
-										<div class="job-list-content">
-											<div class="company-area">
-												<div class="logo">
-												{% set avatar = dev.user.avatar ? dev.user.avatar.reference : 'default-avatar.png'  %}
-													<img src="{{asset('images/avatar/' ~ avatar)}}" alt="avatar-dev" width="50px" >
-												</div>
-												<div class="company-details">
-													<div class="name-location">
-														<h5>
-															<a href="job-details.html">{{dev.prenom}} {{ dev.nom|upper}}</a>
-														</h5>
-														<p>
-															<a href="company-details.html">{{dev.cat.nom}}</a>
-														</p>
-													</div>
-												</div>
-											</div>
-											<div class="job-discription">
-												<ul>
-													<li>
-														<p>
-															<span class="title">Expérience:</span>
-															{{dev.experience}} an(s)
-														</p>
-													</li>
-													<li>
-														<p>
-															<span class="title">Deadline:</span>
-															05 April, 2023</p>
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="bookmark">
-											<i class="bi bi-bookmark-fill"></i>
-										</div>
-									</div>
-									<div class="job-type-apply">
-										{% if dev.isDisponible %}
-											<div class="job-type">
-												<span class="light-blue">Disponible</span>
-											</div>										
-										{% endif %}
-
-										<div class="">
-										
-												<span>4,3</span>
-										<i class='bx bxs-star' style="font-size:1.2rem; color:orange"></i>
-										<i class='bx bxs-star'></i>
-										<i class='bx bxs-star'></i>
-										<i class='bx bxs-star-half' ></i>
-										<i class='bx bx-star' ></i>
-												<span>(10 avis)</span>
-
-										</div>
-										
-										<div class="apply-btn">
-											<a href="{{path('app_dev_details', {'uuid':dev.uuid})}}">
-												<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir le profile</a>
-										</div>
-									</div>
-								</div>
-							</div>
+						<div id="developers-list">
+							 {% include 'developer/dev_list_partial.html.twig' with { devs: devs } %}
 							
-						{% endfor %}
 							
-							<div class="col-lg-12 d-flex justify-content-center">
-								<div class="pagination-area">
-									<nav aria-label="...">
-										<ul class="pagination">
-											<li class="page-item disabled">
-												<a class="page-link" href="#" tabindex="-1"></a>
-											</li>
-											<li class="page-item active" aria-current="page">
-												<a class="page-link" href="#">01</a>
-											</li>
-											<li class="page-item">
-												<a class="page-link" href="#">02</a>
-											</li>
-											<li class="page-item">
-												<a class="page-link" href="#">03</a>
-											</li>
-											<li class="page-item">
-												<a class="page-link" href="#"></a>
-											</li>
-										</ul>
-									</nav>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -500,5 +151,50 @@
 		</div>
 	</div>
 	<!-- ========== Job Listing e nd============= -->
+
+{% endblock %}
+
+{% block javascripts %}
+ <script src="{{asset('assets/js/range-slider.js')}}"></script>
+
+ <script >
+$(document).ready(function () {
+    function applyFilters() {
+        // Récupérer les catégories sélectionnées
+        const categorie = $("#filter-category").val();
+
+        // Récupérer les années d'expérience sélectionnées
+        const experience = $("#filter-experience").val();
+
+		alert(categorie)
+
+        // Récupérer la plage de salaire
+        const salaryMin = $("#salary-min").val();
+        const salaryMax = $("#salary-max").val();
+
+        // Envoyer une requête AJAX
+        $.ajax({
+            url: "/filter-developers",
+            method: "GET",
+            data: {
+                categorie: categorie,
+                experience: experience,
+                salary_min: salaryMin,
+                salary_max: salaryMax,
+            },
+            success: function (response) {
+                // Mettre à jour la liste avec le HTML reçu
+                $("#developers-list").html(response.html);
+            },
+            error: function (error) {
+                console.error("Erreur lors du filtrage :", error);
+            },
+        });
+    }
+
+    // Appliquer les filtres au clic du bouton
+    $("#apply-filters").on("click", applyFilters);
+});
+ </script>
 
 {% endblock %}
