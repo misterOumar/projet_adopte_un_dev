@@ -67,7 +67,7 @@ class DeveloperController extends AbstractController
         $pagination = $paginator->paginate(
             $queryBuilder, 
             $request->query->getInt('page', 1), // Page actuelle (par défaut page 1)
-            10 // Nombre d'éléments par page
+            5 // Nombre d'éléments par page
         );
 
         

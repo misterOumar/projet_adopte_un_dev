@@ -21,7 +21,8 @@ class DeveloperFilterType extends AbstractType
             ->add('valeur', SearchType::class, [
                 'label' => 'Rechercher',
                 'required' => false,
-                'attr' => ['placeholder' => 'Rechercher par nom, mot cles etc...']
+                'attr' => ['placeholder' => 'Rechercher par nom, mot cles etc...',
+                            'class' => 'border form-control']
             ])
             ->add('categorie', ChoiceType::class, [
                 'label' => 'Catégorie',
@@ -59,7 +60,8 @@ class DeveloperFilterType extends AbstractType
             ->add('salaireMin', IntegerType::class, [
                 'label' => 'Salaire minimum',
                 'required' => false,
-                'attr' => ['placeholder' => 'Salaire min en €']
+                'attr' => ['placeholder' => 'Salaire min en €',
+                            'class' => 'border form-control']
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Filtrer',
