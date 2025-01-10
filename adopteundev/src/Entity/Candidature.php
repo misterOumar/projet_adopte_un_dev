@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CandidatureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CandidatureRepository::class)]
 class Candidature
@@ -34,8 +35,12 @@ class Candidature
     #[ORM\JoinColumn(nullable: false)]
     private ?Fichier $fichier = null;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $uuid = null;
+
     public function __construct()
     {
+        $this->uuid = Uuid::v7();
         $this->date = new \DateTimeImmutable();
     }
 
@@ -112,6 +117,18 @@ class Candidature
     public function setFichier(?Fichier $fichier): static
     {
         $this->fichier = $fichier;
+
+        return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): static
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }

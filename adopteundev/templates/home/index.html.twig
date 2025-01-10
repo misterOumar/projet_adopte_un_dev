@@ -226,7 +226,6 @@
     <!-- ========== Home Two Job list strat============= -->
     <div class="home2-job-list-area mb-120">
 		<div class="container">
-			{% if app.user %}
         		{% if is_granted('ROLE_COMPANY') %}
             		<div class="company-section">
 
@@ -328,7 +327,6 @@
 							</div>
                 		</div>
             		</div>
-        		
 				{% else %}
 					<div class="container">
 						<div class="row mb-60">
@@ -385,9 +383,7 @@
 							</div>
 						{% endfor %}
 						</div>
-						i
 					</div>
-				{% endif %}
     		{% endif %}
 		</div>
     </div>

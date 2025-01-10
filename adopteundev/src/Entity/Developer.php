@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DeveloperRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_MOBILE', fields: ['mobile'])]
@@ -16,6 +17,9 @@ class Developer
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $uuid = null;
 
     #[ORM\Column(length: 80)]
     private ?string $nom = null;
@@ -80,12 +84,19 @@ class Developer
     #[ORM\JoinTable(name: 'developer_favorites')]
     private Collection $favorites;
 
+    /**
+     * @var Collection<int, DeveloperRating>
+     */
+    #[ORM\OneToMany(targetEntity: DeveloperRating::class, mappedBy: 'rateDeveloper')]
+    private Collection $ratings;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
 
     public function __construct()
     {
+        $this->uuid = Uuid::v7();
         $this->mobileVisible = true;
         $this->salaireVisible = true;
         $this->isDisponible = true;
@@ -93,6 +104,8 @@ class Developer
         $this->technologie = new ArrayCollection();
         $this->candidatures = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        
 
     }
 
@@ -357,6 +370,64 @@ class Developer
     public function removeFavorite(Poste $poste): self
     {
         $this->favorites->removeElement($poste);
+
+        return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): static
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DeveloperRating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+
+    public function getAverageRating(): float
+    {
+        if ($this->ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        $sum = array_sum(array_map(fn($rating) => $rating->getRating(), $this->ratings->toArray()));
+        return round($sum / $this->ratings->count(), 1);
+    }
+
+    public function getRatingsCount(): int
+    {
+        return $this->ratings->count();
+    }
+
+    public function addRating(DeveloperRating $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setRateDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(DeveloperRating $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getRateDeveloper() === $this) {
+                $rating->setRateDeveloper(null);
+            }
+        }
 
         return $this;
     }

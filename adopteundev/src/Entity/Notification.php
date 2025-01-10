@@ -20,7 +20,7 @@ class Notification
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?bool $isRead = null;
+    private ?bool $isRead = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
@@ -68,7 +68,7 @@ class Notification
         return $this->isRead;
     }
 
-    public function setRead(bool $isRead): static
+    public function setIsRead(bool $isRead): static
     {
         $this->isRead = $isRead;
 
