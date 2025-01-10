@@ -45,11 +45,18 @@
 														</div>
 														<div class="company-details">
 															<div class="top">
+																<ul>
+																	<li>
 																<h6>
 																	<a href="{{ path('app_poste_details', { uuid: candidature.poste.uuid }) }}">
 																		{{ candidature.poste.titre }}
 																	</a>
 																</h6>
+																	</li>
+																	<li><li><img src="{{asset('assets/images/icon/calender2.svg')}}" alt="">
+                                                                        <span class="time">{{ candidature.date|time_diff }}</span>
+                                                                    </li>
+																</ul>
 															</div>
 															<ul>
 																<li><img src="{{asset('assets/images/icon/location.svg')}}" alt="">{{ candidature.poste.ville }},
