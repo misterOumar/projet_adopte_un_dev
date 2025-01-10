@@ -64,14 +64,18 @@
 						</div>
 						<ul class="menu-list">
 
-							<li class="active">
-								<a href="{{ path('app_home') }}">Accueil</a>
+							<li class="{% if app.request.get('_route')=='app_home' %}active{% endif %}">
+
+								<a href="{{ path('app_home') }}" >Accueil</a>
 							</li>
 							<li>
 								<a href="{{ path('app_home') }}">Postes</a>
 							</li>
-							<li>
-								<a href="{{ path('app_dev_list') }}">Profiles</a>
+
+							<li class="{% if app.request.get('_route')=='app_dev_list' %}active{% endif %}">
+
+							<a href="{{ path('app_dev_list') }}" >Profiles</a>
+
 							</li>
 						</ul>
 						<div class="for-mobile-menu d-lg-none d-block">
