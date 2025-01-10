@@ -1,0 +1,310 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Developpeur!
+{% endblock %}
+
+{% block body %}
+	<!-- ========== Dashboard Area end============= -->
+	<div class="dashboard-area pt-120 mb-120">
+		<div class="container">
+			<div class="row g-lg-4 gy-5 mb-90">
+				<div class="col-lg-3">
+					<div class="dashboard-sidebar">
+						<div class="single-widget mb-60">
+							{% include "developer/menu_dev.html.twig" %}
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<div class="applied-job-area">
+						<div class="table-wrapper">
+							<div class="table-title-filter">
+								<div class="section-title">
+									<h5>Liste de mes canditaures:</h5>
+								</div>
+							</div>
+							{% if candidatures is empty %}
+								<p>Vous n'avez pas encore postulé à un poste.</p>
+							{% else %}
+								<table class="eg-table table category-table mb-30">
+									<thead>
+										<tr>
+											<th>Titre du poste</th>
+											<th>Date de candidature</th>
+											<th>Entreprise</th>
+											<th>Statut</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for candidature in candidatures %}
+											<tr>
+												<td data-label="Job Title">
+													<div class="company-info">
+														<div class="logo">
+															<img src="{{asset('assets/images/bg/company-logo/company-06.png')}}" alt="">
+														</div>
+														<div class="company-details">
+															<div class="top">
+																<h6>
+																	<a href="{{ path('app_poste_details', { uuid: candidature.poste.uuid }) }}">
+																		{{ candidature.poste.titre }}
+																	</a>
+																</h6>
+															</div>
+															<ul>
+																<li><img src="{{asset('assets/images/icon/location.svg')}}" alt="">{{ candidature.poste.ville }},
+																	{{ candidature.poste.adresse }}
+																</li>
+																<li>
+																	<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+																	<p>
+																		<span class="title">Salaire:</span>
+																		{{ candidature.poste.salaireMin }}
+																		<span class="time">	€/Mois</span>
+																	</p>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</td>
+												<td data-label="Apply Job">{{ candidature.date|date('d/m/Y') }}</td>
+												<td data-label="Company">{{ candidature.poste.company.nom }}
+												</td>
+												<td data-label="Status">
+													{% if candidature.statut == 'acceptée' %}
+														<span class="badge bg-success">Acceptée</span>
+													{% elseif candidature.statut == 'Vue' %}
+														<span class="badge bg-warning">Vue</span>
+													{% elseif candidature.statut == 'En cours' %}
+														<span class="badge bg-warning">En cours</span>
+													{% elseif candidature.statut == 'rejetée' %}
+														<span class="badge bg-danger">Rejetée</span>
+													{% endif %}
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							{% endif %}
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="featured-jobs-area">
+						<div class="section-title">
+							<h4>Featured Jobs:</h4>
+						</div>
+					</div>
+				</div>
+				<div class="swiper feature-slider2">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<div class="feature-card2">
+								<div class="company-area">
+									<span></span>
+									<div class="logo">
+										<img src="assets/images/bg/company-logo/company-02.png" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a href="job-details.html">UI/UX Engineer</a>
+												<span>Full Time, Remote<span></span>
+												</span>
+											</h5>
+											<ul>
+												<li>
+													<a href="company-details.html">Norland Company</a>
+												</li>
+												<li class="verified"><img src="assets/images/icon/verified.svg" alt="">
+													Verified Company</li>
+											</ul>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark-fill"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul class="one">
+										<li>
+											<p>
+												<span class="title">Location:</span>
+												Chicago, Australia</p>
+										</li>
+										<li>
+											<p>
+												<span class="title">Salary:</span>
+												$90-$140 /
+												<span class="time">Per Hour</span>
+											</p>
+										</li>
+									</ul>
+									<ul>
+										<li>
+											<p>
+												<span class="title">Experience:</span>
+												2-3 Years</p>
+										</li>
+										<li>
+											<p>
+												<span class="title">Deadline:</span>
+												<span class="time">
+													3 February, 2023</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="job-details.html">
+											<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="feature-card2">
+								<div class="company-area">
+									<span></span>
+									<div class="logo">
+										<img src="assets/images/bg/company-logo/company-03.png" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a href="job-details.html">React JS Developer</a>
+												<span>Full Time, Remote<span></span>
+												</span>
+											</h5>
+											<ul>
+												<li>
+													<a href="company-details.html">UX.UI Company</a>
+												</li>
+												<li class="verified"><img src="assets/images/icon/verified.svg" alt="">
+													Verified Company</li>
+											</ul>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark-fill"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul class="one">
+										<li>
+											<p>
+												<span class="title">Location:</span>
+												Dhaka, Bangladesh</p>
+										</li>
+										<li>
+											<p>
+												<span class="title">Salary:</span>
+												$80K-$110K /
+												<span class="time">Per Month</span>
+											</p>
+										</li>
+									</ul>
+									<ul>
+										<li>
+											<p>
+												<span class="title">Experience:</span>
+												2-3 Years</p>
+										</li>
+										<li>
+											<p>
+												<span class="title">Deadline:</span>
+												<span class="time">
+													3 February, 2023</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="job-details.html">
+											<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="feature-card2">
+								<div class="company-area">
+									<span></span>
+									<div class="logo">
+										<img src="assets/images/bg/company-logo/company-04.png" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a href="job-details.html">Receptionist</a>
+												<span>Full Time, Part Time<span></span>
+												</span>
+											</h5>
+											<ul>
+												<li>
+													<a href="company-details.html">Germaine Group Ltd</a>
+												</li>
+												<li class="verified"><img src="assets/images/icon/verified.svg" alt="">
+													Verified Company</li>
+											</ul>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark-fill"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul class="one">
+										<li>
+											<p>
+												<span class="title">Location:</span>
+												West London, Uk</p>
+										</li>
+										<li>
+											<p>
+												<span class="title">Salary:</span>
+												$50K-$60K /
+												<span class="time">Per Hour</span>
+											</p>
+										</li>
+									</ul>
+									<ul>
+										<li>
+											<p>
+												<span class="title">Experience:</span>
+												2-2.5 Years</p>
+										</li>
+										<li>
+											<p>
+												<span class="title">Deadline:</span>
+												<span class="time">
+													4 February, 2023</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="job-details.html">
+											<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ========== Dashboard Area end============= -->
+
+{% endblock %}

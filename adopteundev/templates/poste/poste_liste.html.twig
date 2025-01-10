@@ -1,0 +1,278 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}liste des postes
+{% endblock %}
+
+{% block body %}
+	<!-- ========== Inner Banner Start============= -->
+	<div class="inner-banner">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="banner-content text-center">
+						<h1>Liste des offres d'emploi</h1>
+						<span></span>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="{{path('app_home')}}">Accueil</a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Liste des offres d'emploi
+								</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ========== Inner Banner end============= -->
+	<!-- ========== Job Listing Start============= -->
+	<div class="job-listing-area pt-120 mb-120">
+		<div class="container">
+			<div class="row g-lg-4 gy-5">
+				<div class="col-lg-4 order-lg-1 order-2">
+					<div class="job-sidebar">
+						<div class="job-widget style-1 mb-20">
+							<div class="check-box-item">
+								<h5 class="job-widget-title">Catégories de postes</h5>
+								<div class="checkbox-container">
+									<ul>
+										{% for categorie in categories %}
+											<li>
+												<label class="containerss">
+													<input type="checkbox" name="categories[]" value="{{ categorie.id }}">
+													<span class="checkmark"></span>
+													<span class="text">{{ categorie.nom }}</span>
+													<span class="qty">({{ categorie.nbPostes }})</span>
+												</label>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+
+						</div>
+						<div class="job-widget mb-20">
+							<div class="check-box-item">
+								<h5 class="job-widget-title">Type d'emploi</h5>
+								{# <form method="get" action="{{ path('app_poste_list') }}"> #}
+								<div class="checkbox-container">
+									<ul>
+										{% for type in types %}
+											<li>
+												<label class="containerss">
+													<input type="checkbox" name="types[]" value="{{ type.type }}">
+													<span class="checkmark"></span>
+													<span class="text">{{ type.type }}</span>
+													<span class="qty">({{ type.nbPostes }})</span>
+												</label>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+								{# </form> #}
+							</div>
+
+						</div>
+						<div class="job-widget mb-20">
+							<div class="check-box-item">
+								<h5 class="job-widget-title">Date du poste</h5>
+									<div class="checkbox-container">
+										<ul>
+											<li>
+												<label class="containerss">
+													<input type="radio" name="dateFilter" value="today">
+													<span class="checkmark"></span>
+													<span class="text">Aujourd'hui</span>
+													<span class="qty">({{ countByDate.today }})</span>
+												</label>
+											</li>
+											<li>
+												<label class="containerss">
+													<input type="radio" name="dateFilter" value="yesterday">
+													<span class="checkmark"></span>
+													<span class="text">Hier</span>
+													<span class="qty">({{ countByDate.yesterday }})</span>
+												</label>
+											</li>
+											<li>
+												<label class="containerss">
+													<input type="radio" name="dateFilter" value="week">
+													<span class="checkmark"></span>
+													<span class="text">Il y a une semaine</span>
+													<span class="qty">({{ countByDate.week }})</span>
+												</label>
+											</li>
+											<li>
+												<label class="containerss">
+													<input type="radio" name="dateFilter" value="month">
+													<span class="checkmark"></span>
+													<span class="text">Il y a un mois</span>
+													<span class="qty">({{ countByDate.month }})</span>
+												</label>
+											</li>
+										</ul>
+									</div>
+							</div>
+
+						</div>
+						<div class="job-widget mb-20">
+							<div class="check-box-item">
+								<h5 class="job-widget-title mb-15">Fourchette des salaires</h5>
+								<div class="range-wrap">
+									<div class="slider-labels">
+										<div class="caption">
+											<span id="slider-range-value1"></span>K
+										</div>
+										-
+										<div class="text-right caption">
+											<span id="slider-range-value2"></span>K
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<form>
+												<input type="hidden" name="min-value" value="">
+												<input type="hidden" name="max-value" value="">
+											</form>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12">
+											<div id="slider-range"></div>
+										</div>
+									</div>
+
+								</div>
+								<div class="salary-container">
+									<ul>
+										<li>
+											<input class="form-check-input" type="radio" id="salary-1" name="showInputBox" value="salary-1">
+											<div class="content">
+												<span class="text">$5K-$15K</span>
+												<span class="qty">(80)</span>
+											</div>
+										</li>
+										<li>
+											<input class="form-check-input" type="radio" id="salary-2" name="showInputBox" value="salary-2">
+											<div class="content">
+												<span class="text">$20K-$30K</span>
+												<span class="qty">(100)</span>
+											</div>
+										</li>
+										<li>
+											<input class="form-check-input" type="radio" id="salary-3" name="showInputBox" value="salary-3">
+											<div class="content">
+												<span class="text">$35K-$50K</span>
+												<span class="qty">(100)</span>
+											</div>
+										</li>
+										<li>
+											<input class="form-check-input" type="radio" id="salary-4" name="showInputBox" value="salary-4">
+											<div class="content">
+												<span class="text">$55K-$70K</span>
+												<span class="qty">(120)</span>
+											</div>
+										</li>
+										<li>
+											<input class="form-check-input" type="radio" id="salary-5" name="showInputBox" value="salary-5">
+											<div class="content">
+												<span class="text">$75K-$100K</span>
+												<span class="qty">(30)</span>
+											</div>
+										</li>
+									</ul>
+
+								</div>
+							</div>
+						</div>
+						<div class="job-widget-btn">
+							<a class="primry-btn-2 lg-btn text-center" href="#">Filtrer</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-8 order-lg-2 order-1">
+					<div class="job-listing-wrrap">
+						<div class="row g-4 mb-25">
+							<div class="col-lg-6 d-flex align-items-center">
+								<p class="show-item">Liste des postes</p>
+							</div>
+							<div class="col-lg-6 d-flex align-items-center justify-content-lg-end">
+								<div class="grid-select-area">
+									<div class="select-area">
+										<select class="select1">
+											<option value="0">Sort By(Default)</option>
+											<option value="1">Full Time</option>
+											<option value="2">Part Time</option>
+											<option value="3">Remote</option>
+											<option value="3">Internship</option>
+											<option value="3">Freelance</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row ">
+							{% for poste in postes %}
+								<div class="col-lg-12 mb-30">
+									<div class="job-listing-card">
+										<div class="job-top">
+											<div class="job-list-content">
+												<div class="company-area">
+													<div class="logo">
+														<img src="assets/images/bg/company-logo/company-01.png" alt="">
+													</div>
+													<div class="company-details">
+														<div class="name-location">
+															<h5>
+																<a href="job-details.html">{{poste.titre}}</a>
+															</h5>
+															<p>
+																<a href="company-details.html">{{poste.company.nom}}</a>
+															</p>
+														</div>
+													</div>
+												</div>
+												<div class="job-discription">
+													<ul>
+														<li>
+															<p>
+																<span class="title">Salaire:</span>
+																{{ poste.salaireMin }}
+																€/
+																<span class="time">Mois</span>
+															</p>
+														</li>
+														<li>
+															<p>
+																<span class="title">Date Limite:</span>
+																{{ poste.dateLimite|date('d-m-Y') }}</p>
+														</li>
+													</ul>
+												</div>
+											</div>
+											<div class="bookmark">
+												<i class="bi bi-bookmark-fill"></i>
+											</div>
+										</div>
+										<div class="job-type-apply">
+											<div class="job-type">
+												<span class="{% if poste.type == 'Temps plein' %} light-green {% elseif poste.type == 'Temps partiel' %} light-purple {% elseif poste.type == 'Freelance' %} light-blue {% endif %}">{{ poste.type}}</span>
+											</div>
+											<div class="apply-btn">
+												<a href="{{path('app_poste_details', {'uuid':poste.uuid})}}"> 
+													<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir details</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ========== Job Listing e nd============= -->
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Developer;
 use App\Entity\Poste;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +17,65 @@ class PosteRepository extends ServiceEntityRepository
         parent::__construct($registry, Poste::class);
     }
 
-//    /**
-//     * @return Poste[] Returns an array of Poste objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Poste[] Returns an array of Poste objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Poste
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Poste
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    // suggestion de poste pour un développeur
+    public function findSuggestionsForDeveloper(Developer $developer): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+            ->where('p.experienceRequis <= :experience')
+            ->andWhere('p.ville = :ville OR p.ville IS NULL') // Les postes sans ville spécifique sont inclus
+            ->andWhere('p.categorie = :categorie')
+            ->andWhere(':technologie MEMBER OF p.technologie') // Correspondance technologique
+            ->setParameter('experience',
+                $developer->getExperience()
+            )
+            ->setParameter('ville', $developer->getVille())
+            ->setParameter('categorie', $developer->getCat())
+            ->setParameter('technologie', $developer->getTechnologie()->toArray())
+            ->orderBy('p.salaireMin', 'DESC') // Prioriser par salaire minimum
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * recuperer les postes les plus consulté
+     * @param int $limite
+     * @return array POST
+     */
+    public function findMostViewedPosts(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.views', 'v')
+            ->groupBy('p.id')
+            ->orderBy('COUNT(v.id)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

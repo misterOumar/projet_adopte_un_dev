@@ -40,7 +40,7 @@ class DeveloperRegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('developer_registration/register.html.twig', [
+        return $this->render('developer/register.html.twig', [
             'form' => $form->createView(),
         ]);
     }

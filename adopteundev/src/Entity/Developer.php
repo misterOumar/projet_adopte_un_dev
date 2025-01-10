@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\DeveloperRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DeveloperRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_MOBILE', fields: ['mobile'])]
@@ -14,6 +17,9 @@ class Developer
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $uuid = null;
 
     #[ORM\Column(length: 80)]
     private ?string $nom = null;
@@ -50,9 +56,58 @@ class Developer
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $cat = null;
 
+    #[ORM\Column]
+    private ?bool $mobileVisible = null;
+
+    #[ORM\Column]
+    private ?bool $salaireVisible = null;
+
+    /**
+     * @var Collection<int, Cv>
+     */
+    #[ORM\OneToMany(targetEntity: Cv::class, mappedBy: 'developer')]
+    private Collection $cvs;
+    
+    /**
+     * @var Collection<int, Candidature>
+     */
+    #[ORM\OneToMany(targetEntity: Candidature::class, mappedBy: 'developer')]
+    private Collection $candidatures;
+  
+    /**
+     * @var Collection<int, Technologie>
+     */
+    #[ORM\ManyToMany(targetEntity: Technologie::class, inversedBy: 'developers')]
+    private Collection $technologie;
+
+    #[ORM\ManyToMany(targetEntity: Poste::class)]
+    #[ORM\JoinTable(name: 'developer_favorites')]
+    private Collection $favorites;
+
+    /**
+     * @var Collection<int, DeveloperRating>
+     */
+    #[ORM\OneToMany(targetEntity: DeveloperRating::class, mappedBy: 'rateDeveloper')]
+    private Collection $ratings;
+
     // #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     // #[ORM\JoinColumn(nullable: false)]
     // private ?Categorie $cat = null;
+
+    public function __construct()
+    {
+        $this->uuid = Uuid::v7();
+        $this->mobileVisible = true;
+        $this->salaireVisible = true;
+        $this->isDisponible = true;
+        $this->cvs = new ArrayCollection();
+        $this->technologie = new ArrayCollection();
+        $this->candidatures = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        
+
+    }
 
     public function getId(): ?int
     {
@@ -187,6 +242,192 @@ class Developer
     public function setCat(Categorie $cat): static
     {
         $this->cat = $cat;
+
+        return $this;
+    }
+
+    public function isMobileVisible(): ?bool
+    {
+        return $this->mobileVisible;
+    }
+
+    public function setMobileVisible(bool $mobileVisible): static
+    {
+        $this->mobileVisible = $mobileVisible;
+
+        return $this;
+    }
+
+    public function isSalaireVisible(): ?bool
+    {
+        return $this->salaireVisible;
+    }
+
+    public function setSalaireVisible(bool $salaireVisible): static
+    {
+        $this->salaireVisible = $salaireVisible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cv>
+     */
+    public function getCvs(): Collection
+    {
+        return $this->cvs;
+    }
+
+    public function addCv(Cv $cv): static
+    {
+        if (!$this->cvs->contains($cv)) {
+            $this->cvs->add($cv);
+            $cv->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCv(Cv $cv): static
+    {
+        if ($this->cvs->removeElement($cv)) {
+            // set the owning side to null (unless already changed)
+            if ($cv->getDeveloper() === $this) {
+                $cv->setDeveloper(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Technologie>
+     */
+    public function getTechnologie(): Collection
+    {
+        return $this->technologie;
+    }
+
+    public function addTechnologie(Technologie $technologie): static
+    {
+        if (!$this->technologie->contains($technologie)) {
+            $this->technologie->add($technologie);
+        }
+
+        return $this;
+    }
+
+    public function removeTechnologie(Technologie $technologie): static
+    {
+        $this->technologie->removeElement($technologie);
+
+        return $this;
+    }
+    /**
+     * @return Collection<int, Candidature>
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidature $candidature): static
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures->add($candidature);
+            $candidature->setDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): static
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getDeveloper() === $this) {
+                $candidature->setDeveloper(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Poste $poste): self
+    {
+        if (!$this->favorites->contains($poste)) {
+            $this->favorites->add($poste);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Poste $poste): self
+    {
+        $this->favorites->removeElement($poste);
+
+        return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): static
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DeveloperRating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+
+    public function getAverageRating(): float
+    {
+        if ($this->ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        $sum = array_sum(array_map(fn($rating) => $rating->getRating(), $this->ratings->toArray()));
+        return round($sum / $this->ratings->count(), 1);
+    }
+
+    public function getRatingsCount(): int
+    {
+        return $this->ratings->count();
+    }
+
+    public function addRating(DeveloperRating $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setRateDeveloper($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(DeveloperRating $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getRateDeveloper() === $this) {
+                $rating->setRateDeveloper(null);
+            }
+        }
 
         return $this;
     }
