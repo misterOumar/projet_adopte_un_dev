@@ -14,7 +14,7 @@
 						<div class="author-and-action-btn-area two mb-40">
 							<div class="author-area two">
 								<div class="author-img">
-									<img src="{{asset('assets/images/bg/company-img2.png')}}" alt="">
+									<img src="{{asset('images/avatar/' ~ avatar)}}" alt="">
 								</div>
 								<div class="author-content">
 									<span>Bonjour ,</span>
@@ -128,76 +128,85 @@
 						<div class="table-wrapper2">
 							<table class="eg-table table category-table mb-0">
 								<tbody>
-									{% for candidature in candidatures %}
+									{% if candidatures is not empty %}
+										{% for candidature in candidatures %}
+											<tr>
+												<td data-label="Nom du Candidat">
+													<div class="employee-info">
+														<div class="employee-img">
+															{% set avatarC = candidature.developer.user.avatar ? candidature.developer.user.avatar.reference : 'default-avatar.png'  %}
+															<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+														</div>
+														<div class="employee-content">
+															<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#candidatureModal{{ candidature.id }}">
+																{{ candidature.developer.nom }}
+																{{ candidature.developer.prenom }}
+															</button>
+															<span>
+																<img src="{{ asset('assets/images/icon/company-2.svg') }}" alt="">
+																{{ candidature.developer.cat.nom }}
+															</span>
+															<p>
+																<span>Envoyé le:</span>
+																{{ candidature.date|date('d M, Y') }}
+															</p>
+														</div>
+													</div>
+												</td>
+												<td data-label="Résumé de carrière">
+													<div class="carrer-summary">
+														<h6>{{ candidature.poste.titre }}
+														</h6>
+														<ul>
+															<li>
+																<span>Experience:</span>
+																{{ candidature.developer.experience }}+ Years
+															</li>
+															<li>
+																<span>Salary:</span>
+																{{ candidature.developer.salaireMin }}
+																/ mois
+															</li>
+														</ul>
+													</div>
+												</td>
+												<td data-label="Résumé de carrière">
+													<div class="carrer-summary">
+														<h5>Titre du poste
+														</h5>
+														<h5>{{ candidature.poste.titre }}
+														</h5>
+													</div>
+												</td>
+												<td data-label="Actions">
+													<div class="action-btn-group">
+														<ul>
+															<li>
+																<form method="post" action="{{ path('app_candidature_accepter', {'uuid': candidature.uuid}) }}" style="display:inline;">
+																	<button type="submit"><img src="{{ asset('assets/images/icon/shortlist-icon.svg') }}" alt="">
+																		Accepter
+																	</button>
+																</form>
+															</li>
+															<li>
+																<form method="post" action="{{ path('app_candidature_rejeter', {'uuid': candidature.uuid}) }}" style="display:inline;">
+																	<button type="submit" class="reject"><img src="{{ asset('assets/images/icon/rejected-icon.svg') }}" alt="">
+																		Rejeter
+																	</button>
+																</form>
+															</li>
+														</ul>
+													</div>
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
 										<tr>
-											<td data-label="Nom du Candidat">
-												<div class="employee-info">
-													<div class="employee-img">
-														<img src="{{ asset('images/avatar/' ~ candidature.developer.user.avatar.reference) }}" alt="">
-													</div>
-													<div class="employee-content">
-														<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#candidatureModal{{ candidature.id }}">
-															{{ candidature.developer.nom }}
-															{{ candidature.developer.prenom }}
-														</button>
-														<span>
-															<img src="{{ asset('assets/images/icon/company-2.svg') }}" alt="">
-															{{ candidature.developer.cat.nom }}
-														</span>
-														<p>
-															<span>Envoyé le:</span>
-															{{ candidature.date|date('d M, Y') }}
-														</p>
-													</div>
-												</div>
-											</td>
-											<td data-label="Résumé de carrière">
-												<div class="carrer-summary">
-													<h6>{{ candidature.poste.titre }}
-													</h6>
-													<ul>
-														<li>
-															<span>Experience:</span>
-															{{ candidature.developer.experience }}+ Years
-														</li>
-														<li>
-															<span>Salary:</span>
-															{{ candidature.developer.salaireMin }}
-															/ mois
-														</li>
-													</ul>
-												</div>
-											</td>
-											<td data-label="Résumé de carrière">
-												<div class="carrer-summary">
-													<h5>Titre du poste
-													</h5>
-													<h5>{{ candidature.poste.titre }}
-													</h5>
-												</div>
-											</td>
-											<td data-label="Actions">
-												<div class="action-btn-group">
-													<ul>
-														<li>
-															<form method="post" action="{{ path('app_candidature_accepter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																<button type="submit"><img src="{{ asset('assets/images/icon/shortlist-icon.svg') }}" alt="">
-																	Accepter
-																</button>
-															</form>
-														</li>
-														<li>
-															<form method="post" action="{{ path('app_candidature_rejeter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																<button type="submit" class="reject"><img src="{{ asset('assets/images/icon/rejected-icon.svg') }}" alt="">
-																	Rejeter
-																</button>
-															</form>
-														</li>
-													</ul>
-												</div>
+											<td colspan="4" class="text-center">
+												<p>Aucune candidature n'a encore été reçue.</p>
 											</td>
 										</tr>
-									{% endfor %}
+									{% endif %}
 								</tbody>
 							</table>
 						</div>
