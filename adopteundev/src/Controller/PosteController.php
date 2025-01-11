@@ -11,11 +11,13 @@ use App\Entity\PostView;
 use App\Form\CVRegistrationType;
 use App\Form\PosteFormType;
 use App\Repository\CandidatureRepository;
+use App\Repository\CategorieRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\CvRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use App\Repository\PostViewRepository;
+use App\Repository\TechnologieRepository;
 use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -182,103 +184,74 @@ class PosteController extends AbstractController
 
 
     #[Route('/postes', name: 'app_poste_list')]
-    public function posteList(Request $request, EntityManagerInterface $entityManager, PosteRepository $posteRepository): Response
+    public function posteList(Request $request, TechnologieRepository $technologieRepository, EntityManagerInterface $entityManager, PosteRepository $posteRepository, CategorieRepository $categorieRepository, NotificationService $notificationService): Response
     {
-        //recupération des catégories associés à un poste
-        $categories = $entityManager->createQuery(
-            'SELECT c.id, c.nom, COUNT(p.id) AS nbPostes FROM App\Entity\Categorie c LEFT JOIN c.postes p GROUP BY c.id'
-        )->getResult();
 
-        // récupération des type de poste
-        $types = $entityManager->createQuery(
-            'SELECT p.type, COUNT(p.id) AS nbPostes
-             FROM App\Entity\Poste p
-             GROUP BY p.type'
-        )->getResult();
-        // Récupérer la sélection de la période via les paramètres GET
-        $selectedDateFilter = $request->query->get('dateFilter', null);
+        // Récupérer les paramètres de la requête
+        $categorie_filtre = $request->query->get('category');
+        $technos_filtre = $request->query->get('technos');
+        $experience_filtre = $request->query->get('experience',);
+        $salaryMin_filtre = $request->query->get('salaire');
+        $type_filtre = $request->query->get('type');
 
-        // Calculer la plage de dates en fonction de la sélection
-        $now = new \DateTimeImmutable();
-        $startDate = null;
-
-        switch ($selectedDateFilter) {
-            case 'today':
-                $startDate = $now->setTime(0, 0, 0); // Début de la journée
-                break;
-            case 'yesterday':
-                $startDate = $now->modify('-1 day')->setTime(0, 0, 0); // Début d'hier
-                break;
-            case 'week':
-                $startDate = $now->modify('-1 week'); // Début de la semaine dernière
-                break;
-            case 'month':
-                $startDate = $now->modify('-1 month'); // Début du mois dernier
-                break;
-        }
-
-        // Requête pour récupérer les postes
-        $queryBuilder = $entityManager->getRepository(Poste::class)->createQueryBuilder('p');
-
-        if ($startDate) {
-            $queryBuilder
-                ->andWhere('p.createdAt >= :startDate')
-                ->setParameter('startDate', $startDate);
-        }
-
-        // $postes = $queryBuilder->getQuery()->getResult();
-
-        // Compter les postes pour chaque période
-        $countByDate = [
-            'today' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfDay')
-                ->setParameter('startOfDay', $now->setTime(0, 0, 0))
-                ->getQuery()
-                ->getSingleScalarResult(),
-            'yesterday' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfYesterday')
-                ->andWhere('p.createdAt < :startOfToday')
-                ->setParameter('startOfYesterday', $now->modify('-1 day')->setTime(0, 0, 0))
-                ->setParameter('startOfToday', $now->setTime(0, 0, 0))
-                ->getQuery()
-                ->getSingleScalarResult(),
-            'week' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfWeek')
-                ->setParameter('startOfWeek', $now->modify('-1 week'))
-                ->getQuery()
-                ->getSingleScalarResult(),
-            'month' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfMonth')
-                ->setParameter('startOfMonth', $now->modify('-1 month'))
-                ->getQuery()
-                ->getSingleScalarResult(),
-        ];
-
-        // Récupérer les filtres depuis la requête
-        $category = $request->query->get('category');
-        $experience = $request->query->get('experience');
-
-        // Récupérer les postes en fonction des critères
+        // construire la querybuilder
         $queryBuilder = $posteRepository->createQueryBuilder('p');
 
-        if ($category) {
+        if ($categorie_filtre) {
             $queryBuilder->andWhere('p.categorie = :category')
-                ->setParameter('category', $category);
+                ->setParameter('category', $categorie_filtre);
         }
 
-        if ($experience) {
-            $queryBuilder->andWhere('p.experience = :experience')
-                ->setParameter('experience', $experience);
+        // filtrer un dev en fonction de son experience
+        if ($experience_filtre) {
+            $queryBuilder->andWhere('p.experienceRequis >= :experience')
+                ->setParameter('experience', $experience_filtre);
         }
+
+        // filtrer un dev en fonction de sa collection de technologies
+        if ($technos_filtre) {
+            $queryBuilder->join('p.technologie', 't')
+                ->andWhere('t.id IN (:techno)')
+                ->setParameter('techno', $technos_filtre);
+        }
+
+        // filtrer un dev en fonction de son salaire minimum
+        if ($salaryMin_filtre) {
+            $queryBuilder->andWhere('p.salaireMin >= :salaireMin')
+                ->setParameter('salaireMin', $salaryMin_filtre);
+        }
+
+        // filtrer un dev en fonction du type de poste
+        if ($type_filtre) {
+            $queryBuilder->andWhere('p.type = :type')
+                ->setParameter('type', $type_filtre);
+        }
+
+
+
+
+
+
+
+        //recupération des catégories associés à un poste
+        $categories = $categorieRepository->findCategorieWithPosts();
+        $technos = $technologieRepository->findTechnologiesWithDevelopers();
+        $types = $posteRepository->findDistinctTypes();
+
+
 
         $postes = $queryBuilder->getQuery()->getResult();
 
+
+
         // Récupérer toutes les catégories pour afficher les options
-        return $this->render('poste/poste_liste.html.twig', ['postes' => $postes, 'categories' => $categories, 'types' => $types, 'countByDate' => $countByDate,]);
+        return $this->render('poste/poste_liste.html.twig', [
+            'postes' => $postes,
+            'categories' => $categories,
+            'types' => $types,
+
+            'technos' => $technos
+        ]);
     }
 
     // #[IsGranted('ROLE_DEV')]

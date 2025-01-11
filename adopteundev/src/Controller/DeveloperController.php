@@ -18,6 +18,7 @@ use App\Entity\DeveloperView;
 use App\Form\DeveloperRatingType;
 use App\Repository\CompanyRepository;
 use App\Repository\DeveloperViewRepository;
+use App\Repository\TechnologieRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -90,14 +91,55 @@ class DeveloperController extends AbstractController
     //     }
 
     #[Route('/devs', name: 'app_dev_list')]
-    public function listDevelopers(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository)
+    public function listDevelopers(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository, TechnologieRepository $technologieRepository, PaginatorInterface $paginator): Response
     {
+        // recuperer les filtres
+        // Récupérer les paramètres de la requête
+        $categorie_filtre = $request->query->get('category');
+        $technos_filtre = $request->query->get('technos');
+        $experience_filtre = $request->query->get('experience',);
+        $salaryMin_filtre = $request->query->get('salaire');
+
+        // construire la querybuilder
+        $queryBuilder = $developerRepository->createQueryBuilder('d');
+
+        if ($categorie_filtre) {
+            $queryBuilder->andWhere('d.cat = :category')
+            ->setParameter('category', $categorie_filtre);
+        }
+
+        // filtrer un dev en fonction de son experience
+        if ($experience_filtre) {
+            $queryBuilder->andWhere('d.experience >= :experience')
+            ->setParameter('experience', $experience_filtre);
+        }
+
+        // filtrer un dev en fonction de sa collection de technologies
+        if ($technos_filtre) {
+            $queryBuilder->join('d.technologie', 't')
+            ->andWhere('t.id IN (:techno)')
+            ->setParameter('techno', $technos_filtre);
+        }
+
+        // filtrer un dev en fonction de son salaire minimum
+        if ($salaryMin_filtre) {
+            $queryBuilder->andWhere('d.salaireMin >= :salaireMin')
+            ->setParameter('salaireMin', $salaryMin_filtre);
+        }
+
+
         // pour le filtre
-        $categories = $categorieRepository->findAll();
-        $developers = $developerRepository->findAll();
+        //recupération des catégories associés à un poste
+        $categories = $categorieRepository->findCategorieWithPosts();
+        $technos = $technologieRepository->findTechnologiesWithDevelopers();
+
+
+
+        $developers = $queryBuilder->getQuery()->getResult();
         return $this->render('developer/list.html.twig', [
             'devs' => $developers,
             'categories' => $categories,
+            'technos' => $technos,
         ]);
     }
 

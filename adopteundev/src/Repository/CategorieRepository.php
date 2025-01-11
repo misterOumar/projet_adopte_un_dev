@@ -52,4 +52,13 @@ class CategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    // recuperer les catégorie relier à au moins un poste
+    public function findCategorieWithPosts(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.postes', 'p')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -48,4 +48,13 @@ class TechnologieRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    // technologies relier à au moins un developer
+    public function findTechnologiesWithDevelopers(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->join('t.developers', 'd')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -79,5 +79,14 @@ class PosteRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    // recuperer les types de poste unique
+    public function findDistinctTypes(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('DISTINCT p.type')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 }
