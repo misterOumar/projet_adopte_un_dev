@@ -9,6 +9,17 @@ innovantes.
 
 
 
+
+## Membres du groupes:
+### 1. Blakimé Christianna
+### 2. Coulibaly Oumar
+### 3. Konan Évrard
+### 4. Saboutey Tettey Fabiola
+
+
+
+
+
 ## Installation
 
 1. Télécharger le projet en clonant
