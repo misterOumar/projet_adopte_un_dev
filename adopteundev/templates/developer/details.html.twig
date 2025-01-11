@@ -5,6 +5,11 @@
 	{{developer.prenom}}
 {% endblock %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href={{ asset("css/custum.css") }}>
+{% endblock %}
+
+
 
 {% block body %}
 
@@ -88,17 +93,17 @@
 											<a href="#">{{ developer.nom}}</a>
 										</h5>
 										
-										<div class="">
+											<div class="">
 											{% set average = developer.getAverageRating() %}
 											{% set count = developer.getRatingsCount() %}
 
 											{% for i in 1..5 %}
 												{% if i <= average %}
-													<i class="bx bxs-star"></i>
+													<i class="bx bxs-star star-rating"></i>
 												{% elseif i <= average + 0.5 %}
-													<i class="bx bxs-star-half"></i>
+													<i class="bx bxs-star-half star-rating"></i>
 												{% else %}
-													<i class="bx bx-star"></i>
+													<i class="bx bx-star star-rating"></i>
 												{% endif %}
 											{% endfor %}
 											<span>{{ average }}</span>
@@ -166,13 +171,38 @@
 					<div class="job-details-sidebar mb-120">
 						<div class="save-apply-btn d-flex justify-content-end mb-50">
 							<ul>
-								<li>
-									<a class="save-btn" href="#">Save Job<span>
-											<i class="bi bi-bookmark-fill"></i>
+						{% if is_granted(constant('App\\Entity\\User::ROLE_COMPANY')) %}
+							
+							{% if  developer in company.developerSaved %}
+
+								<form action="{{ path('app_favorite_dev_remove', {uuid: developer.uuid}) }}" method="post">
+									<button type="submit" style="" class="save-btn">
+										Retirer au favoris<span>
+											<i class='bx bxs-bookmark'></i>
 										</span>
+
+									</button>
+								</form>
+							{% else %}
+								<form action="{{ path('app_favorite_dev_add', {uuid: developer.uuid}) }}" method="post">
+
+									<button type="submit" class="save-btn" style="background:transparent">
+																Ajouter au favoris<span>
+										<i class='bx bxs-bookmark'></i>
+																	</span>
+
+									</button>
+								</form>
+							{% endif %}
+						{% endif %}
+
+								<li>
+									<a class="save-btn" href="#">
 									</a>
 								</li>
-{% if ratingDeveloper.uuid != developer.uuid %}
+								
+								{% if (is_granted(constant('App\\Entity\\User::ROLE_DEV')) and ratingDeveloper.uuid != developer.uuid) %}
+
 
 									<li>
 										<button class="primry-btn-2 lg-btn" data-bs-toggle="modal" data-bs-target="#ratingModal">Evaluer</button>

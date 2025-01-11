@@ -14,7 +14,7 @@
 						<div class="author-and-action-btn-area two mb-40">
 							<div class="author-area two">
 								<div class="author-img">
-									<img src="{{asset('assets/images/bg/company-img2.png')}}" alt="">
+									<img src="{{asset('images/avatar/' ~ avatar)}}" alt="">
 								</div>
 								<div class="author-content">
 									<span>Bonjour ,</span>
@@ -44,26 +44,10 @@
 										<img src="{{ asset('assets/images/icon/tt-applied.svg') }}" alt="image">
 									</div>
 									<div class="coundown">
-										<p>Total Applied</p>
+										<p>Mes Postes</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												30
-											</h3>
-											<span>+</span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3 col-sm-6">
-								<div class="counter-single two">
-									<div class="counter-icon">
-										<img src="{{ asset('assets/images/icon/save-job.svg') }}" alt="image">
-									</div>
-									<div class="coundown">
-										<p>Live Jobs</p>
-										<div class="d-flex align-items-center">
-											<h3 class="odometer">
-												80
+												{{company.countPostes}}
 											</h3>
 											<span>+</span>
 										</div>
@@ -76,10 +60,11 @@
 										<img src="{{asset('assets/images/icon/pending-icon.svg')}}" alt="image">
 									</div>
 									<div class="coundown">
-										<p>Pending Job</p>
+										<p>Candidatures</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												120
+												{{totalCandidature}}
+
 											</h3>
 											<span>+</span>
 										</div>
@@ -89,31 +74,33 @@
 							<div class="col-lg-3 col-sm-6">
 								<div class="counter-single four">
 									<div class="counter-icon">
-										<img src="{{asset('assets/images/icon/closed-icon.svg')}}" alt="image">
+										<img src="{{asset('assets/images/icon/follow-icon.svg')}}" alt="image">
+
+
 									</div>
 									<div class="coundown">
-										<p>Closed Jobs</p>
+										<p class="small-1">Candidatures Acceptées</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												900
+												{{totalCandidatureAccepted}}
+
 											</h3>
 											<span>+</span>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row g-4 justify-content-cente">
 							<div class="col-lg-3 col-sm-6">
 								<div class="counter-single">
 									<div class="counter-icon">
 										<img src="{{asset('assets/images/icon/total-view-icon.svg')}}" alt="image">
 									</div>
 									<div class="coundown">
-										<p>Total View</p>
+										<p>
+											Vues de Postes</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												2500
+												{{totalView}}
 											</h3>
 											<span>+</span>
 										</div>
@@ -128,76 +115,70 @@
 						<div class="table-wrapper2">
 							<table class="eg-table table category-table mb-0">
 								<tbody>
-									{% for candidature in candidatures %}
+									{% if candidatures is not empty %}
+										{% for candidature in candidatures %}
+											<tr>
+												<td data-label="Nom du Candidat">
+													<div class="employee-info">
+														<div class="employee-img">
+															{% set avatarC = candidature.developer.user.avatar ? candidature.developer.user.avatar.reference : 'default-avatar.png'  %}
+															<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+														</div>
+														<div class="employee-content">
+															<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#candidatureModal{{ candidature.id }}">
+																{{ candidature.developer.nom }}
+																{{ candidature.developer.prenom }}
+															</button>
+															<span>
+																<img src="{{ asset('assets/images/icon/company-2.svg') }}" alt="">
+																{{ candidature.developer.cat.nom }}
+															</span>
+															<p>
+																<span>Candidaté :</span>
+																{{ candidature.date|time_diff }}
+															</p>
+														</div>
+													</div>
+												</td>
+												<td data-label="Résumé de carrière">
+													<div class="carrer-summary">
+														<h6>{{ candidature.poste.titre }}
+														</h6>
+														<ul>
+															<li>
+																<span>Experience:</span>
+																{{ candidature.developer.experience }}
+																an(s)
+															</li>
+															<li>
+																<span>Salaraire:</span>
+																{{ candidature.developer.salaireMin }}
+																/€ mois
+															</li>
+														</ul>
+													</div>
+												</td>
+												<td data-label="Actions">
+													<div class="action-btn-group">
+														<ul>
+															<li>
+																<button type="button" class="btn btn-secondary disabled">
+																	{{candidature.statut}}
+																</button>
+															</li>
+
+														</ul>
+													</div>
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
 										<tr>
-											<td data-label="Nom du Candidat">
-												<div class="employee-info">
-													<div class="employee-img">
-														<img src="{{ asset('images/avatar/' ~ candidature.developer.user.avatar.reference) }}" alt="">
-													</div>
-													<div class="employee-content">
-														<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#candidatureModal{{ candidature.id }}">
-															{{ candidature.developer.nom }}
-															{{ candidature.developer.prenom }}
-														</button>
-														<span>
-															<img src="{{ asset('assets/images/icon/company-2.svg') }}" alt="">
-															{{ candidature.developer.cat.nom }}
-														</span>
-														<p>
-															<span>Envoyé le:</span>
-															{{ candidature.date|date('d M, Y') }}
-														</p>
-													</div>
-												</div>
-											</td>
-											<td data-label="Résumé de carrière">
-												<div class="carrer-summary">
-													<h6>{{ candidature.poste.titre }}
-													</h6>
-													<ul>
-														<li>
-															<span>Experience:</span>
-															{{ candidature.developer.experience }}+ Years
-														</li>
-														<li>
-															<span>Salary:</span>
-															{{ candidature.developer.salaireMin }}
-															/ mois
-														</li>
-													</ul>
-												</div>
-											</td>
-											<td data-label="Résumé de carrière">
-												<div class="carrer-summary">
-													<h5>Titre du poste
-													</h5>
-													<h5>{{ candidature.poste.titre }}
-													</h5>
-												</div>
-											</td>
-											<td data-label="Actions">
-												<div class="action-btn-group">
-													<ul>
-														<li>
-															<form method="post" action="{{ path('app_candidature_accepter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																<button type="submit"><img src="{{ asset('assets/images/icon/shortlist-icon.svg') }}" alt="">
-																	Accepter
-																</button>
-															</form>
-														</li>
-														<li>
-															<form method="post" action="{{ path('app_candidature_rejeter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																<button type="submit" class="reject"><img src="{{ asset('assets/images/icon/rejected-icon.svg') }}" alt="">
-																	Rejeter
-																</button>
-															</form>
-														</li>
-													</ul>
-												</div>
+											<td colspan="4" class="text-center">
+												<p>Aucune candidature n'a encore été reçue.</p>
 											</td>
 										</tr>
-									{% endfor %}
+									{% endif %}
 								</tbody>
 							</table>
 						</div>

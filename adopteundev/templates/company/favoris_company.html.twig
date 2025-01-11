@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Entreprise!
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href={{ asset("css/custum.css") }}>
+{% endblock %}
+
+
+{% block body %}
+	<!-- ========== Dashboard Area end============= -->
+	<div class="dashboard-area company-dashboard pt-120 mb-120">
+		<div class="container">
+			<div class="row g-lg-4">
+				{% include "company/menu_company.html.twig" %}
+				<div class="col-lg-12">
+
+
+					<div class="new-applied-job-area">
+						<h5>Ma Liste de Devs Favoris:</h5>
+						<div class="table-wrapper2">
+							<table class="eg-table table category-table mb-0">
+								<tbody>
+									{% for developer in favoris_dev %}
+
+
+										<tr>
+											<td data-label="Nom du Candidat">
+												<div class="employee-info">
+													<div class="employee-img">
+														{% set avatarC = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+														<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+													</div>
+													<div class="employee-content">
+														<a href="{{path('app_dev_details', {uuid: developer.uuid})}}">
+
+
+															{{ developer.nom }}
+															{{ developer.prenom }}
+														</a>
+														<span>
+															<img src="{{ asset('assets/images/icon/company-2.svg') }}" alt="">
+															{{ developer.cat.nom }}
+														</span>
+														<div class="">
+															{% set average = developer.getAverageRating() %}
+															{% set count = developer.getRatingsCount() %}
+
+															{% for i in 1..5 %}
+																{% if i <= average %}
+																	<i class="bx bxs-star star-rating"></i>
+																{% elseif i <= average + 0.5 %}
+																	<i class="bx bxs-star-half star-rating"></i>
+																{% else %}
+																	<i class="bx bx-star star-rating"></i>
+																{% endif %}
+															{% endfor %}
+															<span>{{ average }}</span>
+															<span>({{ count }}
+																avis)</span>
+														</div>
+
+
+													</div>
+												</div>
+											</td>
+											<td data-label="Résumé de carrière">
+												<div class="carrer-summary">
+
+													<ul>
+														<li>
+															<span>Experience:</span>
+															{{ developer.experience }}
+															an(s)
+														</li>
+														<li>
+															<span>Salaire:</span>
+															{{ developer.salaireMin }}
+															/€ mois
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td data-label="Actions">
+												<div class="action-btn-group">
+													<ul>
+														<li>
+															
+
+															<form action="{{ path('app_favorite_dev_remove', {uuid: developer.uuid}) }}" method="post">
+																<button type="submit" class="btn btn-warning">
+
+																	Retirer au favoris
+																</button>
+															</form>
+
+														</li>
+
+													</ul>
+												</div>
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="4" class="text-center">
+												<p>Vous n'avez pas encore de développeur favoris. Vous pouvez en rajouter depuis la page
+													<a href="{{ path('app_dev_list') }}">
+														<span>
+															liste des développeurs</span>
+													</a>
+												</p>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- ========== Dashboard Area end============= -->
+{% endblock %}

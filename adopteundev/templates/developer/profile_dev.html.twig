@@ -72,6 +72,26 @@
 										</div>
 
 
+										<div class="col-md-12 mb-3 d-flex justify-content-center">
+											<div class="">
+												{% set average = developer.getAverageRating() %}
+												{% set count = developer.getRatingsCount() %}
+
+												{% for i in 1..5 %}
+													{% if i <= average %}
+														<i class="bx bxs-star star-rating"></i>
+													{% elseif i <= average + 0.5 %}
+														<i class="bx bxs-star-half star-rating"></i>
+													{% else %}
+														<i class="bx bx-star star-rating"></i>
+													{% endif %}
+												{% endfor %}
+												<span>{{ average }}</span>
+												<span>({{ count }}
+													avis)</span>
+											</div>
+
+										</div>
 										<div class="col-md-6">
 											<div class="form-inner mb-25">
 												<label for="firstname1">Nom*</label>
@@ -204,78 +224,6 @@
 									{{ form_end(form) }}
 									{# </form> #}
 
-									<div class="form-wrapper">
-										<div class="section-title">
-											<h5>Social Network:</h5>
-										</div>
-										<form class="profile-form">
-											<div class="row">
-
-												<div class="col-md-6">
-													<div class="form-inner mb-25">
-														<label for="fecebook">Facebook</label>
-														<div class="input-area">
-															<img src="assets/images/icon/facebook-2.svg" alt="">
-															<input type="text" id="fecebook" name="fecebook" placeholder="https://example-fecebook.com">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-inner mb-25">
-														<label for="twitter">Twitter</label>
-														<div class="input-area">
-															<img src="assets/images/icon/twiter-2.svg" alt="">
-															<input type="text" id="twitter" name="twitter" placeholder="https://example-twitter.com">
-														</div>
-													</div>
-												</div>
-
-
-												<div class="col-md-6">
-													<div class="form-inner mb-25">
-														<label for="linkedin">LinkedIn</label>
-														<div class="input-area">
-															<img src="assets/images/icon/linkedin-2.svg" alt="">
-															<input type="text" id="linkedin" name="linkedin" placeholder="https://example-linkedin.com">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-inner mb-25">
-														<label for="pinterest">Pinterest</label>
-														<div class="input-area">
-															<img src="assets/images/icon/pinterest-2.svg" alt="">
-															<input type="text" id="pinterest" name="pinterest" placeholder="https://example-pinterest.com">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-inner mb-25">
-														<label for="dribble">Dribbble</label>
-														<div class="input-area">
-															<img src="assets/images/icon/dribble-2.svg" alt="">
-															<input type="text" id="dribble" name="dribble" placeholder="https://example-dribbble.com">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-6">
-													<div class="form-inner mb-50">
-														<label for="behance">Behance</label>
-														<div class="input-area">
-															<img src="assets/images/icon/behance-2.svg" alt="">
-															<input type="text" id="behance" name="behance" placeholder="https://example-behance.com">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-inner">
-														<button class="primry-btn-2 lg-btn w-unset" type="submit">Update Social Link</button>
-													</div>
-												</div>
-
-											</div>
-										</form>
-									</div>
 								</div>
 								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 									<div class="form-wrapper">

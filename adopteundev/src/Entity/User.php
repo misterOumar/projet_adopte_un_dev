@@ -243,6 +243,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->notifications;
     }
 
+    // count notification
+    public function countNotifications(): int
+    {
+        return $this->notifications->count();
+    }
+
     public function addNotification(Notification $notification): static
     {
         if (!$this->notifications->contains($notification)) {

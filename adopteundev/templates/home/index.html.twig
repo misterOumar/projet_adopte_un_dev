@@ -3,526 +3,565 @@
 {% block title %}Coming soon | AdopteUnDev!
 {% endblock %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/slick-theme.css')}}">
+	<link rel="stylesheet" href="{{asset('assets/css/slick.css')}}">
+
+
+{% endblock %}
+
+
 {% block body %}
 
-<style>
-	.statistics-section {
-    padding: 60px 0;
-    background-color: #f9f9f9;
-}
 
-.counter-single {
-    text-align: center;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.counter-icon {
-    font-size: 40px;
-    color: #00A7AC;
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.icon-bg1 {
-    background: #e0f7fa;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px auto;
-}
-
-.stat-number {
-    font-size: 36px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-</style>
 	<!-- ========== Hero Six Start============= -->
 	<div class="hero2">
-        <div class="hero-wapper">
-            <div class="container-fluid px-0">
-                <div class="row">
-                    <div class="col-lg-7 d-flex align-items-center">
-                        <div class="hero-content">
-                            <h1>To Choose Your Level Best <span>Dream Career.</span></h1>
-                            <p><span>2400</span> Peoples are daily search in this portal, <span>100</span> user added job portal!</p>
-                            <div class="job-search-area">
-                                <form>
-                                    <div class="form-inner job-title">
-                                        <input type="text" placeholder="Lieux">
-                                    </div>
-                                    <div class="form-inner category">
-                                        <select class="select1">
-                                            <option value="0">Catégories</option>
-                                            <option value="1">UI/UX </option>
-                                            <option value="2">Closed</option>
-                                            <option value="4">Closed</option>
-                                            <option value="5">Closed</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-inner">
-                                        <button type="submit" class="primry-btn-2 "><img
-                                                src="assets/images/icon/search-icon.svg" alt=""> Rechercher</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="suggest-tag">
-                                <h6><i class="bi bi-bookmark-fill"></i>Suggested Tag:</h6>
-                                <ul>
-                                    <li><a href="job-listing1.html">Engineering,</a></li>
-                                    <li><a href="job-listing1.html">Marketing,</a></li>
-                                    <li><a href="job-listing1.html">UI/UX Design,</a></li>
-                                    <li><a href="job-listing1.html">Data Analyst,</a></li>
-                                    <li><a href="job-listing1.html">Programming</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 d-flex justify-content-end">
-                       <div class="banner-image-area">
-                            <div class="banner-img-left">
-                                <div class="banner-img1">
-                                    <img class="img-fluid" src="assets/images/bg/home2-banner-01.png" alt="">
-                                </div>
-                                <div class="banner-img2">
-                                    <img class="img-fluid" src="assets/images/bg/home2-banner-02.png" alt="">
-                                </div>
-                            </div>
-                            <div class="banner-img-center">
-                                <div class="banner-img3">
-                                    <img class="img-fluid" src="assets/images/bg/home2-banner-03.png" alt="">
-                                </div>
-                                <div class="banner-img4">
-                                    <div class="user-area">
-                                        <ul>
-                                            <li><img src="assets/images/bg/user31.png" alt=""></li>
-                                            <li><img src="assets/images/bg/user32.png" alt=""></li>
-                                            <li><img src="assets/images/bg/user33.png" alt=""></li>
-                                            <li>
-                                                <div class="total-user">
-                                                    <h6>21k</h6>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <p>Personnes nous ont rejoint!</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="banner-img-right">
-                                <div class="banner-img5">
-                                    <div class="new-job-list">
-                                        <h3>2400+</h3>
-                                        <p>New Job Listed!</p>
-                                    </div>
-                                </div>
-                                <div class="banner-img6">
-                                    <img class="img-fluid" src="assets/images/bg/home2-banner-04.png" alt="">
-                                </div>
-                            </div>
-                       </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-	<!-- ========== Hero Six End============= -->
+		<div class="hero-wapper">
+			<div class="container-fluid px-0">
+				<div class="row">
+					<div class="col-lg-7 d-flex align-items-center">
+						<div class="hero-content">
+							<h1>
+								Sélectionner la
+								<span>carrière idéale</span>
+								qui correspond parfaitement à
+								<span>vos talents</span>.
 
-	    <!-- ========== Home Two Banner End============= -->
-    <!-- ========== Home Two Counter Start============= -->
-    <div class="counter-area home2-counter-area mb-120">
-			<div class="container">
-				<div class="row g-lg-4 gy-5 justify-content-center">
-					<div class="col-lg-3 col-sm-6 divider d-flex justify-content-center">
-						<div class="counter-single">
-							<div class="counter-icon">
-								<div class="icon-bg1">
-									<i class="fas fa-users"></i>
-								</div>
+
+							</h1>
+							<p>
+								Plus de
+
+								<span>2400</span>
+
+								offres d'emploi sont disponibles pour vous!</p>
+							<div class="job-search-area">
+								<form>
+									<div class="form-inner job-title">
+										<input type="text" placeholder="Lieux">
+									</div>
+									<div class="form-inner category">
+										<select class="select1">
+											<option value="0">Catégories</option>
+											<option value="1">UI/UX
+											</option>
+											<option value="2">Closed</option>
+											<option value="4">Closed</option>
+											<option value="5">Closed</option>
+										</select>
+									</div>
+									<div class="form-inner">
+										<button type="submit" class="primry-btn-2 "><img src="assets/images/icon/search-icon.svg" alt="">
+											Rechercher</button>
+									</div>
+								</form>
 							</div>
-							<h3 class="counter stat-number" data-count="{{ totalUsers }}">0</h3>
-							<p>Utilisateurs</p>
 						</div>
 					</div>
-					<div class="col-lg-3 col-sm-6 divider d-flex justify-content-center">
-						<div class="counter-single">
-							<div class="counter-icon">
-								<div class="icon-bg1">
-									<i class="fas fa-building"></i>
+					<div class="col-lg-5 d-flex justify-content-end">
+						<div class="banner-image-area">
+							<div class="banner-img-left">
+								<div class="banner-img1">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-01.png" alt="">
+								</div>
+								<div class="banner-img2">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-02.png" alt="">
 								</div>
 							</div>
-							<h3 class="counter stat-number" data-count="{{ totalCompanies }}">0</h3>
-							<p>Compagnies</p>
-						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 divider d-flex justify-content-center">
-						<div class="counter-single">
-							<div class="counter-icon">
-								<div class="icon-bg1">
-									<i class="fas fa-laptop-code"></i>
+							<div class="banner-img-center">
+								<div class="banner-img3">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-03.png" alt="">
+								</div>
+								<div class="banner-img4">
+									<div class="user-area">
+										<ul>
+											<li><img src="assets/images/bg/user31.png" alt=""></li>
+											<li><img src="assets/images/bg/user32.png" alt=""></li>
+											<li><img src="assets/images/bg/user33.png" alt=""></li>
+											<li>
+												<div class="total-user">
+													<h6>21k</h6>
+												</div>
+											</li>
+										</ul>
+										<p>Personnes nous ont rejoint!</p>
+									</div>
 								</div>
 							</div>
-							<h3 class="counter stat-number" data-count="{{ totalDevelopers }}">0</h3>
-							<p>Développeurs</p>
-						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 divider d-flex justify-content-center">
-						<div class="counter-single">
-							<div class="counter-icon">
-								<div class="icon-bg1">
-									<i class="fas fa-briefcase"></i>
+							<div class="banner-img-right">
+								<div class="banner-img5">
+									<div class="new-job-list">
+										<h3>2400+</h3>
+										<p>Nouveaux postes!</p>
+									</div>
+								</div>
+								<div class="banner-img6">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-04.png" alt="">
 								</div>
 							</div>
-							<h3 class="counter stat-number" data-count="{{ recentPosts }}">0</h3>
-							<p>Postes créés</p>
 						</div>
 					</div>
 				</div>
 			</div>
-    </div>
-    <!-- ========== Home Two Counter End============= -->
-    <!-- ========== Home Two Job Category Start============= -->
-    <div class="home2-category-area mb-120">
-        <div class="container">
-            <div class="row mb-60">
-                <div class="col-12 d-flex justify-content-center gap-3">
-                    <div class="section-title1 text-center">
-                        <h2>Catégories de postes populaires</h2>
-                        <p>To choose your trending job dream & to make future bright.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row g-4 justify-content-center">
-    			{% for categorie in topCategories %}
-        			<div class="col-xl-3 col-lg-4 col-sm-6">
-						<div class="single-category2">
-							<div class="category-icon">
-								<div class="icon-bg">
-									<!-- Optionnel : une icône ou une image -->
-									<i class="fas fa-layer-group"></i>
-								</div>
-							</div>
-							<div class="category-content">
-								<h3 class="category-title">{{ categorie.nom }}</h3>
-								<p class="category-description">
-									<!-- Optionnel : afficher le nombre de postes si disponible -->
-									{{ categorie.post_count|default(0) }} postes disponibles
-								</p>
-							</div>
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-        </div>
-    </div>
-    <!-- ========== Home Two Job Category End============= -->
-    <!-- ========== Home Two Job list strat============= -->
-    <div class="home2-job-list-area mb-120">
-		<div class="container">
-        		{% if is_granted('ROLE_COMPANY') %}
-            		<div class="company-section">
-
-                		<div class="section">
-                    		<h2>Développeurs les plus consultés</h2>
-							<div class="row">
-								{% for developer in mostViewedDevelopers %}
-									<div class="col-lg-4 col-md-6">
-										<div class="profile-card">
-											<h4>{{ developer.nom }} {{ developer.prenom }}</h4>
-											<p>Ville : {{ developer.ville }}</p>
-											<p>Expérience : {{ developer.experience }} ans</p>
-											<!--<p>Vues : {{ developer.views }}</p>-->
-										</div>
-									</div>
-									<div class="col-xl-4 col-lg-6">
-                    					<div class="job-list-card">
-                        					<div class="urgent-batch">
-                            					<span>Urgent</span>
-                        					</div>
-                        					<div class="company-area">
-                            					<div class="logo">
-                                					<img src="assets/images/bg/company-logo/company-01.png" alt="">
-                            					</div>
-                            					<div class="company-details">
-                                					<div class="name-location">
-                                    					<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
-                                					</div>
-                                					<div class="bookmark">
-                                    					<i class="bi bi-bookmark"></i>
-                                					</div>
-                            					</div>
-                        					</div>
-                        					<div class="job-discription">
-                            					<ul>
-                                					<li>
-                                    					<p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
-                                					</li>
-                                					<li>
-                                    					<p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
-                                					</li>
-                                					<li>
-                                    					<!--<p><span class="title">Nombre de vues:</span> <span>{{ developer.views }}</span></p>-->
-                                					</li>
-                            					</ul>
-                        					</div>
-                        					<div class="job-type-apply">
-                            					<div class="apply-btn">
-                                					<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
-                            					</div>
-                        					</div>
-                    					</div>
-                					</div>
-                        		{% endfor %}
-                    		</div>
-                		</div>
-
-                		<div class="section mt-5">
-                    		<h2>Derniers profils créés</h2>
-							<div class="row g-4">
-								{% for developer in recentDevelopers %}
-									<div class="col-xl-4 col-lg-6">
-										<div class="job-list-card">
-											<div class="urgent-batch">
-												<span>Urgent</span>
-											</div>
-											<div class="company-area">
-												<div class="logo">
-													<img src="assets/images/bg/company-logo/company-01.png" alt="">
-												</div>
-												<div class="company-details">
-													<div class="name-location">
-														<h5><a href="job-details.html">{{ developer.nom }} {{ developer.prenom }}</a></h5>
-													</div>
-													<div class="bookmark">
-														<i class="bi bi-bookmark"></i>
-													</div>
-												</div>
-											</div>
-											<div class="job-discription">
-												<ul>
-													<li>
-														<p><span class="title">Ville:</span> {{ developer.ville }}  / <span class="time"></span></p>
-													</li>
-													<li>
-														<p><span class="title">Expérience:</span> <span> {{ developer.experience }} ans</span></p>
-													</li>
-										
-												</ul>
-											</div>
-											<div class="job-type-apply">
-												<div class="apply-btn">
-													<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Voir plus</a>
-												</div>
-											</div>
-										</div>
-									</div>
-								{% endfor %}
-							</div>
-                		</div>
-            		</div>
-				{% else %}
-					<div class="container">
-						<div class="row mb-60">
-							<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
-								<div class="section-title1">
-									<h2>Postes les plus recents</h2>
-									<p>To choose your trending job dream &amp; to make future bright.</p>
-								</div>
-								<div class="explore-btn">
-									<a href="{{ path('app_register') }}">Voir Plus <span><img src="assets/images/icon/explore-elliose.svg" alt=""></span></a>
-								</div>
-							</div>
-						</div>
-						<div class="row g-4">
-						{% for poste in postes %}
-							<div class="col-xl-4 col-lg-6">
-								<div class="job-list-card">
-									<div class="urgent-batch">
-										<span>Urgent</span>
-									</div>
-									<div class="company-area">
-										<div class="logo">
-											<img src="assets/images/bg/company-logo/company-01.png" alt="">
-										</div>
-										<div class="company-details">
-											<div class="name-location">
-												<h5><a href="job-details.html">{{poste.titre}}</a></h5>
-												<p><a href="company-details.html">{{poste.company.nom}}</a></p>
-											</div>
-											<div class="bookmark">
-												<i class="bi bi-bookmark"></i>
-											</div>
-										</div>
-									</div>
-									<div class="job-discription">
-										<ul>
-											<li>
-												<p><span class="title">Salaire:</span> {{poste.salaireMin}} $ / <span class="time">Par mois</span></p>
-											</li>
-											<li>
-												<p><span class="title">Type:</span> <span> {{poste.type}}</span></p>
-											</li>
-											<li>
-												<p><span class="title">Date limite:</span> <span class="time">{{ poste.dateLimite|date('d/m/Y') }}</span></p>
-											</li>
-										</ul>
-									</div>
-									<div class="job-type-apply">
-										<div class="apply-btn">
-											<a href="job-details.html"><span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Postuler</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						{% endfor %}
-						</div>
-					</div>
-    		{% endif %}
 		</div>
-    </div>
-    <!-- ========== Home Two Job list End============= -->
-    <!-- ========== Home Two Working-Process Start============= -->
-    <div class="home2-working-process mb-120">
-        <div class="container">
-            <div class="row mb-60">
-                <div class="col-12 d-flex justify-content-center">
-                    <div class="section-title1 text-center">
-                        <h2>Comment fonctionne <span>AdopteUnDev</span></h2>
-                        <p>To choose your trending job dream &amp; to make future bright.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row gy-5 justify-content-center">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="working-process-card2">
-                        <div class="working-process-sl">
-                            <h4>01</h4>
-                            <span></span>
-                        </div>
-                        <div class="working-process-content">
-                            <h5><a href="register.html">Créer votre compte</a></h5>
-                            <p>To create your account be confident & safely.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="working-process-card2">
-                        <div class="working-process-sl">
-                            <h4>02</h4>
-                            <span></span>
-                        </div>
-                        <div class="working-process-content">
-                            <h5><a href="edit-profile.html">Mettre à jour vos informations</a></h5>
-                            <p>To create your account be confident & safely.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="working-process-card2">
-                        <div class="working-process-sl">
-                            <h4>03</h4>
-                            <span></span>
-                        </div>
-                        <div class="working-process-content">
-                            <h5><a href="job-listing1.html">Faire vos recherches</a></h5>
-                            <p>To create your account be confident & safely.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="working-process-card2">
-                        <div class="working-process-sl last">
-                            <h4>04</h4>
-                            <span></span>
-                        </div>
-                        <div class="working-process-content">
-                            <h5><a href="job-listing1.html">Postuler ou Recruter</a></h5>
-                            <p>To create your account be confident & safely.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ========== Home Two Working-Process End============= -->
+	</div>
+	<!-- ========== Hero Six End============= -->
 
-    <!-- ========== Home2 Trusted Company area Start============= 
-    <div class="home1-trusted-company two mb-120">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h5>Our Trusted Company</h5>
-                    </div>
-                    <div class="swiper trusted-company-slider">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="company-logo">
-                                    <img src="assets/images/bg/company-logo/trusted-company-01.png" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="company-logo">
-                                    <img src="assets/images/bg/company-logo/trusted-company-02.png" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="company-logo">
-                                    <img src="assets/images/bg/company-logo/trusted-company-03.png" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="company-logo">
-                                    <img src="assets/images/bg/company-logo/trusted-company-04.png" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="company-logo">
-                                    <img src="assets/images/bg/company-logo/trusted-company-05.png" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="company-logo">
-                                    <img src="assets/images/bg/company-logo/trusted-company-06.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-    <!-- ========== Home2 Trusted Company area end============= -->
+	{% include "home/_counter.html.twig" %}
 
-	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-    const counters = document.querySelectorAll(".stat-number");
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute("data-count");
-            const current = +counter.innerText;
-
-            const increment = target / 200; // Ajustez pour une vitesse optimale
-
-            if (current < target) {
-                counter.innerText = Math.ceil(current + increment);
-                setTimeout(updateCount, 10);
-            } else {
-                counter.innerText = target;
-            }
-        };
-
-        updateCount();
-    });
-});
-	 </script>
+	<!-- ========== Home Two Banner End============= -->
 
 
-{% endblock %}
+	<!-- ========== Home Two Job list strat============= -->
+		{% if is_granted('ROLE_COMPANY') %}
+		<!-- ========== Home1 Top Recruiters area Start============= -->
+			<div class="home1-top-recruiters mb-120 mt-10"> <div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+							<h2>Développeurs
+								<span>en vedette</span>
+							</h2>
+							<p>
+
+								Découvrez nos spécialistes les plus recherchés du moment.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="slick-wrapper">
+						<div id="slick1">
+							{% for developer in mostViewedDevelopers %}
+
+								<div class="slide-item">
+									<div class="recruters-card">
+										<div class="company-area">
+											<div class="logo">
+												{% set avatarDev = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+												<img src="{{asset('images/avatar/' ~ avatarDev)}}" alt="">
+
+											</div>
+											<div class="name-location">
+												<h5>
+													<a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">{{developer.nom}}</a>
+
+												</h5>
+												<p><img src="{{asset('assets/images/icon/location.svg')}}" alt="">
+													{{developer.ville}}</p>
+
+												<div class="reviews">{% set average = developer.getAverageRating() %}
+													{% set count = developer.getRatingsCount() %}
+
+													{% for i in 1..5 %}
+														{% if i <= average %}
+															<i class="bx bxs-star star-rating"></i>
+														{% elseif i <= average + 0.5 %}
+															<i class="bx bxs-star-half star-rating"></i>
+														{% else %}
+															<i class="bx bx-star star-rating"></i>
+														{% endif %}
+													{% endfor %}
+													<span>{{ average }}</span>
+													<span>({{ count }}
+														avis)</span>
+												</div>
+
+											</div>
+										</div>
+										<div class="job-details-vacancies">
+											<div class="apply-btn">
+												<a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">
+
+													<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir le profil</a>
+											</div>
+											<div class="vacancies">
+												<p>Vues:
+													<span>{{developer.getViewCount()}}
+													</span>
+
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							{% endfor %}
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home1 Top Recruiters area end============= -->
+
+		<!-- ========== Home1 Featured Start============= -->
+		<div class="home1-featured-area mb-120">
+			<div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+
+
+							<h2>Récents profils
+
+								<span>Devs</span>
+							</h2>
+							<p>découvrez de nouveaux talents prometteurs</p>
+
+
+						</div>
+						<div class="explore-btn">
+							<a href="{{path('app_dev_list')}}">Voir tous les devs
+
+								<span><img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt=""></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row g-4">
+					{% for developer in recentDevelopers %}
+
+						<div class="col-xl-4 col-lg-6">
+							<div class="feature-card">
+								<div class="company-area">
+									<div class="logo">
+										{% set avatarC = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a class="d-inline-block text-truncate" style="max-width: 250px;" href=" {{path('app_dev_details', {'uuid':developer.uuid} )}}">{{developer.nom}}</a>
+
+
+											</h5>
+											<p>{{developer.cat.nom}}</p>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul>
+										<li>
+											<img src="assets/images/icon/arrow2.svg" alt="">
+											<p>
+												<span class="title">Salaire:</span>
+												{{developer.salaireMin}}€/
+												<span class="time">Par mois</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Ville:</span>
+												<span>
+													{{developer.ville}}</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Expérience:</span>
+												<span>{{developer.experience}}
+													an(s)
+												</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">
+											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir le profil</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home1 Featured end============= -->
+
+
+	{% else %}
+		<!-- ========== Home3 Top Company area Start============= -->
+		<div class="home3-top-company ">
+			<div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+							<h2>Les postes les plus
+								<span>Populaire</span>
+							</h2>
+							<p>
+								Les postes les plus consultés actuellement
+							</p>
+						</div>
+						<div class="explore-btn">
+							<a href="{{path('app_poste_list')}}">Voir plus
+								<span><img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt=""></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-center g-4">
+
+					{% for poste in mostPopularPosts %}
+
+						<div class="col-lg-4 col-md-6 col-sm-10">
+							<div class="top-company-card">
+								<div class="company-details">
+									<div class="name-location">
+										<h5>
+											<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}" class=" d-inline-block text-truncate" style="max-width: 300px;">{{poste.titre}}</a>
+
+
+										</h5>
+										<p><img src="{{asset('assets/images/icon/location.svg')}}" alt="">
+											{{poste.ville}},
+											{{poste.adresse}}
+										</p>
+									</div>
+									<div class="bookmark">
+										<i class="bi bi-bookmark"></i>
+									</div>
+								</div>
+								<div class="job-details-vacancies">
+									<div class="vacancies">
+										<p>Vues:
+											<span>{{poste.getViewCount()}}</span>
+
+										</p>
+									</div>
+									<div class="apply-btn">
+										<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}">
+											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>voir Details</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home3 Top Company area End============= -->
+
+		<!-- ========== Home1 Featured Start============= -->
+		<div class="home1-featured-area mb-120">
+			<div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+
+
+							<h2>Dernières
+								<span>Offres</span>
+								d'Emploi à la Une</h2>
+							<p>Choisissez votre métier de rêve et construisez un avenir radieux.</p>
+
+						</div>
+						<div class="explore-btn">
+							<a href="{{path('app_poste_list')}}">Voir toutes les offres
+
+								<span><img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt=""></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row g-4">
+					{% for poste in recentPosts %}
+						<div class="col-xl-4 col-lg-6">
+							<div class="feature-card">
+								<div class="company-area">
+									<div class="logo">
+										{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a class="d-inline-block text-truncate" style="max-width: 250px;" href=" {{path('app_company_poste_details', {'uuid':poste.uuid} )}}">{{poste.titre}}</a>
+
+
+											</h5>
+											<p>{{poste.type}}</p>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul>
+										<li>
+											<img src="assets/images/icon/arrow2.svg" alt="">
+											<p>
+												<span class="title">Salaire:</span>
+												{{poste.salaireMin}}€/
+												<span class="time">Par mois</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Ville:</span>
+												<span>
+													{{poste.ville}}</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Date limite:</span>
+												<span>
+													{{poste.dateLimite|date('d/m/Y')}}</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}">
+											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Postuler maintenant</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home1 Featured end============= -->
+
+	{% endif %}
+
+	<!-- ========== Home Two Working-Process Start============= -->
+	<div class="home2-working-process mb-120">
+		<div class="container">
+			<div class="row mb-60">
+				<div class="col-12 d-flex justify-content-center">
+					<div class="section-title1 ">
+						<h2 class="text-center">Comment fonctionne
+							<span>AdopteUnDev ?</span>
+						</h2>
+
+						<p>
+							AdopteUnDev est une plateforme innovante conçue pour aider les développeurs à trouver le poste de leurs rêves tout en favorisant les échanges entre recruteurs et candidats. Le fonctionnement de ce service est simple et efficace : les développeurs peuvent créer des profils détaillés où ils mettent en avant leurs compétences, leurs expériences et leurs objectifs professionnels. De leur côté, les entreprises peuvent également créer des annonces de postes à pourvoir, décrivant les compétences qu'elles recherchent et l'environnement de travail qu'elles offrent.
+
+						</p>
+						<br>
+						<p>
+							Grâce à un algorithme de correspondance intelligent, AdopteUnDev propose des suggestions d'emplois adaptés aux profils des développeurs. Cela permet de maximiser les chances de trouver un emploi qui non seulement répond aux attentes professionnelles, mais qui est également aligné avec les aspirations personnelles de chaque candidat.
+						</p>
+						<br>
+						<p>En intégrant des témoignages et des conseils d'experts du secteur, la plateforme offre également un accompagnement précieux pour ceux qui souhaitent se perfectionner ou se réorienter dans leur carrière. Que ce soit par le biais de formations, de webinars, ou de ressources sur le marché du travail, AdopteUnDev se positionne comme un partenaire clé pour construire un avenir professionnel radieux.
+						</p>
+						<br>
+
+
+						<p>
+							En somme, AdopteUnDev ne se limite pas à être un simple site d'emploi, mais devient un véritable écosystème où les développeurs peuvent s'épanouir, évoluer et réaliser leurs ambitions professionnelles.
+
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="row gy-5 justify-content-center">
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl">
+							<h4>01</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="{{ path('app_register') }}">Créer votre compte</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl">
+							<h4>02</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="#">Mettre à jour vos informations</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl">
+							<h4>03</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="#">Faire vos recherches</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl last">
+							<h4>04</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="#">Postuler ou Recruter</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		 <script>
+																											document.addEventListener("DOMContentLoaded", function () {
+																									    const counters = document.querySelectorAll(".stat-number");
+																									    counters.forEach(counter => {
+																									        const updateCount = () => {
+																									            const target = +counter.getAttribute("data-count");
+																									            const current = +counter.innerText;
+																									
+																									            const increment = target / 200; // Ajustez pour une vitesse optimale
+																									
+																									            if (current < target) {
+																									                counter.innerText = Math.ceil(current + increment);
+																									                setTimeout(updateCount, 10);
+																									            } else {
+																									                counter.innerText = target;
+																									            }
+																									        };
+																									
+																									        updateCount();
+																									    });
+																									});
+																										 </script>
+	{% endblock %}
+
+	{% block javascripts %}
+		 <script src="{{asset('assets/js/slick.js')}}"></script>
+
+
+	{% endblock %}

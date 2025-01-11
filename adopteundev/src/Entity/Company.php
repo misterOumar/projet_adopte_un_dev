@@ -40,9 +40,17 @@ class Company
     #[ORM\OneToMany(targetEntity: Poste::class, mappedBy: 'company')]
     private Collection $postes;
 
+    /**
+     * @var Collection<int, Developer>
+     */
+    #[ORM\ManyToMany(targetEntity: Developer::class)]
+    #[ORM\JoinTable(name: 'developer_saved')]
+    private Collection $developerSaved;
+
     public function __construct()
     {
         $this->postes = new ArrayCollection();
+        $this->developerSaved = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +148,12 @@ class Company
         return $this;
     }
 
+    // count poste
+    public function countPostes(): int
+    {
+        return count($this->postes);
+    }
+
     public function removePoste(Poste $poste): static
     {
         if ($this->postes->removeElement($poste)) {
@@ -148,6 +162,32 @@ class Company
                 $poste->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Developer>
+     */
+    public function getDeveloperSaved(): Collection
+    {
+        return $this->developerSaved;
+    }
+
+    public function addDeveloperSaved(Developer $developerSaved): static
+    {
+        if (!$this->developerSaved->contains($developerSaved)) {
+            $this->developerSaved->add($developerSaved);
+        }
+
+        return $this;
+    }
+
+    
+
+    public function removeDeveloperSaved(Developer $developerSaved): static
+    {
+        $this->developerSaved->removeElement($developerSaved);
 
         return $this;
     }

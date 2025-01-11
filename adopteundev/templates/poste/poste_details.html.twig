@@ -35,7 +35,8 @@
 						<div class="job-list-content">
 							<div class="company-area">
 								<div class="logo">
-									<img src="{{asset('assets/images/bg/company-logo/company-01.png')}}" alt="">
+									{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
 								</div>
 								<div class="company-details">
 									<div class="name-location">
@@ -176,77 +177,6 @@
 
 			</div>
 			<div class="row">
-				<div class="col-lg-12 mb-120">
-					<div class="company-gallery">
-						<div class="title">
-							<h5>Company Gallery View</h5>
-						</div>
-						<div class="swiper company-gallery-slider" data-cursor="Drag">
-							<div class="swiper-wrapper">
-								<div class="swiper-slide">
-									<a href="{{asset('assets/images/bg/company-gallery-big-01.png')}}" data-fancybox="gallery" class="gallery2-img">
-										<div class="gallery-wrap">
-											<img class="img-fluid" src="{{asset('assets/images/bg/company-gallery-sm-01.png')}}" alt="">
-											<div class="overlay d-flex align-items-center justify-content-center">
-												<div class="items-content text-center">
-													<img src="{{asset('assets/images/icon/eye.svg')}}" alt="">
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-								<div class="swiper-slide">
-									<a href="{{asset('assets/images/bg/company-gallery-big-02.png')}}" data-fancybox="gallery" class="gallery2-img">
-										<div class="gallery-wrap">
-											<img class="img-fluid" src="assets/images/bg/company-gallery-sm-02.png" alt="">
-											<div class="overlay d-flex align-items-center justify-content-center">
-												<div class="items-content text-center">
-													<img src="{{asset('assets/images/icon/eye.svg')}}" alt="">
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-								<div class="swiper-slide">
-									<a href="{{asset('assets/images/bg/company-gallery-big-03.png')}}" data-fancybox="gallery" class="gallery2-img">
-										<div class="gallery-wrap">
-											<img class="img-fluid" src="assets/images/bg/company-gallery-sm-03.png" alt="">
-											<div class="overlay d-flex align-items-center justify-content-center">
-												<div class="items-content text-center">
-													<img src="{{asset('assets/images/icon/eye.svg')}}" alt="">
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-								<div class="swiper-slide">
-									<a href="assets/images/bg/company-gallery-big-04.png" data-fancybox="gallery" class="gallery2-img">
-										<div class="gallery-wrap">
-											<img class="img-fluid" src="assets/images/bg/company-gallery-sm-04.png" alt="">
-											<div class="overlay d-flex align-items-center justify-content-center">
-												<div class="items-content text-center">
-													<img src="assets/images/icon/eye.svg" alt="">
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-								<div class="swiper-slide">
-									<a href="assets/images/bg/company-gallery-big-05.png" data-fancybox="gallery" class="gallery2-img">
-										<div class="gallery-wrap">
-											<img class="img-fluid" src="assets/images/bg/company-gallery-sm-05.png" alt="">
-											<div class="overlay d-flex align-items-center justify-content-center">
-												<div class="items-content text-center">
-													<img src="assets/images/icon/eye.svg" alt="">
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="col-lg-12">
 					<div class="related-jobs">
 						<div class="section-title mb-40">
@@ -441,7 +371,7 @@
 					<h5 class="modal-title" id="postulerModalLabel">Formulaire de candidature</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<form id="postuler-form" method="POST" action="{{ path('app_postuler', { 'uuid': poste.uuid }) }}">
+				<form id="postuler-form" method="POST" action="{{ path('app_postuler', { 'uuid': poste.uuid }) }}" enctype="multipart/form-data">
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-md-6 mb-3">
@@ -449,36 +379,40 @@
 								<input type="text" class="form-control" id="dev-nom" name="name" value="{{ developer.nom }}">
 							</div>
 							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prenom</label>
+								<label for="dev-prenom" class="form-label">Prénom</label>
 								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.prenom }}" required>
 							</div>
 							<div class="col-md-6 mb-3">
-								<label for="dev-mobile" class="form-label">Mobile</label>
-								<input type="text" class="form-control" id="dev-prenom" name="mobile" value="{{ developer.mobile }}" required>
+								<label for="dev-prenom" class="form-label">Prénom</label>
+								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.mobile }}" required>
 							</div>
 							<div class="col-md-6 mb-3">
-								<label for="dev-email" class="form-label">Email</label>
-								<input type="text" class="form-control" id="dev-email" name="email" value="{{ user.email }}" readonly required>
+								<label for="dev-prenom" class="form-label">Prénom</label>
+								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.user.email }}" required>
 							</div>
-							<div class="col-md-6 mb-3 d-flex">
-								<label for="cv" class="form-label">Sélectionnez votre CV</label>
-								<select class="select1" id="cv" name="cv" required>
+							<div class="col-md-6 mb-3">
+								<label for="cv" class="form-label">Sélectionnez un CV</label>
+								<select class="form-select" id="cv" name="cv">
 									<option value="" disabled selected>Choisissez un CV</option>
 									{% for cv in cvs %}
 										<option value="{{ cv.id }}">{{ cv.fichier.nom }}</option>
 									{% endfor %}
 								</select>
 							</div>
+							<div class="col-md-6 mb-3">
+								<label for="fichier" class="form-label">Uploader un nouveau CV (PDF, max. 5 Mo)</label>
+								<input type="file" class="form-control" id="fichier" name="fichier" accept="application/pdf">
+							</div>
 						</div>
-
 						<div class="modal-footer">
-							<button type="submit" class="primry-btn-2 lg-btn w-unset">Postuler</button>
-							<button type="button" class="danger-btn-2 lg-btn w-unset " data-bs-dismiss="modal">Annuler</button>
+							<button type="submit" class="btn btn-primary">Postuler</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
+
 			</div>
 		</div>
 	</div>
-	<!-- ========== Job Details End============= -->
-{% endblock %}
+</div>
+<!-- ========== Job Details End============= -->{% endblock %}
