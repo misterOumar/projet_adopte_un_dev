@@ -360,6 +360,11 @@ class Developer
         return $this;
     }
 
+    public function getCandidatureCount(): int
+    {
+        return $this->candidatures->count();
+    }
+
     public function getFavorites(): Collection
     {
         return $this->favorites;
@@ -372,6 +377,11 @@ class Developer
         }
 
         return $this;
+    }
+
+    public function getFavoritesCount(): int
+    {
+        return $this->favorites->count();
     }
 
     public function removeFavorite(Poste $poste): self

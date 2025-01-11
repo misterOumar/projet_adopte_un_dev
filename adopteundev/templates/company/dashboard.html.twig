@@ -44,26 +44,10 @@
 										<img src="{{ asset('assets/images/icon/tt-applied.svg') }}" alt="image">
 									</div>
 									<div class="coundown">
-										<p>Total Applied</p>
+										<p>Mes Postes</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												30
-											</h3>
-											<span>+</span>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3 col-sm-6">
-								<div class="counter-single two">
-									<div class="counter-icon">
-										<img src="{{ asset('assets/images/icon/save-job.svg') }}" alt="image">
-									</div>
-									<div class="coundown">
-										<p>Live Jobs</p>
-										<div class="d-flex align-items-center">
-											<h3 class="odometer">
-												80
+												{{company.countPostes}}
 											</h3>
 											<span>+</span>
 										</div>
@@ -76,10 +60,11 @@
 										<img src="{{asset('assets/images/icon/pending-icon.svg')}}" alt="image">
 									</div>
 									<div class="coundown">
-										<p>Pending Job</p>
+										<p>Candidatures</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												120
+											{{totalCandidature}}
+
 											</h3>
 											<span>+</span>
 										</div>
@@ -89,31 +74,33 @@
 							<div class="col-lg-3 col-sm-6">
 								<div class="counter-single four">
 									<div class="counter-icon">
-										<img src="{{asset('assets/images/icon/closed-icon.svg')}}" alt="image">
+										<img src="{{asset('assets/images/icon/follow-icon.svg')}}" alt="image">
+
+
+
 									</div>
 									<div class="coundown">
-										<p>Closed Jobs</p>
+										<p class="small-1">Candidatures Acceptées</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												900
+											{{totalCandidatureAccepted}}
+
 											</h3>
 											<span>+</span>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row g-4 justify-content-cente">
 							<div class="col-lg-3 col-sm-6">
 								<div class="counter-single">
 									<div class="counter-icon">
 										<img src="{{asset('assets/images/icon/total-view-icon.svg')}}" alt="image">
 									</div>
 									<div class="coundown">
-										<p>Total View</p>
+										<p> Vues de Postes</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-												2500
+												{{totalView}}
 											</h3>
 											<span>+</span>
 										</div>
@@ -147,8 +134,8 @@
 																{{ candidature.developer.cat.nom }}
 															</span>
 															<p>
-																<span>Envoyé le:</span>
-																{{ candidature.date|date('d M, Y') }}
+																<span>Envoyé :</span>
+																{{ candidature.date|time_diff }}
 															</p>
 														</div>
 													</div>
@@ -160,22 +147,14 @@
 														<ul>
 															<li>
 																<span>Experience:</span>
-																{{ candidature.developer.experience }}+ Years
+																{{ candidature.developer.experience }} an(s)
 															</li>
 															<li>
-																<span>Salary:</span>
+																<span>Salaraire:</span>
 																{{ candidature.developer.salaireMin }}
-																/ mois
+																/€ mois
 															</li>
 														</ul>
-													</div>
-												</td>
-												<td data-label="Résumé de carrière">
-													<div class="carrer-summary">
-														<h5>Titre du poste
-														</h5>
-														<h5>{{ candidature.poste.titre }}
-														</h5>
 													</div>
 												</td>
 												<td data-label="Actions">

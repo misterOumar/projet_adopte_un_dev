@@ -35,7 +35,8 @@
 						<div class="job-list-content">
 							<div class="company-area">
 								<div class="logo">
-									<img src="{{asset('assets/images/bg/company-logo/company-01.png')}}" alt="">
+									{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
 								</div>
 								<div class="company-details">
 									<div class="name-location">

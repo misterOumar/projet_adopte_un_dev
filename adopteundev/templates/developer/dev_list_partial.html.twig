@@ -11,11 +11,13 @@
 						<div class="company-details">
 							<div class="name-location">
 								<h5>
-									<a href="job-details.html">{{dev.prenom}}
+									<a href="{{path('app_dev_details', {'uuid':dev.uuid})}}">{{dev.prenom}}
+
 										{{ dev.nom|upper}}</a>
 								</h5>
 								<p>
-									<a href="company-details.html">{{dev.cat.nom}}</a>
+									<a href="{{path('app_dev_details', {'uuid':dev.uuid})}}">{{dev.cat.nom}}</a>
+
 								</p>
 							</div>
 						</div>

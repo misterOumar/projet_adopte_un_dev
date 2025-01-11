@@ -40,4 +40,77 @@ class CandidatureRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    // recuperer le nombre de candidature pour une company
+    public function getNombreCandidatureParCompany($company)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery();
+        return $query->getSingleScalarResult();
+    }
+
+    public function countCandidaturesByCompany($company): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->leftJoin('c.poste', 'p')
+            ->where('p.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findAcceptedByCompany($company): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->leftJoin('c.poste', 'p')
+            ->where('p.company = :company')
+            ->andWhere('c.statut = :status')
+            ->setParameter('company', $company)
+            ->setParameter('status', 'acceptée')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
+    public function findPendingByCompany($companyId): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.poste', 'p')
+            ->where('p.company = :company')
+            ->andWhere('c.statut = :status')
+            ->setParameter('company', $companyId)
+            ->setParameter('status', 'En cours')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // nombre candidature rejetée en fonction du poste
+    public function countRejectedByPoste($posteId): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.poste = :poste')
+            ->andWhere('c.statut = :status')
+            ->setParameter('poste', $posteId)
+            ->setParameter('status', 'rejetée')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countAcceptedByPoste($posteId): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.poste = :poste')
+            ->andWhere('c.statut = :status')
+            ->setParameter('poste', $posteId)
+            ->setParameter('status', 'acceptée')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

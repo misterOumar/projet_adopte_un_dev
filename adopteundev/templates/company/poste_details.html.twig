@@ -112,9 +112,9 @@
 											<div class="counter-single two">
 												<div class="coundown">
 													<div class="total-number d-flex align-items-center gap-2">
-														<h3 class="odometer">60</h3>
+														<h3 class="odometer">{{poste.viewCount()}}</h3>
 													</div>
-													<p>Vues</p>
+													<p>Vues du poste</p>
 												</div>
 											</div>
 										</div>
@@ -122,7 +122,8 @@
 											<div class="counter-single three">
 												<div class="coundown">
 													<div class="total-number d-flex align-items-center gap-2">
-														<h3 class="odometer">20</h3>
+														<h3 class="odometer">{{totalAcceptedCandidature}}</h3>
+
 													</div>
 													<p>Acceptée</p>
 												</div>
@@ -132,7 +133,8 @@
 											<div class="counter-single six">
 												<div class="coundown">
 													<div class="total-number d-flex align-items-center gap-2">
-														<h3 class="odometer">40</h3>
+														<h3 class="odometer">{{totalRejectedCandidatures}}</h3>
+
 													</div>
 													<p>Rejetée</p>
 												</div>
@@ -148,7 +150,10 @@
 											<div class="job-list-content">
 												<div class="company-area">
 													<div class="logo">
-														<img src="{{asset('assets/images/bg/company-logo/company-01.png')}}" alt="">
+													
+{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+
 													</div>
 													<div class="company-details">
 														<div class="name-location">
@@ -284,49 +289,8 @@
 			</div>
 			<div class="applied-list-wrap">
 				<div class="row g-lg-4 gy-5">
-					<div class="col-xl-3 col-lg-4">
-						<div class="filter-area" id="sidebar">
-							<h5>Filtered By :</h5>
-							<div class="select-area mb-15">
-								<select class="js-states form-control select2">
-									<option>Position</option>
-									<option>Senior PHP Developer</option>
-									<option>Senior Receptionist</option>
-									<option>React Developer</option>
-								</select>
-							</div>
-							<div class="select-area mb-15">
-								<select class="js-states form-control select2">
-									<option>Job Type</option>
-									<option>Full Time</option>
-									<option>Part Time</option>
-									<option>Remote</option>
-								</select>
-							</div>
-							<div class="select-area mb-15">
-								<select class="js-states form-control select2">
-									<option>Expereience Level</option>
-									<option>1 Years</option>
-									<option>1.5 Years</option>
-									<option>2 Years</option>
-									<option>2.5 Years</option>
-									<option>3 Years</option>
-									<option>3.5 Years</option>
-								</select>
-							</div>
-							<div class="select-area">
-								<select class="js-states form-control select2">
-									<option>Education Level</option>
-									<option>Bachelor Degree in CSE</option>
-									<option>IGCSE</option>
-									<option>AS</option>
-									<option>A Level</option>
-									<option>Matriculated</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-9 col-lg-8">
+
+					<div class="col-xl-12 col-lg-12">
 						<div class="table-wrapper2">
 							<table class="eg-table table category-table mb-0">
 								<thead>
@@ -351,8 +315,8 @@
 															{{ candidature.developer.prenom }}</button>
 														<span><img src="{{asset('assets/images/icon/company-2.svg')}}" alt="">{{ candidature.developer.cat.nom }}</span>
 														<p>
-															<span>Envoyé le:</span>
-															{{ candidature.date|date('d-m-Y') }}</p>
+															<span>Candidaté:</span>
+															{{ candidature.date|time_diff }}</p>
 													</div>
 												</div>
 
@@ -374,25 +338,37 @@
 											<td data-label="Actions">
 												<div class="action-btn-group">
 													<ul>
-														<li>
-															<form method="post" action="{{ path('app_candidature_accepter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																<button type="submit" class="btn btn-success"><img src="{{asset('assets/images/icon/shortlist-icon.svg')}}" alt="">
-																	Accepter
+														{% if candidature.statut == "En cours" %}
+															<li>
+																<form method="post" action="{{ path('app_candidature_accepter', {'uuid': candidature.uuid}) }}" style="display:inline;">
+																	<button type="submit" class="btn btn-success"><img src="{{asset('assets/images/icon/shortlist-icon.svg')}}" alt="">
+																		Accepter
+																	</button>
+																</form>
+															</li>
+
+															<li>
+																<form method="post" action="{{ path('app_candidature_rejeter', {'uuid': candidature.uuid}) }}" style="display:inline;">
+																	<button class="reject"><img src="{{asset('assets/images/icon/rejected-icon.svg')}}" alt="">
+																		Rejeter
+																	</button>
+																</form>
+															</li>
+														{% else %}
+															<li>
+																<button type="button" class="btn btn-secondary disabled">
+																	{{candidature.statut}}
+
+
 																</button>
-															</form>
-														</li>
-													</button>
-												</li>
-												<li>
-													<form method="post" action="{{ path('app_candidature_rejeter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-														<button class="reject"><img src="{{asset('assets/images/icon/rejected-icon.svg')}}" alt="">
-															Rejeter
-														</button>
-													</form>
-												</li>
+															</li>
+														{% endif %}
+
+													</ul>
+												</div>
 											</td>
 										</tr>
-									</ul>
+									</tbody>
 								</tbody>
 							</div>
 						</td>

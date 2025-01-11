@@ -94,13 +94,15 @@ class DeveloperRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Developer
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findMostViewedDevelopers(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.views', 'v')
+            ->groupBy('d.id')
+            ->orderBy('COUNT(v.id)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -116,51 +116,7 @@
 
 						<ul>
 							{% if app.user %}
-								<li>
-									<div class="btn-group dropdown">
-										<div class="notifications-area dropdown-toggle" role="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-											<div class="notifacation-icon">
-												<svg width="16" height="12" viewbox="0 0 16 12" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0 2C0 1.46957 0.210714 0.960859 0.585787 0.585786C0.960859 0.210714 1.46957 0 2 0H14C14.5304 0 15.0391 0.210714 15.4142 0.585786C15.7893 0.960859 16 1.46957 16 2V10C16 10.5304 15.7893 11.0391 15.4142 11.4142C15.0391 11.7893 14.5304 12 14 12H2C1.46957 12 0.960859 11.7893 0.585787 11.4142C0.210714 11.0391 0 10.5304 0 10V2ZM2 1C1.73478 1 1.48043 1.10536 1.29289 1.29289C1.10536 1.48043 1 1.73478 1 2V2.217L8 6.417L15 2.217V2C15 1.73478 14.8946 1.48043 14.7071 1.29289C14.5196 1.10536 14.2652 1 14 1H2ZM15 3.383L10.292 6.208L15 9.105V3.383ZM14.966 10.259L9.326 6.788L8 7.583L6.674 6.788L1.034 10.258C1.09083 10.4708 1.21632 10.6589 1.39099 10.7931C1.56566 10.9272 1.77975 11 2 11H14C14.2201 11 14.4341 10.9274 14.6088 10.7934C14.7834 10.6595 14.909 10.4716 14.966 10.259ZM1 9.105L5.708 6.208L1 3.383V9.105Z"/>
-												</svg>
-											</div>
-											<span>3</span>
-										</div>
-										<div class="notifacion-card dropdown-menu" aria-labelledby="dropdownMenuButton1">
-											<h6 class="title">3 Massages</h6>
-											<ul>
-												<li>
-													<div class="icon">
-														<img src="{{asset('assets/images/bg/company-logo/notifacion-1.png')}}" alt="">
-													</div>
-													<div class="content">
-														<h6>
-															<a href="#">Your application has accepted in 5 vacancies.</a>
-														</h6>
-														<span><img src="{{asset('assets/images/icon/clock-1.svg')}}" alt="">
-															10 min ago</span>
-													</div>
-												</li>
-												<li>
-													<div class="icon">
-														<img src="{{asset('assets/images/bg/company-logo/notifacion-2.png')}}" alt="">
-													</div>
-													<div class="content">
-														<h6>
-															<a href="#">Your application has accepted in 5 vacancies.</a>
-														</h6>
-														<span><img src="{{asset('assets/images/icon/clock-1.svg')}}" alt="">
-															10 min ago</span>
-													</div>
-												</li>
-
-											</ul>
-											<div class="view-all">
-												<a href="#">See All Massages</a>
-											</div>
-										</div>
-									</div>
-								</li>
+								
 								<li>
 									<div class="btn-group dropdown">
 										<div class="notifications-area dropdown-toggle" role="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -171,21 +127,28 @@
 													<path d="M3.00065 1.8943C3.16067 1.99989 3.23535 2.14067 3.23535 2.3448C3.23535 2.54541 3.22824 2.55597 2.74461 3.10149C2.01206 3.92505 1.43241 5.08648 1.21194 6.17401C1.13014 6.56819 1.06614 7.14891 1.06614 7.46214C1.06614 7.83169 0.845657 8.09213 0.532721 8.09213C0.354917 8.09213 0.152219 7.96895 0.0704293 7.81057C-0.0113609 7.6522 -0.0184731 7.43399 0.0348682 6.84271C0.173556 5.36452 0.781648 3.84058 1.6849 2.70731C1.96583 2.35536 2.3001 1.99285 2.42456 1.90486C2.57392 1.8028 2.85129 1.79928 3.00065 1.8943Z"/>
 												</svg>
 											</div>
-											<span>5</span>
+											<span>{{app.user.countNotifications}}</span>
 										</div>
 										<div class="notifacion-card dropdown-menu" aria-labelledby="dropdownMenuButton2">
-											<h6 class="title">Notifications</h6>
+											<h6 class="title">{{app.user.countNotifications}} Notifications</h6>
 											<ul>
 												{% if app.user.notifications %}
 													
-													{% for notification in app.user.notifications %}
+													{% for notification in app.user.notifications %}													
+
 														<li>
-															<strong>{{ notification.createdAt|date('d/m/Y H:i') }}</strong> - 
-															{{ notification.message }}
-															{% if not notification.isRead %}
-																<span class="badge bg-warning">Non lu</span>
-															{% endif %}
+															<div class="icon">
+																<i class='bx bx-bell' style='color:#06ff23'  ></i>
+															</div>
+															<div class="content">
+																<h6>
+																	<a href="#">{{ notification.message }}</a>
+																</h6>
+																<span><img src="{{asset('assets/images/icon/clock-1.svg')}}" alt="">
+																	{{ notification.createdAt|time_diff }}</span>
+															</div>
 														</li>
+
 													{% endfor %}
 												{% else %}
 													<div class="view-all">
@@ -354,7 +317,7 @@
 
 
 			<!-- ========== Footer Area Start============= -->
-				<footer class="footer2">
+				<footer class="footer2" style="bottom:0">
 					<div class="container">
 						<div class="row">
 							<div class="col-lg-6 col-md-6 d-flex justify-content-md-start justify-content-center">
