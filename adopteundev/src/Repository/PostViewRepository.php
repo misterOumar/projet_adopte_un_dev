@@ -40,4 +40,15 @@ class PostViewRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function countViewsByCompany($company): int
+    {
+        return $this->createQueryBuilder('pv')
+            ->select('COUNT(pv.id)')
+            ->leftJoin('pv.poste', 'p')
+            ->where('p.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

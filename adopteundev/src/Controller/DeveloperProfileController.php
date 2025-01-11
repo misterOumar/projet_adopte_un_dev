@@ -14,6 +14,7 @@ use App\Entity\Fichier;
 use App\Form\CVRegistrationType;
 use App\Form\DevelopperSettingType;
 use App\Repository\DeveloperRepository;
+use App\Repository\PosteRepository;
 use App\Services\FichierService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -32,7 +33,8 @@ class DeveloperProfileController extends AbstractController
 
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
         if (!$developer) {
-            throw $this->createNotFoundException('Aucun profil de développeur associé à cet utilisateur.');
+            $this->addFlash('warning', 'Aucun profil de développeur associé à cet utilisateur..');
+            return $this->redirectToRoute('app_home');
         }
         $email = $developer->getUser()->getEmail();
         // dd($email);
@@ -131,7 +133,7 @@ class DeveloperProfileController extends AbstractController
 
     // page candidature du dev
     #[Route('/candidature', name: 'candidature')]
-    public function candidature(EntityManagerInterface $entityManager): Response
+    public function candidature(EntityManagerInterface $entityManager, PosteRepository $posteRepository): Response
     {
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -150,14 +152,21 @@ class DeveloperProfileController extends AbstractController
         // Récupérer les candidatures liées à ce développeur
         $candidatures = $entityManager->getRepository(Candidature::class)->findBy(['developer' => $developer]);
 
+        
+
+        // Récupérer les suggestions de postes
+        $suggestedPosts = $posteRepository->findSuggestionsForDeveloper($developer);
+
         return $this->render('developer/candidature_dev.html.twig', [
             'candidatures' => $candidatures,
+            'suggestedPosts' => $suggestedPosts,
+            'developer' => $developer
         ]);
     }
 
     //postes favoris
     #[Route('/favoris', name: 'favoris')]
-    public function favoris(): Response
+    public function favoris(PosteRepository $posteRepository): Response
     {
         $user = $this->getUser();
 
@@ -167,9 +176,17 @@ class DeveloperProfileController extends AbstractController
             throw $this->createNotFoundException('Aucun profil de développeur associé à cet utilisateur.');
         }
         $poste_favoris = $developer->getFavorites();
+
+        $user = $this->getUser();
+        $developer = $this->developerRepository->findOneBy(['user' => $user]);
+
+        // Récupérer les suggestions de postes
+        $suggestedPosts = $posteRepository->findSuggestionsForDeveloper($developer);
         
         return $this->render('developer/poste_favoris_dev.html.twig',
-        ['poste_favoris' => $poste_favoris]
+        ['poste_favoris' => $poste_favoris,
+        'developer' => $developer,
+       'suggestedPosts' => $suggestedPosts,]
     );
     }
 }

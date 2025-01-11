@@ -4,8 +4,6 @@
 {% endblock %}
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{asset('assets/css/swiper-bundle.css')}}">
-
-
 {% endblock %}
 
 
@@ -45,7 +43,7 @@
 											<p>Demandes</p>
 											<div class="d-flex align-items-center">
 												<h3 class="odometer">
-													250
+													{{ developer.CandidatureCount()}}
 												</h3>
 												<span>+</span>
 											</div>
@@ -58,10 +56,10 @@
 											<img src="{{asset('assets/images/icon/save-job.svg')}}" alt="image">
 										</div>
 										<div class="coundown">
-											<p>Postes enreg</p>
+											<p>Postes fav</p>
 											<div class="d-flex align-items-center">
 												<h3 class="odometer">
-													150
+													{{developer.getFavoritesCount()}}
 												</h3>
 												<span>+</span>
 											</div>
@@ -74,10 +72,11 @@
 											<img src="{{asset('assets/images/icon/massage.svg')}}" alt="image">
 										</div>
 										<div class="coundown">
-											<p>Message</p>
+											<p>Notifications</p>
 											<div class="d-flex align-items-center">
 												<h3 class="odometer">
-													120
+{{developer.user.countNotifications()}}
+
 												</h3>
 												<span>+</span>
 											</div>
@@ -123,7 +122,8 @@
 													<td data-label="Job Title">
 														<div class="company-info">
 															<div class="logo">
-																<img src="{{asset('assets/images/bg/company-logo/company-06.png')}}" alt="">
+																{% set avatarC = candidature.poste.company.user.avatar ? candidature.poste.company.user.avatar.reference : 'default-avatar.png'  %}
+																<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
 															</div>
 															<div class="company-details">
 																<div class="top">
@@ -199,7 +199,7 @@
 									<div class="company-area">
 										<span></span>
 										<div class="logo">
-											{% set avatarC = poste.user.avatar ? poste.user.avatar.reference : 'default-avatar.png'  %}
+											{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
 											<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
 
 										</div>
@@ -290,7 +290,5 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script src="{{asset('assets/js/swiper-bundle.min.js')}}"></script>
-
-
+	 <script src="{{asset('assets/js/swiper-bundle.min.js')}}"></script>
 {% endblock %}

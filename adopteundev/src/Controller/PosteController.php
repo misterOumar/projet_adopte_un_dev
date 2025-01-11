@@ -11,11 +11,13 @@ use App\Entity\PostView;
 use App\Form\CVRegistrationType;
 use App\Form\PosteFormType;
 use App\Repository\CandidatureRepository;
+use App\Repository\CategorieRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\CvRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use App\Repository\PostViewRepository;
+use App\Repository\TechnologieRepository;
 use App\Services\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -88,7 +90,15 @@ class PosteController extends AbstractController
             ->setParameter('poste', $poste)
             ->getQuery()
             ->getSingleScalarResult();
-        return $this->render('company/poste_details.html.twig', ['poste' => $poste, 'candidatures' => $candidatures, 'totalCandidatures' => $candidaturesCount]);
+        $totalRejectedCandidature = $this->candidatureRepository->countRejectedByPoste($poste);
+        $totalAcceptedCandidature = $this->candidatureRepository->countAcceptedByPoste($poste);
+        return $this->render('company/poste_details.html.twig', [
+            'poste' => $poste,
+            'candidatures' => $candidatures,
+            'totalCandidatures' => $candidaturesCount,
+            'totalRejectedCandidatures' => $totalRejectedCandidature,
+            'totalAcceptedCandidature' => $totalAcceptedCandidature,
+        ]);
     }
 
     #[IsGranted('ROLE_COMPANY')]
@@ -135,10 +145,11 @@ class PosteController extends AbstractController
 
         $candidature->setStatut('acceptée');
         $entityManager->flush();
+        $titre_poste = $candidature->getPoste()->getTitre();
 
         $developer = $candidature->getDeveloper()->getUser();
         $message = sprintf(
-            "Le statut d'une candidature a changé."
+            "Votre candidature pour le poste " . $titre_poste . " a été accepté 🎉."
         );
         $notificationService->createNotification($developer, $message, 'acceptée');
 
@@ -161,115 +172,86 @@ class PosteController extends AbstractController
         $entityManager->flush();
 
         $developer = $candidature->getDeveloper()->getUser();
+        $titre_poste = $candidature->getPoste()->getTitre();
+
+        $developer = $candidature->getDeveloper()->getUser();
         $message = sprintf(
-            "Le statut d'une candidature a changé."
+            "Désolé ! Votre candidature pour le poste " . $titre_poste . " a été refusée 😢."
         );
-        $notificationService->createNotification($developer, $message, 'rejetée');
-
-
-        $this->addFlash('success', 'La candidature a été rejetée avec succès.');
+        $notificationService->createNotification($developer, $message, 'refusée');
         return $this->redirectToRoute('app_company_dashboard');
     }
 
 
     #[Route('/postes', name: 'app_poste_list')]
-    public function posteList(Request $request, EntityManagerInterface $entityManager, PosteRepository $posteRepository): Response
+    public function posteList(Request $request, TechnologieRepository $technologieRepository, EntityManagerInterface $entityManager, PosteRepository $posteRepository, CategorieRepository $categorieRepository, NotificationService $notificationService): Response
     {
-        //recupération des catégories associés à un poste
-        $categories = $entityManager->createQuery(
-            'SELECT c.id, c.nom, COUNT(p.id) AS nbPostes FROM App\Entity\Categorie c LEFT JOIN c.postes p GROUP BY c.id'
-        )->getResult();
 
-        // récupération des type de poste
-        $types = $entityManager->createQuery(
-            'SELECT p.type, COUNT(p.id) AS nbPostes
-             FROM App\Entity\Poste p
-             GROUP BY p.type'
-        )->getResult();
-        // Récupérer la sélection de la période via les paramètres GET
-        $selectedDateFilter = $request->query->get('dateFilter', null);
+        // Récupérer les paramètres de la requête
+        $categorie_filtre = $request->query->get('category');
+        $technos_filtre = $request->query->get('technos');
+        $experience_filtre = $request->query->get('experience',);
+        $salaryMin_filtre = $request->query->get('salaire');
+        $type_filtre = $request->query->get('type');
 
-        // Calculer la plage de dates en fonction de la sélection
-        $now = new \DateTimeImmutable();
-        $startDate = null;
-
-        switch ($selectedDateFilter) {
-            case 'today':
-                $startDate = $now->setTime(0, 0, 0); // Début de la journée
-                break;
-            case 'yesterday':
-                $startDate = $now->modify('-1 day')->setTime(0, 0, 0); // Début d'hier
-                break;
-            case 'week':
-                $startDate = $now->modify('-1 week'); // Début de la semaine dernière
-                break;
-            case 'month':
-                $startDate = $now->modify('-1 month'); // Début du mois dernier
-                break;
-        }
-
-        // Requête pour récupérer les postes
-        $queryBuilder = $entityManager->getRepository(Poste::class)->createQueryBuilder('p');
-
-        if ($startDate) {
-            $queryBuilder
-                ->andWhere('p.createdAt >= :startDate')
-                ->setParameter('startDate', $startDate);
-        }
-
-        // $postes = $queryBuilder->getQuery()->getResult();
-
-        // Compter les postes pour chaque période
-        $countByDate = [
-            'today' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfDay')
-                ->setParameter('startOfDay', $now->setTime(0, 0, 0))
-                ->getQuery()
-                ->getSingleScalarResult(),
-            'yesterday' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfYesterday')
-                ->andWhere('p.createdAt < :startOfToday')
-                ->setParameter('startOfYesterday', $now->modify('-1 day')->setTime(0, 0, 0))
-                ->setParameter('startOfToday', $now->setTime(0, 0, 0))
-                ->getQuery()
-                ->getSingleScalarResult(),
-            'week' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfWeek')
-                ->setParameter('startOfWeek', $now->modify('-1 week'))
-                ->getQuery()
-                ->getSingleScalarResult(),
-            'month' => $entityManager->getRepository(Poste::class)->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.createdAt >= :startOfMonth')
-                ->setParameter('startOfMonth', $now->modify('-1 month'))
-                ->getQuery()
-                ->getSingleScalarResult(),
-        ];
-
-        // Récupérer les filtres depuis la requête
-        $category = $request->query->get('category');
-        $experience = $request->query->get('experience');
-
-        // Récupérer les postes en fonction des critères
+        // construire la querybuilder
         $queryBuilder = $posteRepository->createQueryBuilder('p');
 
-        if ($category) {
+        if ($categorie_filtre) {
             $queryBuilder->andWhere('p.categorie = :category')
-                ->setParameter('category', $category);
+                ->setParameter('category', $categorie_filtre);
         }
 
-        if ($experience) {
-            $queryBuilder->andWhere('p.experience = :experience')
-                ->setParameter('experience', $experience);
+        // filtrer un dev en fonction de son experience
+        if ($experience_filtre) {
+            $queryBuilder->andWhere('p.experienceRequis >= :experience')
+                ->setParameter('experience', $experience_filtre);
         }
 
-        $postes = $queryBuilder->getQuery()->getResult();
+        // filtrer un dev en fonction de sa collection de technologies
+        if ($technos_filtre) {
+            $queryBuilder->join('p.technologie', 't')
+                ->andWhere('t.id IN (:techno)')
+                ->setParameter('techno', $technos_filtre);
+        }
+
+        // filtrer un dev en fonction de son salaire minimum
+        if ($salaryMin_filtre) {
+            $queryBuilder->andWhere('p.salaireMin >= :salaireMin')
+                ->setParameter('salaireMin', $salaryMin_filtre);
+        }
+
+        // filtrer un dev en fonction du type de poste
+        if ($type_filtre) {
+            $queryBuilder->andWhere('p.type = :type')
+                ->setParameter('type', $type_filtre);
+        }
+
+
+
+
+
+
+
+        //recupération des catégories associés à un poste
+        $categories = $categorieRepository->findCategorieWithPosts();
+        $technos = $technologieRepository->findTechnologiesWithDevelopers();
+        $types = $posteRepository->findDistinctTypes();
+
+
+
+        $postes = $queryBuilder->orderBy('p.createdAt', 'DESC')->getQuery()->getResult();
+
+
 
         // Récupérer toutes les catégories pour afficher les options
-        return $this->render('poste/poste_liste.html.twig', ['postes' => $postes, 'categories' => $categories, 'types' => $types, 'countByDate' => $countByDate,]);
+        return $this->render('poste/poste_liste.html.twig', [
+            'postes' => $postes,
+            'categories' => $categories,
+            'types' => $types,
+
+            'technos' => $technos
+        ]);
     }
 
     // #[IsGranted('ROLE_DEV')]
@@ -309,7 +291,7 @@ class PosteController extends AbstractController
     #[IsGranted('ROLE_DEV')]
     #[Route('/postuler/{uuid}', name: 'app_postuler', methods: ['POST'])]
 
-    public function postuler(string $uuid, Request $request , EntityManagerInterface $entityManager, CandidatureRepository $candidature, NotificationService $notificationService): Response
+    public function postuler(string $uuid, Request $request, EntityManagerInterface $entityManager, CandidatureRepository $candidature, NotificationService $notificationService, CvRepository $cvRepository): Response
     {
 
         $poste = $this->posteRepository->findOneBy(['uuid' => $uuid]);
@@ -322,9 +304,70 @@ class PosteController extends AbstractController
         $developer = $this->developerRepository->findOneBy(['user' => $user]);
 
         if ($request->isMethod('POST')) {
-            // Récupérer les données du formulaire
-            $cvId = $request->request->get('cv'); // ID du CV sélectionné
-            $selectedCv = $entityManager->getRepository(Cv::class)->find($cvId);
+
+
+
+            if (!$developer) {
+                throw $this->createAccessDeniedException('Vous devez être un développeur pour postuler.');
+            }
+
+            // Vérifier si un fichier a été uploadé
+            $uploadedFile = $request->files->get('fichier');
+
+            if ($uploadedFile) {
+                // Validation du fichier
+                if ($uploadedFile->getSize() > 5242880) { // Taille max : 5 Mo
+                    $this->addFlash('error', 'Le fichier est trop volumineux (max : 5 Mo).');
+                    return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+                }
+
+                if ($uploadedFile->getMimeType() !== 'application/pdf') { // Type MIME valide
+                    $this->addFlash('error', 'Veuillez uploader un fichier PDF valide.');
+                    return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+                }
+
+                // Enregistrer le fichier
+                $uuidFile = Uuid::v4();
+                $newFilename = $uuidFile . '.' . $uploadedFile->guessExtension();
+                $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/cvs';
+                $uploadedFile->move($uploadDir, $newFilename);
+
+                // Créer une entité Fichier
+                $fichier = new Fichier();
+                $fichier->setNom($uploadedFile->getClientOriginalName());
+                $fichier->setReference($newFilename);
+                $fichier->setCreatedAt(new \DateTimeImmutable());
+
+                $entityManager->persist($fichier);
+
+                // Créer une entité CV associée au développeur
+                $cv = new Cv();
+                $cv->setDeveloper($developer);
+                $cv->setFichier($fichier);
+
+                $entityManager->persist($cv);
+
+                // Associer ce CV à la candidature
+                $selectedCv = $cv;
+            } else {
+                // Si aucun fichier n'est uploadé, récupérer le CV existant
+                $cvId = $request->request->get('cv');
+                if (!$cvId) {
+                    $this->addFlash('error', 'Veuillez sélectionner ou uploader un CV.');
+                    return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+                }
+
+                // Vérifier si le CV appartient au développeur
+                $selectedCv = $cvRepository->findOneBy([
+                    'id' => $cvId,
+                    'developer' => $developer,
+                ]);
+
+                if (!$selectedCv) {
+                    $this->addFlash('error', 'Le CV sélectionné est invalide.');
+                    return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
+                }
+            }
 
             // Créer une nouvelle candidature
             $candidature = new Candidature();
@@ -332,6 +375,8 @@ class PosteController extends AbstractController
             $candidature->setPoste($poste);
             $candidature->setDeveloper($developer);
             $candidature->setFichier($selectedCv->getFichier());
+            $candidature->setDate(new \DateTimeImmutable());
+
             $entityManager->persist($candidature);
             $entityManager->flush();
 
@@ -343,85 +388,12 @@ class PosteController extends AbstractController
             );
             $notificationService->createNotification($company, $message, 'candidature');
 
-        if (!$developer) {
-            throw $this->createAccessDeniedException('Vous devez être un développeur pour postuler.');
+            $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
+
+            return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
         }
 
-        // Vérifier si un fichier a été uploadé
-        $uploadedFile = $request->files->get('fichier');
-
-        if ($uploadedFile) {
-            // Validation du fichier
-            if ($uploadedFile->getSize() > 5242880) { // Taille max : 5 Mo
-                $this->addFlash('error', 'Le fichier est trop volumineux (max : 5 Mo).');
-                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
-            }
-
-            if ($uploadedFile->getMimeType() !== 'application/pdf') { // Type MIME valide
-                $this->addFlash('error', 'Veuillez uploader un fichier PDF valide.');
-                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
-            }
-
-            // Enregistrer le fichier
-            $uuidFile = Uuid::v4();
-            $newFilename = $uuidFile . '.' . $uploadedFile->guessExtension();
-            $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/cvs';
-            $uploadedFile->move($uploadDir, $newFilename);
-
-            // Créer une entité Fichier
-            $fichier = new Fichier();
-            $fichier->setNom($uploadedFile->getClientOriginalName());
-            $fichier->setReference($newFilename);
-            $fichier->setCreatedAt(new \DateTimeImmutable());
-
-            $entityManager->persist($fichier);
-
-            // Créer une entité CV associée au développeur
-            $cv = new Cv();
-            $cv->setDeveloper($developer);
-            $cv->setFichier($fichier);
-
-            $entityManager->persist($cv);
-
-            // Associer ce CV à la candidature
-            $selectedCv = $cv;
-        } else {
-            // Si aucun fichier n'est uploadé, récupérer le CV existant
-            $cvId = $request->request->get('cv');
-            if (!$cvId) {
-                $this->addFlash('error', 'Veuillez sélectionner ou uploader un CV.');
-                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
-            }
-
-            // Vérifier si le CV appartient au développeur
-            $selectedCv = $cvRepository->findOneBy([
-                'id' => $cvId,
-                'developer' => $developer,
-            ]);
-
-            if (!$selectedCv) {
-                $this->addFlash('error', 'Le CV sélectionné est invalide.');
-                return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
-            }
-        }
-
-        // Créer une nouvelle candidature
-        $candidature = new Candidature();
-        $candidature->setStatut("En cours");
-        $candidature->setPoste($poste);
-        $candidature->setDeveloper($developer);
-        $candidature->setFichier($selectedCv->getFichier());
-        $candidature->setDate(new \DateTimeImmutable());
-
-        $entityManager->persist($candidature);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Votre candidature a été envoyée avec succès !');
-
-        return $this->redirectToRoute('app_poste_details', ['uuid' => $uuid]);
-    }
-
-   /*  public function markAsRead(Notification $notification, EntityManagerInterface $em): Response
+        /*  public function markAsRead(Notification $notification, EntityManagerInterface $em): Response
 {
     $notification->setIsRead(true);
     $em->flush();
@@ -429,6 +401,5 @@ class PosteController extends AbstractController
     $this->addFlash('success', 'Notification marquée comme lue.');
     return $this->redirectToRoute('dashboard');
 } */
-
+    }
 }
-

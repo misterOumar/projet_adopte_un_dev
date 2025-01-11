@@ -6,6 +6,7 @@ use App\Repository\CategorieRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
+use App\Repository\TechnologieRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,28 +21,26 @@ class HomeController extends AbstractController
         UserRepository $userRepository,
         CompanyRepository $companyRepository,
         DeveloperRepository $developerRepository,
-    ): Response
-    {
+        TechnologieRepository $technologieRepository
+    ): Response {
         $user = $this->getUser();
 
-        $mostViewedDevelopers = [];
-        $recentDevelopers = [];
-        $mostPopularPosts = [];
-        if ($user && $this->isGranted('ROLE_COMPANY')) {
-            // Logique spécifique pour les entreprises
-            //$mostViewedDevelopers = $developerRepository->findBy([], ['views' => 'DESC'], 3);
-            $recentDevelopers = $developerRepository->findBy([], ['id' => 'DESC'], 3);
-        }
+        $mostViewedDevelopers = $developerRepository->findMostViewedDevelopers();
+        $mostPopularPosts = $posteRepository->findMostViewedPosts();
+
+        $recentDevelopers = $developerRepository->findBy([], ['id' => 'DESC'], 5);
+
         $date = new \DateTimeImmutable('-2 days');
-        $date=$date->format('Y-m-d H:i:s');
+        $date = $date->format('Y-m-d H:i:s');
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'postes'=> $posteRepository->findBy( [],['id' => 'desc'],3) ,
-            'topCategories' => $categorieRepository -> findTopCategoriesByPostCount(),
+            'recentPosts' => $posteRepository->findBy([], ['id' => 'desc'], 3),
+            'topCategories' => $categorieRepository->findTopCategoriesByPostCount(),
             'totalUsers' => $userRepository->count([]),
             'totalCompanies' => $companyRepository->count([]),
             'totalDevelopers' => $developerRepository->count([]),
-            'recentPosts' => $posteRepository->count(['createdAt' => ['gte' => $date]]),
+            'totalTechnologie' => $technologieRepository->count([]),
+            'totalPosts' => $posteRepository->count(),
             'mostViewedDevelopers' => $mostViewedDevelopers,
             'recentDevelopers' => $recentDevelopers,
             'mostPopularPosts' => $mostPopularPosts,

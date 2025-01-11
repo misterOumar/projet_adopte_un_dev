@@ -22,8 +22,8 @@ class Candidature
     #[ORM\JoinColumn(nullable: false)]
     private ?Developer $developer = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(length: 15)]
     private ?string $statut = null;

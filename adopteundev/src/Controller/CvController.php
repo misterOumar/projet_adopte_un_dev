@@ -52,3 +52,12 @@ class CvController extends AbstractController
 
 
 }
+
+// genere du texte pour la biographie d'un developeur web
+
+$biographie = "
+    Mon nom est John Doe, je suis né le 15 mai 1990 à Paris. Je suis passionné par le développement web et le marketing digital.
+    Je vis actuellement en formation à l'école d'informatique à Paris. J'ai développé une expérience professionnelle en tant qu'ingénieur développeur web chez une entreprise de technologie.
+    Mon objectif est de vous proposer des services de développement web professionnels et de marketing digital adaptés à vos besoins. J'ai également une expérience en tant que freelance, où j'ai aidé des entreprises à développer leurs sites web et les marques digitales.
+";
+

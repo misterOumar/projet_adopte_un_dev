@@ -18,6 +18,8 @@ use App\Entity\DeveloperView;
 use App\Form\DeveloperRatingType;
 use App\Repository\CompanyRepository;
 use App\Repository\DeveloperViewRepository;
+use App\Repository\TechnologieRepository;
+use App\Services\NotificationService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -90,21 +92,63 @@ class DeveloperController extends AbstractController
     //     }
 
     #[Route('/devs', name: 'app_dev_list')]
-    public function listDevelopers(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository)
+    public function listDevelopers(Request $request, DeveloperRepository $developerRepository, CategorieRepository $categorieRepository, TechnologieRepository $technologieRepository, PaginatorInterface $paginator): Response
     {
+        // Récupérer les paramètres de la requête
+        $categorie_filtre = $request->query->get('category');
+        $technos_filtre = $request->query->get('technos');
+        $experience_filtre = $request->query->get('experience',);
+        $salaryMin_filtre = $request->query->get('salaire');
+
+        // construire la querybuilder
+        $queryBuilder = $developerRepository->createQueryBuilder('d');
+
+        if ($categorie_filtre) {
+            $queryBuilder->andWhere('d.cat = :category')
+            ->setParameter('category', $categorie_filtre);
+        }
+
+        // filtrer un dev en fonction de son experience
+        if ($experience_filtre) {
+            $queryBuilder->andWhere('d.experience >= :experience')
+            ->setParameter('experience', $experience_filtre);
+        }
+
+        // filtrer un dev en fonction de sa collection de technologies
+        if ($technos_filtre) {
+            $queryBuilder->join('d.technologie', 't')
+            ->andWhere('t.id IN (:techno)')
+            ->setParameter('techno', $technos_filtre);
+        }
+
+        // filtrer un dev en fonction de son salaire minimum
+        if ($salaryMin_filtre) {
+            $queryBuilder->andWhere('d.salaireMin >= :salaireMin')
+            ->setParameter('salaireMin', $salaryMin_filtre);
+        }
+
+
         // pour le filtre
-        $categories = $categorieRepository->findAll();
-        $developers = $developerRepository->findAll();
+        //recupération des catégories associés à dev
+        // $categories = $developerRepository->findDistinctCategories();
+        // $categories = $categorieRepository->findCategorieWithPosts();
+        $categories = $categorieRepository->findCategorieWithDevelopper();
+        $technos = $technologieRepository->findTechnologiesWithDevelopers();
+
+
+
+        $developers = $queryBuilder->getQuery()->getResult();
         return $this->render('developer/list.html.twig', [
             'devs' => $developers,
             'categories' => $categories,
+            'technos' => $technos,
         ]);
     }
 
 
 
     #[Route('/devs/detail/{uuid}', name: 'app_dev_details')]
-    public function details(string $uuid,Request $request,CompanyRepository $companyRepository, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager, DeveloperViewRepository $developerViewRepository): Response
+    public function details(string $uuid,Request $request,CompanyRepository $companyRepository, DeveloperRepository $developerRepository, EntityManagerInterface $entityManager, DeveloperViewRepository $developerViewRepository, NotificationService $notificationService ): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -141,6 +185,11 @@ class DeveloperController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Votre évaluation a été enregistrée.');
+
+                // Envoyer une notification à l'évalué
+                $message = "Vous venez d'être évalué par ". $ratingDeveloper->getNom();
+                $notificationService->createNotification($ratedDeveloper->getUser(), $message, 'acceptée');
+
                 return $this->redirectToRoute('app_dev_details', ['uuid' => $ratedDeveloper->getUuid()]);
             }
         }

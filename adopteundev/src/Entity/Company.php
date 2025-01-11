@@ -148,6 +148,12 @@ class Company
         return $this;
     }
 
+    // count poste
+    public function countPostes(): int
+    {
+        return count($this->postes);
+    }
+
     public function removePoste(Poste $poste): static
     {
         if ($this->postes->removeElement($poste)) {
@@ -176,6 +182,8 @@ class Company
 
         return $this;
     }
+
+    
 
     public function removeDeveloperSaved(Developer $developerSaved): static
     {
