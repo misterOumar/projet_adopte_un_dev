@@ -240,7 +240,7 @@ class PosteController extends AbstractController
 
 
 
-        $postes = $queryBuilder->getQuery()->getResult();
+        $postes = $queryBuilder->orderBy('p.createdAt', 'DESC')->getQuery()->getResult();
 
 
 

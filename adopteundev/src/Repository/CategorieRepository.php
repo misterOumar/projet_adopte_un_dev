@@ -61,4 +61,14 @@ class CategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    
+    public function findCategorieWithDevelopper(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.developer', 'p')
+            ->getQuery()
+            ->getResult();
+    }
+    
+
 }

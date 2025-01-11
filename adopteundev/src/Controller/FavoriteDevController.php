@@ -24,12 +24,13 @@ class FavoriteDevController extends AbstractController
 
         $company = $companyRepository->findOneBy(['user' => $this->getUser()]);
 
-        if($company->getDeveloperSaved()->contains($developer)) {
-            $company->removeDeveloperSaved($developer);
+        if (!$company->getDeveloperSaved()->contains($developer)) {
+            $company->addDeveloperSaved($developer);
             $entityManager->flush();
-             $this->addFlash('success', 'Développeur retiré à vos favoris');
-            
+            $this->addFlash('success', 'Développeur ajouté à vos favoris');
         }
+
+      
         return $this->redirectToRoute('app_dev_list');
     }
 
@@ -46,12 +47,13 @@ class FavoriteDevController extends AbstractController
 
         $company = $companyRepository->findOneBy(['user' => $this->getUser()]);
 
-        if(!$company->getDeveloperSaved()->contains($developer)) {
-            $company->addDeveloperSaved($developer);
+        if ($company->getDeveloperSaved()->contains($developer)) {
+            $company->removeDeveloperSaved($developer);
             $entityManager->flush();
-             $this->addFlash('success', 'Développeur ajouté à vos favoris');
-            
+            $this->addFlash('success', 'Développeur retiré à vos favoris');
         }
         return $this->redirectToRoute('app_dev_list');
     }
+
+    
 }

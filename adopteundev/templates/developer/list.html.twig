@@ -74,7 +74,7 @@
 							</div>
 							<div class="select-area mb-15">
 								<select name="experience" class="js-states form-control select2">
-									<option>Niveau d'expérience</option>
+									<option disabled selected>Niveau d'expérience</option>
 									{% for i in 1..5 %}
 										<option value="{{ i }}" {% if i == app.request.get('experience') %} selected {% endif %}>
 											{{ i }}

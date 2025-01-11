@@ -52,6 +52,16 @@ class CandidatureRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
+    public function findByCompany($company): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.poste', 'p')
+            ->where('p.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function countCandidaturesByCompany($company): int
     {
         return $this->createQueryBuilder('c')

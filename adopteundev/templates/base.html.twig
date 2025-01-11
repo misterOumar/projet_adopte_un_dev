@@ -57,12 +57,12 @@
 			<header class="header-area style-5">
 				<div class="menu-area">
 					<div class="header-logo">
-						<a href="index.html"><img alt="image" class="img-fluid" src="{{asset('assets/images/logo.png')}}" width="60"></a>
+						<a href="{{path('app_home')}}"><img alt="image" class="img-fluid" src="{{asset('assets/images/logo.png')}}" width="60"></a>
 					</div>
 					<div class="main-menu">
 						<div class="mobile-logo-area d-lg-none d-flex justify-content-between align-items-center">
 							<div class="mobile-logo-wrap">
-								<a href="index.html"><img alt="image" src="{{asset('assets/images/header1-logo.svg')}}"></a>
+								<a href="{{path('app_home')}}"><img alt="image" src="{{asset('assets/images/header1-logo.svg')}}"></a>
 							</div>
 							<div class="menu-close-btn">
 								<i class="bi bi-x-lg"></i>
@@ -80,7 +80,7 @@
 
 							<li class="{% if app.request.get('_route')=='app_dev_list' %}active{% endif %}">
 
-							<a href="{{ path('app_dev_list') }}" >Profiles</a>
+							<a href="{{ path('app_dev_list') }}" >Développeurs</a>
 
 							</li>
 						</ul>

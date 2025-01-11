@@ -23,7 +23,7 @@ class CompanyDashboardController extends AbstractController
         $company = $this->companyRepository->findOneBy(['user' => $user]);
 
         // Récupérer les candidatures liées aux postes de la société
-        $candidatures = $candidatureRepository->findPendingByCompany($company);
+        $candidatures = $candidatureRepository->findByCompany($company);
 
             $totalCandidature = $candidatureRepository->countCandidaturesByCompany($company);
             $totalCandidatureAccepted = $candidatureRepository->findAcceptedByCompany($company);

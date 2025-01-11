@@ -175,7 +175,7 @@
 							
 							{% if  developer in company.developerSaved %}
 
-								<form action="{{ path('app_favorite_poste_remove', {uuid: developer.uuid}) }}" method="post">
+								<form action="{{ path('app_favorite_dev_remove', {uuid: developer.uuid}) }}" method="post">
 									<button type="submit" style="" class="save-btn">
 										Retirer au favoris<span>
 											<i class='bx bxs-bookmark'></i>

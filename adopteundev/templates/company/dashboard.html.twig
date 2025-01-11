@@ -63,7 +63,7 @@
 										<p>Candidatures</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-											{{totalCandidature}}
+												{{totalCandidature}}
 
 											</h3>
 											<span>+</span>
@@ -77,13 +77,12 @@
 										<img src="{{asset('assets/images/icon/follow-icon.svg')}}" alt="image">
 
 
-
 									</div>
 									<div class="coundown">
 										<p class="small-1">Candidatures Acceptées</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
-											{{totalCandidatureAccepted}}
+												{{totalCandidatureAccepted}}
 
 											</h3>
 											<span>+</span>
@@ -97,7 +96,8 @@
 										<img src="{{asset('assets/images/icon/total-view-icon.svg')}}" alt="image">
 									</div>
 									<div class="coundown">
-										<p> Vues de Postes</p>
+										<p>
+											Vues de Postes</p>
 										<div class="d-flex align-items-center">
 											<h3 class="odometer">
 												{{totalView}}
@@ -134,7 +134,7 @@
 																{{ candidature.developer.cat.nom }}
 															</span>
 															<p>
-																<span>Envoyé :</span>
+																<span>Candidaté :</span>
 																{{ candidature.date|time_diff }}
 															</p>
 														</div>
@@ -147,7 +147,8 @@
 														<ul>
 															<li>
 																<span>Experience:</span>
-																{{ candidature.developer.experience }} an(s)
+																{{ candidature.developer.experience }}
+																an(s)
 															</li>
 															<li>
 																<span>Salaraire:</span>
@@ -161,19 +162,11 @@
 													<div class="action-btn-group">
 														<ul>
 															<li>
-																<form method="post" action="{{ path('app_candidature_accepter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																	<button type="submit"><img src="{{ asset('assets/images/icon/shortlist-icon.svg') }}" alt="">
-																		Accepter
-																	</button>
-																</form>
+																<button type="button" class="btn btn-secondary disabled">
+																	{{candidature.statut}}
+																</button>
 															</li>
-															<li>
-																<form method="post" action="{{ path('app_candidature_rejeter', {'uuid': candidature.uuid}) }}" style="display:inline;">
-																	<button type="submit" class="reject"><img src="{{ asset('assets/images/icon/rejected-icon.svg') }}" alt="">
-																		Rejeter
-																	</button>
-																</form>
-															</li>
+
 														</ul>
 													</div>
 												</td>

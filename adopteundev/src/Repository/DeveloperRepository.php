@@ -105,4 +105,14 @@ class DeveloperRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    // recuperer les catégories de developpeur
+    public function findDistinctCategories()
+    {
+        return $this->createQueryBuilder('d')
+            ->select('DISTINCT d.cat.nom')
+            ->getQuery()
+            ->getResult();
+    }
+    
+
 }

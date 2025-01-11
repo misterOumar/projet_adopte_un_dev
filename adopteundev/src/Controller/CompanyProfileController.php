@@ -101,4 +101,20 @@ class CompanyProfileController extends AbstractController
             'formSetting' => $formSetting->createView()
         ]);
     }
+
+    // favoris de la company
+    #[Route('/company/favoris', name: 'app_company_favoris')]
+    public function favoris(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $company = $this->companyRepository->findOneBy(['user' => $user]);
+        if (!$company) {
+            return $this->redirectToRoute('app_home');
+        }
+        $favoris_dev = $company->getDeveloperSaved();
+       
+        return $this->render('company/favoris_company.html.twig', [
+            'favoris_dev' => $favoris_dev
+        ]);
+    }
 }
