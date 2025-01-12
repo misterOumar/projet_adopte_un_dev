@@ -7,6 +7,7 @@ use App\Repository\DeveloperRepository;
 use App\Repository\PosteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -15,7 +16,7 @@ class FavoritePosteController extends AbstractController
     public function __construct(private DeveloperRepository $developerRepository) {}
 
     #[Route('/favorites/add-poste/{uuid}', name: 'app_favorite_poste_add', methods: ['POST'])]
-    public function addFavoritePoste(string $uuid, PosteRepository $posteRepository, EntityManagerInterface $entityManager): Response
+    public function addFavoritePoste(Request $request, string $uuid, PosteRepository $posteRepository, EntityManagerInterface $entityManager): Response
     {
         $poste = $posteRepository->findOneBy(['uuid' => $uuid]);
 
@@ -34,12 +35,14 @@ class FavoritePosteController extends AbstractController
             $this->addFlash('success', 'Le poste a été ajouté à vos favoris.');
         }
 
-        return $this->redirectToRoute('app_developer_dashboard');
+        // return redirect to back      
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 
 
     #[Route('/favorites/remove-poste/{uuid}', name: 'app_favorite_poste_remove', methods: ['POST'])]
-    public function removeFavoritePoste(string $uuid, PosteRepository $posteRepository, EntityManagerInterface $entityManager): Response
+    public function removeFavoritePoste(Request $request,string $uuid, PosteRepository $posteRepository, EntityManagerInterface $entityManager): Response
     {
         $poste = $posteRepository->findOneBy(['uuid' => $uuid]);
 
@@ -58,6 +61,8 @@ class FavoritePosteController extends AbstractController
             $this->addFlash('success', 'Le poste a été retiré de vos favoris.');
         }
 
-        return $this->redirectToRoute('app_developer_dashboard');
+        // return redirect to back      
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 }

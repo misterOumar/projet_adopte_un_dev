@@ -292,7 +292,11 @@ class PosteController extends AbstractController
             $entityManager->persist($postView);
             $entityManager->flush();
         }
-        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user, 'cvs' => $cvs]);
+
+        // verifier si le developpeur à dèja postuler à ce poste
+        $existingCandidature = $candidature->findOneBy(['poste' => $poste, 'developer' => $developer]) == null ? false : true;
+        
+        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user, 'cvs' => $cvs, "existing_candature"=> $existingCandidature]);
     }
 
     #[IsGranted('ROLE_DEV')]

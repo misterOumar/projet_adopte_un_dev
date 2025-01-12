@@ -36,7 +36,7 @@
 							<div class="company-area">
 								<div class="logo">
 									{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
-										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+									<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
 								</div>
 								<div class="company-details">
 									<div class="name-location">
@@ -94,21 +94,48 @@
 				</div>
 				<div class="col-lg-4">
 					<div class="job-details-sidebar mb-120">
-						<div class="save-apply-btn d-flex justify-content-end mb-50">
-							<ul>
-								<li>
-									<a class="save-btn" href="#">Save Job<span>
-											<i class="bi bi-bookmark-fill"></i>
-										</span>
-									</a>
-								</li>
-								<li>
-									<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#postulerModal">
-										Postuler
-									</button>
-								</li>
-							</ul>
-						</div>
+
+						{% if is_granted('ROLE_DEV')  %}
+
+							<div class="save-apply-btn d-flex justify-content-end mb-50">
+								<ul>
+									<li>
+										{% if poste in developer.favorites %}
+											<form action="{{ path('app_favorite_poste_remove', {uuid: poste.uuid}) }}" method="post">
+												<button type="submit" style="background:transparent" class="save-btn" title="Supprimer de mes favoris">
+												Supprimer de mes favoris <span>
+													<i class='bx bx-bookmark'></i>
+												</span>
+												</button>
+											</form>
+										{% else %}
+											<form action="{{ path('app_favorite_poste_add', {uuid: poste.uuid}) }}" method="post">
+
+												<button type="submit" class="save-btn" style="background:transparent">
+													Ajouter au favoris<span>
+														<i class="bi bi-bookmark-fill"></i>
+													</span>
+
+												</button>
+											</form>
+										{% endif %}
+									</li>
+									<li>
+										{% if existing_candature %}
+											<a class="primry-btn-2 lg-btn w-unset " href="{{path('app_developer_candidature')}}">
+												Ma candidature
+											</a>
+
+										{% else %}
+											<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#postulerModal">
+												Postuler
+											</button>
+
+										{% endif %}
+									</li>
+								</ul>
+							</div>
+						{% endif %}
 						<div class="job-summary-area mb-50">
 							<div class="pin"><img src="{{asset('assets/images/icon/pin.svg')}}" alt=""></div>
 							<div class="job-summary-title">
@@ -390,15 +417,19 @@
 								<label for="dev-prenom" class="form-label">Prénom</label>
 								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.user.email }}" required>
 							</div>
-							<div class="col-md-6 mb-3">
-								<label for="cv" class="form-label">Sélectionnez un CV</label>
-								<select class="form-select" id="cv" name="cv">
-									<option value="" disabled selected>Choisissez un CV</option>
-									{% for cv in cvs %}
-										<option value="{{ cv.id }}">{{ cv.fichier.nom }}</option>
-									{% endfor %}
-								</select>
-							</div>
+
+							{% if cvs %}
+								<div class="col-md-6 mb-3">
+									<label for="cv" class="form-label">Sélectionnez un CV</label>
+									<select class="form-select" id="cv" name="cv">
+										<option value="" disabled selected>Choisissez un CV</option>
+										{% for cv in cvs %}
+											<option value="{{ cv.id }}">{{ cv.fichier.nom }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							{% endif %}
+
 							<div class="col-md-6 mb-3">
 								<label for="fichier" class="form-label">Uploader un nouveau CV (PDF, max. 5 Mo)</label>
 								<input type="file" class="form-control" id="fichier" name="fichier" accept="application/pdf">
