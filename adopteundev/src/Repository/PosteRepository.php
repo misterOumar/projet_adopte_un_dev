@@ -89,4 +89,23 @@ class PosteRepository extends ServiceEntityRepository
     }
 
 
+    // recuperer les postes similaires
+    public function findSimilarPosts(Poste $poste): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        return $qb
+        ->where('p.id != :id')
+        ->setParameter('id', $poste->getId())
+        ->andWhere('p.ville = :ville OR p.ville IS NULL')
+        ->setParameter('ville', $poste->getVille())
+        ->andWhere('p.categorie = :categorie')
+        ->setParameter('categorie', $poste->getCategorie())
+        ->andWhere(':technologie MEMBER OF p.technologie')
+        ->setParameter('technologie', $poste->getTechnologie()->toArray())
+        ->getQuery()
+        ->getResult();
+    }
+        
+
+
 }

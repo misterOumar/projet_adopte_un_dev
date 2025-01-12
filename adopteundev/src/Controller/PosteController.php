@@ -231,7 +231,7 @@ class PosteController extends AbstractController
         // filtrer un dev en fonction de son nom ou de son email
         if ($ville_filtre) {
             $queryBuilder->orWhere('p.ville LIKE :search')
-                ->setParameter('search', '%'. $ville_filtre. '%');
+                ->setParameter('search', '%' . $ville_filtre . '%');
         }
 
 
@@ -295,8 +295,19 @@ class PosteController extends AbstractController
 
         // verifier si le developpeur à dèja postuler à ce poste
         $existingCandidature = $candidature->findOneBy(['poste' => $poste, 'developer' => $developer]) == null ? false : true;
-        
-        return $this->render('poste/poste_details.html.twig', ['poste' => $poste, 'developer' => $developer, 'user' => $user, 'cvs' => $cvs, "existing_candature"=> $existingCandidature]);
+
+        //postes similaires
+        $posteSimilaires = $this->posteRepository->findSimilarPosts($poste);
+
+        return $this->render('poste/poste_details.html.twig', [
+            'poste' => $poste,
+            'developer' => $developer,
+            'user' => $user,
+            'cvs' => $cvs,
+            "existing_candature" => $existingCandidature,
+            "postes_similaire" => $posteSimilaires,
+
+        ]);
     }
 
     #[IsGranted('ROLE_DEV')]
