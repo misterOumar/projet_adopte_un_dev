@@ -36,22 +36,22 @@
 
 								offres d'emploi sont disponibles pour vous!</p>
 							<div class="job-search-area">
-								<form>
+								<form method="get" action="{{ path('app_poste_list') }}">
 									<div class="form-inner job-title">
-										<input type="text" placeholder="Lieux">
+										<input name="ville" type="text" placeholder="Lieux">
 									</div>
-									<div class="form-inner category">
-										<select class="select1">
-											<option value="0">Catégories</option>
-											<option value="1">UI/UX
-											</option>
-											<option value="2">Closed</option>
-											<option value="4">Closed</option>
-											<option value="5">Closed</option>
+									<div class="form-inner category ">
+										<select class="select1" name="category">
+											<option value="">Catégories</option>
+											{% for category in categories %}
+										<option value="{{ category.id }}" >
+											{{ category.nom }}
+										</option>
+									{% endfor %}
 										</select>
 									</div>
 									<div class="form-inner">
-										<button type="submit" class="primry-btn-2 "><img src="assets/images/icon/search-icon.svg" alt="">
+										<button type="submit" class="primry-btn-2 "><img src="{{asset('assets/images/icon/search-icon.svg')}}" alt="">
 											Rechercher</button>
 									</div>
 								</form>
@@ -321,7 +321,7 @@
 								<div class="company-details">
 									<div class="name-location">
 										<h5>
-											<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}" class=" d-inline-block text-truncate" style="max-width: 300px;">{{poste.titre}}</a>
+											<a href="{{path('app_poste_details', {'uuid':poste.uuid})}}" class=" d-inline-block text-truncate" style="max-width: 300px;">{{poste.titre}}</a>
 
 
 										</h5>
@@ -342,7 +342,7 @@
 										</p>
 									</div>
 									<div class="apply-btn">
-										<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}">
+										<a href="{{path('app_poste_details', {'uuid':poste.uuid})}}">
 											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>voir Details</a>
 									</div>
 								</div>
@@ -392,7 +392,7 @@
 									<div class="company-details">
 										<div class="name-location">
 											<h5>
-												<a class="d-inline-block text-truncate" style="max-width: 250px;" href=" {{path('app_company_poste_details', {'uuid':poste.uuid} )}}">{{poste.titre}}</a>
+												<a class="d-inline-block text-truncate" style="max-width: 250px;" href=" {{path('app_poste_details', {'uuid':poste.uuid} )}}">{{poste.titre}}</a>
 
 
 											</h5>
@@ -433,7 +433,7 @@
 								</div>
 								<div class="job-type-apply">
 									<div class="apply-btn">
-										<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}">
+										<a href="{{path('app_poste_details', {'uuid':poste.uuid})}}">
 											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Postuler maintenant</a>
 									</div>
 								</div>
@@ -537,27 +537,27 @@
 		</div>
 
 		 <script>
-																											document.addEventListener("DOMContentLoaded", function () {
-																									    const counters = document.querySelectorAll(".stat-number");
-																									    counters.forEach(counter => {
-																									        const updateCount = () => {
-																									            const target = +counter.getAttribute("data-count");
-																									            const current = +counter.innerText;
-																									
-																									            const increment = target / 200; // Ajustez pour une vitesse optimale
-																									
-																									            if (current < target) {
-																									                counter.innerText = Math.ceil(current + increment);
-																									                setTimeout(updateCount, 10);
-																									            } else {
-																									                counter.innerText = target;
-																									            }
-																									        };
-																									
-																									        updateCount();
-																									    });
-																									});
-																										 </script>
+																													document.addEventListener("DOMContentLoaded", function () {
+																											    const counters = document.querySelectorAll(".stat-number");
+																											    counters.forEach(counter => {
+																											        const updateCount = () => {
+																											            const target = +counter.getAttribute("data-count");
+																											            const current = +counter.innerText;
+																											
+																											            const increment = target / 200; // Ajustez pour une vitesse optimale
+																											
+																											            if (current < target) {
+																											                counter.innerText = Math.ceil(current + increment);
+																											                setTimeout(updateCount, 10);
+																											            } else {
+																											                counter.innerText = target;
+																											            }
+																											        };
+																											
+																											        updateCount();
+																											    });
+																											});
+																												 </script>
 	{% endblock %}
 
 	{% block javascripts %}

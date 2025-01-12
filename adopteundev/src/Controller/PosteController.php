@@ -193,6 +193,7 @@ class PosteController extends AbstractController
         $experience_filtre = $request->query->get('experience',);
         $salaryMin_filtre = $request->query->get('salaire');
         $type_filtre = $request->query->get('type');
+        $ville_filtre = $request->query->get('ville');
 
         // construire la querybuilder
         $queryBuilder = $posteRepository->createQueryBuilder('p');
@@ -225,6 +226,12 @@ class PosteController extends AbstractController
         if ($type_filtre) {
             $queryBuilder->andWhere('p.type = :type')
                 ->setParameter('type', $type_filtre);
+        }
+
+        // filtrer un dev en fonction de son nom ou de son email
+        if ($ville_filtre) {
+            $queryBuilder->orWhere('p.ville LIKE :search')
+                ->setParameter('search', '%'. $ville_filtre. '%');
         }
 
 
