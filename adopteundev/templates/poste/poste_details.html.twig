@@ -3,6 +3,11 @@
 {% block title %}Details du poste
 {% endblock %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/swiper-bundle.css')}}">
+{% endblock %}
+
+
 {% block body %}
 	<!-- ========== Inner Banner Start============= -->
 	<div class="inner-banner">
@@ -10,7 +15,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="banner-content text-center">
-						<h1>Detail du poste</h1>
+						<h1>{{poste.titre}}</h1>
 						<span></span>
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb">
@@ -36,7 +41,7 @@
 							<div class="company-area">
 								<div class="logo">
 									{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
-										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+									<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
 								</div>
 								<div class="company-details">
 									<div class="name-location">
@@ -94,21 +99,49 @@
 				</div>
 				<div class="col-lg-4">
 					<div class="job-details-sidebar mb-120">
-						<div class="save-apply-btn d-flex justify-content-end mb-50">
-							<ul>
-								<li>
-									<a class="save-btn" href="#">Save Job<span>
-											<i class="bi bi-bookmark-fill"></i>
-										</span>
-									</a>
-								</li>
-								<li>
-									<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#postulerModal">
-										Postuler
-									</button>
-								</li>
-							</ul>
-						</div>
+
+						{% if is_granted('ROLE_DEV')  %}
+
+							<div class="save-apply-btn d-flex justify-content-end mb-50">
+								<ul>
+									<li>
+										{% if poste in developer.favorites %}
+											<form action="{{ path('app_favorite_poste_remove', {uuid: poste.uuid}) }}" method="post">
+												<button type="submit" style="background:transparent" class="save-btn" title="Supprimer de mes favoris">
+													Supprimer de mes favoris
+													<span>
+														<i class='bx bx-bookmark'></i>
+													</span>
+												</button>
+											</form>
+										{% else %}
+											<form action="{{ path('app_favorite_poste_add', {uuid: poste.uuid}) }}" method="post">
+
+												<button type="submit" class="save-btn" style="background:transparent">
+													Ajouter au favoris<span>
+														<i class="bi bi-bookmark-fill"></i>
+													</span>
+
+												</button>
+											</form>
+										{% endif %}
+									</li>
+									<li>
+										{% if existing_candature %}
+											<a class="primry-btn-2 lg-btn w-unset " href="{{path('app_developer_candidature')}}">
+												Ma candidature
+											</a>
+
+										{% else %}
+											<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#postulerModal">
+												Postuler
+											</button>
+
+										{% endif %}
+									</li>
+								</ul>
+							</div>
+						{% endif %}
 						<div class="job-summary-area mb-50">
 							<div class="pin"><img src="{{asset('assets/images/icon/pin.svg')}}" alt=""></div>
 							<div class="job-summary-title">
@@ -176,195 +209,97 @@
 				</div>
 
 			</div>
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="related-jobs">
-						<div class="section-title mb-40">
-							<h3>Related Jobs:</h3>
-							<div class="swiper-btn1 d-flex align-items-center">
-								<div class="left-btn prev-4">
-									<img src="assets/images/icon/explore-elliose.svg" alt="">
-								</div>
-								<div class="right-btn next-4">
-									<img src="assets/images/icon/explore-elliose.svg" alt="">
+			{% if postes_similaire %}
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="related-jobs">
+							<div class="section-title mb-40">
+								<h3>Postes similaires:</h3>
+								<div class="swiper-btn1 d-flex align-items-center">
+									<div class="left-btn prev-4">
+										<img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt="">
+									</div>
+									<div class="right-btn next-4">
+										<img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt="">
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="swiper related-job-slider">
-							<div class="swiper-wrapper">
-								<div class="swiper-slide">
-									<div class="feature-card">
-										<div class="company-area">
-											<div class="logo">
-												<img src="assets/images/bg/company-logo/company-02.png" alt="">
-											</div>
-											<div class="company-details">
-												<div class="name-location">
-													<h5>
-														<a href="job-details.html">Assistant Laboratorist</a>
-													</h5>
-													<p>Full Time, Part Time</p>
+							<div class="swiper related-job-slider">
+								<div class="swiper-wrapper">
+									{% for poste in postes_similaire %}
+										<div class="swiper-slide">
+											<div class="feature-card">
+												<div class="company-area">
+													<div class="logo">
+														{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+														<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+
+													</div>
+													<div class="company-details">
+														<div class="name-location">
+															<h5>
+																<a href="{{path('app_poste_details', {'uuid': poste.uuid})}}">{{poste.titre}}</a>
+
+															</h5>
+															<p>{{poste.type}}</p>
+														</div>
+														<div class="bookmark">
+															<i class="bi bi-bookmark"></i>
+														</div>
+													</div>
 												</div>
-												<div class="bookmark">
-													<i class="bi bi-bookmark"></i>
+												<div class="job-discription">
+													<ul>
+														<li>
+															<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+															<p>
+																<span class="title">Salaire:</span>
+																{{poste.salaireMin}}€</p>
+
+															<span class="time">/ Mois</span>
+
+														</li>
+														<li>
+															<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+															<p>
+																<span class="title">Ville :</span>
+																<span>
+																	{{poste.ville}}
+																</span>
+															</p>
+														</li>
+														<li>
+															<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+															<p>
+																<span class="title">Date limite:</span>
+																<span>
+																	{{ poste.dateLimite|date('d-m-Y') }}
+
+																</span>
+															</p>
+														</li>
+													</ul>
 												</div>
-											</div>
-										</div>
-										<div class="job-discription">
-											<ul>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Salary:</span>
-														$30-$40 /
-														<span class="time">Per month</span>
-													</p>
-												</li>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Vacancy:</span>
-														<span>
-															05 Person (Both)</span>
-													</p>
-												</li>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Deadline:</span>
-														<span>
-															02 March, 2023
-														</span>
-													</p>
-												</li>
-											</ul>
-										</div>
-										<div class="job-type-apply">
-											<div class="apply-btn">
-												<a href="job-details.html">
-													<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="swiper-slide">
-									<div class="feature-card">
-										<div class="company-area">
-											<div class="logo">
-												<img src="assets/images/bg/company-logo/company-03.png" alt="">
-											</div>
-											<div class="company-details">
-												<div class="name-location">
-													<h5>
-														<a href="job-details.html">Senior Receptionist</a>
-													</h5>
-													<p>Full Time, Part Time</p>
-												</div>
-												<div class="bookmark">
-													<i class="bi bi-bookmark"></i>
+												<div class="job-type-apply">
+													<div class="apply-btn">
+														<a href="{{path('app_poste_details', {'uuid': poste.uuid})}}">
+															<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Postuler maintenant</a>
+													</div>
 												</div>
 											</div>
 										</div>
-										<div class="job-discription">
-											<ul>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Salary:</span>
-														$60-$90 /
-														<span class="time">Per month</span>
-													</p>
-												</li>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Vacancy:</span>
-														<span>
-															07 Person (Female)</span>
-													</p>
-												</li>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Deadline:</span>
-														<span>
-															03 March, 2023
-														</span>
-													</p>
-												</li>
-											</ul>
-										</div>
-										<div class="job-type-apply">
-											<div class="apply-btn">
-												<a href="job-details.html">
-													<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="swiper-slide">
-									<div class="feature-card">
-										<div class="company-area">
-											<div class="logo">
-												<img src="assets/images/bg/company-logo/company-06.png" alt="">
-											</div>
-											<div class="company-details">
-												<div class="name-location">
-													<h5>
-														<a href="job-details.html">Manager (HR)</a>
-													</h5>
-													<p>Full Time, Part Time</p>
-												</div>
-												<div class="bookmark">
-													<i class="bi bi-bookmark"></i>
-												</div>
-											</div>
-										</div>
-										<div class="job-discription">
-											<ul>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Salary:</span>
-														$60-$76 /
-														<span class="time">Per month</span>
-													</p>
-												</li>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Vacancy:</span>
-														<span>
-															01 Person (Both)</span>
-													</p>
-												</li>
-												<li>
-													<img src="assets/images/icon/arrow2.svg" alt="">
-													<p>
-														<span class="title">Deadline:</span>
-														<span>
-															05 March, 2023</span>
-													</p>
-												</li>
-											</ul>
-										</div>
-										<div class="job-type-apply">
-											<div class="apply-btn">
-												<a href="job-details.html">
-													<span><img src="assets/images/icon/apply-ellipse.svg" alt=""></span>Apply Now</a>
-											</div>
-										</div>
-									</div>
+									{% endfor %}
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+
+			{% endif %}
+
+
 		</div>
-	</div>
-	<!-- Modal postuler -->
-	<div class="modal fade" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel" aria-hidden="true">
+	</div><!-- Modal postuler --><div class="modal fade" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel" aria-hidden="true">
 		<div class="modal-dialog" style="max-width: 50rem;">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -374,38 +309,69 @@
 				<form id="postuler-form" method="POST" action="{{ path('app_postuler', { 'uuid': poste.uuid }) }}" enctype="multipart/form-data">
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-md-6 mb-3">
-								<label for="dev-nom" class="form-label">Nom</label>
-								<input type="text" class="form-control" id="dev-nom" name="name" value="{{ developer.nom }}">
+
+							<div class="col-lg-12">
+								<div class="single-information-area">
+									<div class="section-title">
+										<h6>Résumé de la candidature</h6>
+										<div class="dash"></div>
+									</div>
+									<div class="row g-4 ">
+										<div class="col-lg-6 devaider1 position-relative">
+											<div class="informations">
+												<ul>
+													<li>
+														<span>Nom & prénoms :</span>
+														{{developer.nom}} {{ developer.prenom}} </li>
+													<li>
+														<span>N° de téléphone :</span>
+														{{developer.mobile}}</li>
+													<li>
+														<span>Email:</span>
+														{{developer.user.email}}</li>
+												</ul>
+											</div>
+										</div>
+										<div class="col-lg-6 pl-40">
+											<div class="informations">
+												<ul>
+													<li>
+														<span>Titre du poste :</span>
+														{{poste.titre}}</li>
+													<li>
+														<span>Salaire</span>
+														{{poste.salaireMin}} euros/mois </li>
+													<li>
+														<span>Date limite :</span>
+														{{poste.dateLimite|date('d/m/Y')}}</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prénom</label>
-								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.prenom }}" required>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prénom</label>
-								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.mobile }}" required>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prénom</label>
-								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.user.email }}" required>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="cv" class="form-label">Sélectionnez un CV</label>
-								<select class="form-select" id="cv" name="cv">
-									<option value="" disabled selected>Choisissez un CV</option>
-									{% for cv in cvs %}
-										<option value="{{ cv.id }}">{{ cv.fichier.nom }}</option>
-									{% endfor %}
-								</select>
-							</div>
+
+
+
+							{% if cvs %}
+								<div class="col-md-6 mb-3">
+									<label for="cv" class="form-label">Sélectionnez un CV</label>
+									<select class="form-select" id="cv" name="cv">
+										<option value="" disabled selected>Choisissez un CV</option>
+										{% for cv in cvs %}
+											<option value="{{ cv.id }}">{{ cv.fichier.nom }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							{% endif %}
+
 							<div class="col-md-6 mb-3">
 								<label for="fichier" class="form-label">Uploader un nouveau CV (PDF, max. 5 Mo)</label>
 								<input type="file" class="form-control" id="fichier" name="fichier" accept="application/pdf">
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">Postuler</button>
+							<button type="submit" class="btn btn-info">Postuler</button>
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 						</div>
 					</div>
@@ -414,5 +380,5 @@
 			</div>
 		</div>
 	</div>
-</div>
-<!-- ========== Job Details End============= -->{% endblock %}
+</div><!-- ========== Job Details End============= -->{% endblock %}{% block javascripts %}
+ <script src="{{asset('assets/js/swiper-bundle.min.js')}}"></script>{% endblock %}

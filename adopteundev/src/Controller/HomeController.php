@@ -29,6 +29,8 @@ class HomeController extends AbstractController
         $mostPopularPosts = $posteRepository->findMostViewedPosts();
 
         $recentDevelopers = $developerRepository->findBy([], ['id' => 'DESC'], 5);
+        $categories = $categorieRepository->findCategorieWithPosts();
+
 
         $date = new \DateTimeImmutable('-2 days');
         $date = $date->format('Y-m-d H:i:s');
@@ -45,6 +47,7 @@ class HomeController extends AbstractController
             'recentDevelopers' => $recentDevelopers,
             'mostPopularPosts' => $mostPopularPosts,
             'userRole' => $user ? $user->getRoles()[0] : null, // Récupère le rôle principal de l'utilisateur
+            'categories' => $categories,
         ]);
     }
 }
