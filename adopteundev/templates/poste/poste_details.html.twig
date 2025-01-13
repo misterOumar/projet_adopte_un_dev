@@ -309,22 +309,49 @@
 				<form id="postuler-form" method="POST" action="{{ path('app_postuler', { 'uuid': poste.uuid }) }}" enctype="multipart/form-data">
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-md-6 mb-3">
-								<label for="dev-nom" class="form-label">Nom</label>
-								<input type="text" class="form-control" id="dev-nom" name="name" value="{{ developer.nom }}">
+
+							<div class="col-lg-12">
+								<div class="single-information-area">
+									<div class="section-title">
+										<h6>Résumé de la candidature</h6>
+										<div class="dash"></div>
+									</div>
+									<div class="row g-4 ">
+										<div class="col-lg-6 devaider1 position-relative">
+											<div class="informations">
+												<ul>
+													<li>
+														<span>Nom & prénoms :</span>
+														{{developer.nom}} {{ developer.prenom}} </li>
+													<li>
+														<span>N° de téléphone :</span>
+														{{developer.mobile}}</li>
+													<li>
+														<span>Email:</span>
+														{{developer.user.email}}</li>
+												</ul>
+											</div>
+										</div>
+										<div class="col-lg-6 pl-40">
+											<div class="informations">
+												<ul>
+													<li>
+														<span>Titre du poste :</span>
+														{{poste.titre}}</li>
+													<li>
+														<span>Salaire</span>
+														{{poste.salaireMin}} euros/mois </li>
+													<li>
+														<span>Date limite :</span>
+														{{poste.dateLimite|date('d/m/Y')}}</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prénom</label>
-								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.prenom }}" required>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prénom</label>
-								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.mobile }}" required>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="dev-prenom" class="form-label">Prénom</label>
-								<input type="text" class="form-control" id="dev-prenom" name="prenom" value="{{ developer.user.email }}" required>
-							</div>
+
+
 
 							{% if cvs %}
 								<div class="col-md-6 mb-3">
@@ -344,7 +371,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">Postuler</button>
+							<button type="submit" class="btn btn-info">Postuler</button>
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 						</div>
 					</div>
