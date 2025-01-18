@@ -129,9 +129,9 @@
 											</div>
 											<span>{{app.user.countNotifications}}</span>
 										</div>
-										<div class="notifacion-card dropdown-menu" aria-labelledby="dropdownMenuButton2">
+										<div class="notifacion-card dropdown-menu" aria-labelledby="dropdownMenuButton2" id="notification-container">
 											<h6 class="title">{{app.user.countNotifications}} Notifications</h6>
-											<ul>
+											<ul id="notification-list">
 												{% if app.user.notifications %}
 													
 													{% for notification in app.user.notifications %}													
@@ -370,6 +370,51 @@
 
 
 			 <script src={{ asset("assets/js/main.js") }}></script>
+
+			 <script>
+			 {% if app.user %}
+			 
+					const userId =
+					{{ app.user.id }}; // Remplacez avec l'ID de l'utilisateur connecté
+					const eventSource = new EventSource('/.well-known/mercure?topic=notifications/' + userId);
+
+					eventSource.onmessage = function (event) {
+						console.log(event)
+						const data = JSON.parse(event.data);
+						const notificationList = document.getElementById('notification-list');
+
+						// Créer un nouvel élément pour la notification
+						const newNotification = document.createElement('li');
+						newNotification.innerHTML = `
+					<div class="icon">
+						<i class='bx bx-bell' style='color:#06ff23'></i>
+					</div>
+					<div class="content">
+						<h6>
+							<a href="#">${data.message}</a>
+						</h6>
+						<span><img src="/assets/images/icon/clock-1.svg" alt="">
+							Maintenant</span>
+					</div>
+					`;
+
+						// Ajouter la nouvelle notification en haut de la liste
+						notificationList.prepend(newNotification);
+
+						// Mettre à jour le compteur de notifications
+						const notificationTitle = document.querySelector('.notifacion-card .title');
+						const currentCount = parseInt(notificationTitle.textContent) || 0;
+						notificationTitle.textContent = `${currentCount + 1} Notifications`;
+					};
+{% endif %}
+
+			 </script>
+
+<!-- other javascript -->
+{% block javascriptsChat %}{% endblock %}
+
+
+        
 
 
 		</body>

@@ -45,5 +45,22 @@ services:
       PMA_HOST: db  # Indique le nom du service de base de données
       PMA_PASSWORD: password  # Mot de passe MySQL
 
+
+  mercure:
+    image: dunglas/mercure
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ':80'
+      MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+    ports:
+      - "8080:80"
+    volumes:
+      - mercure_data:/data
+      - mercure_config:/config
+    
+
 volumes:
   db_data:
+  mercure_data:
+  mercure_config:
