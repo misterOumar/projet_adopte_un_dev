@@ -1623,7 +1623,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 
 		<!-- start chat conversation -->
 		<div class="chat-conversation p-3 p-lg-4" data-simplebar>
-			<ul class="list-unstyled mb-0">
+			<ul class="list-unstyled mb-0" id="chat-messages">
+
 				<li>
 					<div class="conversation-list">
 						<div class="chat-avatar">
@@ -2061,6 +2062,35 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 					</div>
 				</li>
 
+				{% for message in messages %}
+
+					<li {% if message.sender == app.user %} class="right" {% endif %}>
+
+					 
+						<div class="conversation-list">
+
+							<div class="user-chat-content">
+								<div class="ctext-wrap">
+									<div class="ctext-wrap-content">
+										<p class="mb-0">
+											{{message.content}}
+										</p>
+										<p class="chat-time mb-0">
+											<i class="ri-time-line align-middle"></i>
+											<span class="align-middle">{{message.createdAt|time_diff}}</span>
+										</p>
+									</div>
+
+									
+								</div>
+
+							</div>
+						</div>
+					</li>
+
+					
+				{% endfor %}
+
 			</ul>
 		</div>
 		<!-- end chat conversation end -->
@@ -2068,10 +2098,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 		<!-- start chat input section -->
 		<div class="chat-input-section p-3 p-lg-4 border-top mb-0">
 
-			<div class="row g-0">
+<form id="sendMessageForm">
 
+
+			
+			<div class="row g-0">
 				<div class="col">
-					<input type="text" class="form-control form-control-lg bg-light border-light" placeholder="Enter Message...">
+				<input type="text" id="messageInput" data-receiver-id={{receiver.id}} class="form-control form-control-lg bg-light border-light" placeholder="Entrer votre message">
+
 				</div>
 				<div class="col-auto">
 					<div class="chat-input-links ms-md-2 me-md-0">
@@ -2096,6 +2130,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 
 				</div>
 			</div>
+</form>
+
 		</div>
 		<!-- end chat input section -->
 	</div>
@@ -2356,4 +2392,70 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 <!-- page init -->
  <script src="{{asset('assets/chat/js/pages/index.init.js')}}"></script>
 
- <script src="{{asset('assets/chat/js/app.js')}}"></script>{% endblock %}
+ <script src="{{asset('assets/chat/js/app.js')}}"></script>
+
+ <script>
+ // send new message using ajax
+
+
+ document.querySelector('#sendMessageForm').addEventListener('submit', async function (e) {
+	e.preventDefault();
+    const messageInput = document.querySelector('#messageInput');
+    const content = messageInput.value.trim();
+    const receiverId = messageInput.getAttribute('data-receiver-id');
+
+    if (!content) {
+        alert('Le message ne peut pas être vide.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/chat/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ recipientId: receiverId, content }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Ajouter le message envoyé dans l'interface utilisateur
+            const chatBox = document.querySelector('#chat-messages');
+            const newMessage = `        
+				<li  class="right" >
+					<div class="conversation-list">
+						<div class="user-chat-content">
+							<div class="ctext-wrap">
+								<div class="ctext-wrap-content">
+									<p class="mb-0">
+										${data.message.content}
+									</p>
+									<p class="chat-time mb-0">
+										<i class="ri-time-line align-middle"></i>
+										<span class="align-middle">${data.message.createdAt}</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+            `;
+			
+            chatBox.innerHTML += newMessage;
+
+            // Vider l'input après l'envoi
+            messageInput.value = '';
+        } else {
+            alert('Erreur lors de l\'envoi du message.');
+        }
+    } catch (error) {
+        console.error('Erreur réseau :', error);
+    }
+});
+
+
+ </script>
+ 
+ {% endblock %}
