@@ -53,6 +53,19 @@ class ChatController extends AbstractController
         ]);
     }
 
+    #[Route('/chat', name: 'chat_list')]
+    public function chatList(MessageRepository $messageRepository): Response
+    {
+        $user = $this->getUser();
+        // dd($user);
+
+        $conversations = $messageRepository->findRecentConversations($user);
+
+        return $this->render('chat/index.html.twig', [
+            'conversations' => $conversations,
+        ]);
+    }
+
     #[Route('/chat/{id}', name: 'chat')]
     public function chat(
         int $id,
@@ -85,9 +98,15 @@ class ChatController extends AbstractController
         //     }
         // }
 
-        return $this->render('chat/index.html.twig', [
+        $user = $this->getUser();
+        // dd($user);
+
+        $conversations = $messageRepository->findRecentConversations($user);
+
+        return $this->render('chat/conversation.html.twig', [
             'receiver' => $receiver,
             'messages' => $messages,
+            'conversations' => $conversations,
         ]);
     }
 }

@@ -70,8 +70,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 						<div class="chat-message-list px-2" data-simplebar>
 
 							<ul class="list-unstyled chat-list chat-user-list">
-							
-
 								{% for conversation in conversations %}
 									<li class="{{ conversation.unreadCount > 0 ? 'unread' }}">
 										<a href="{{ path('chat', { id: conversation.contact.id }) }}">
@@ -97,7 +95,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel=
 										</a>
 									</li>
 								{% endfor %}
-
 
 								<li>
 									<a href="#">

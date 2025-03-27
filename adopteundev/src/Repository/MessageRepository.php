@@ -53,4 +53,65 @@ class MessageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * recuperer les conversations recentes d'un utilisateur
+     * @param $userId
+     * @return array
+     * 
+     */
+    public function findRecentConversations_($userId){
+        $qb = $this->createQueryBuilder('m');
+        $qb->select('u.id AS contactId, u.username AS contactName, MAX(m.createdAt) AS lastMessageTime, SUBSTRING(m.content, 1, 50) AS lastMessage')
+        ->innerJoin('m.receiver', 'u')
+        ->where('m.receiver = :userId')
+        ->setParameter('userId', $userId)
+        ->groupBy('contactName')
+        ->orderBy('lastMessageTime', 'DESC')
+        ->setMaxResults(10);
+        return $qb->getQuery()->getResult();
+    }
+    // public function findRecentConversations($userId){
+    //     return $this->createQueryBuilder('m')
+    //     ->select('u.id AS contactId, u.username AS contactName, MAX(m.createdAt) AS lastMessageTime, SUBSTRING(m.content, 1, 50) AS lastMessage')
+    //     ->innerJoin('m.receiver', 'u')
+    //     ->where('m.receiver = :userId')
+    //     ->setParameter('userId', $userId)
+    //     ->groupBy('u.id')
+    //     ->orderBy('lastMessageTime', 'DESC')
+    //     ->setMaxResults(10)
+    //     ->getQuery()
+    //     ->getResult();
+
+    // }
+
+    public function findRecentConversations(User $user): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select(
+                'CASE 
+                WHEN m.sender = :user THEN receiver.username 
+                ELSE sender.username 
+             END AS contactUsername',
+                'CASE 
+                WHEN m.sender = :user THEN m.receiver 
+                ELSE m.sender 
+             END AS contactId',
+                'MAX(m.createdAt) AS lastMessageTime',
+                'SUBSTRING(m.content, 1, 50) AS lastMessage',
+                'SUM(CASE WHEN m.isRead = 0 AND m.receiver = :user THEN 1 ELSE 0 END) AS unreadCount'
+            )
+            ->join('m.sender', 'sender')
+            ->join('m.receiver', 'receiver')
+            ->where('m.sender = :user OR m.receiver = :user')
+            ->groupBy('contactId', 'contactUsername')
+            ->orderBy('lastMessageTime', 'DESC')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+
 }
