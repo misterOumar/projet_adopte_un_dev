@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Technologie{% endblock %}
+
+{% block body %}
+    <h1>Create new Technologie</h1>
+
+    {{ include('technologie/_form.html.twig') }}
+
+    <a href="{{ path('app_technologie_index') }}">back to list</a>
+{% endblock %}

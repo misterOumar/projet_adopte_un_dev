@@ -1,0 +1,159 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Technologie index
+{% endblock %}
+
+{% block body %}
+
+	<!-- Modal add -->
+	<div class="modal fade" id="modalAddTechnologie" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 40rem;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Ajouter une nouvelle technologie</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				{{ form_start(form) }}
+				<div class="modal-body">
+					<div class="col-lg-12">
+
+						<div class="form-inner mb-25 mt-2">
+							<label for="nom">Nom de la technologie</label>
+							<div class="input-area">
+
+
+								{{ form_widget(form.nom) }}
+
+							</div>
+						</div>
+					</div>
+
+					<div></div>
+
+
+				</div>
+				<div class="modal-footer">
+
+					<button type="submit" class="primry-btn-2 lg-btn w-unset">
+						Ajouter</button>
+
+					<button type="button" class="danger-btn-2 lg-btn w-unset " data-bs-dismiss="modal">
+
+
+						Annuler</button>
+
+
+				</div>
+				{{ form_end(form) }}
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Modal edit -->
+	<div class="modal fade" id="editTechnologyModal" tabindex="-1" aria-labelledby="editTechnologyModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 40rem;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editTechnologyModalLabel">Modifier la technologie</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form id="edit-technology-form" method="post">
+					<div class="modal-body">
+						<div class="mb-3">
+							<label for="technology-name" class="form-label">Nom</label>
+							<input type="text" class="form-control" id="technology-name" name="name" required>
+						</div>
+						<div class="modal-footer">
+
+							<button type="submit" class="primry-btn-2 lg-btn w-unset">
+								Modifier</button>
+
+							<button type="button" class="danger-btn-2 lg-btn w-unset " data-bs-dismiss="modal">
+
+
+								Annuler</button>
+
+
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="table-wrapper">
+		<div class="d-flex mb-2 align-items-center justify-content-between">
+			<h5 class="title">Technologies :
+				<small>{{ technologies|length }}</small>
+
+			</h5>
+
+			<button class="primry-btn-2 lg-btn w-unset" data-bs-toggle="modal" data-bs-target="#modalAddTechnologie">
+				<i class='bx bx-plus-circle me-2'></i>
+				nouvelle technologie
+			</button>
+		</div>
+		<div class="scroll-table">
+			<table class="eg-table table category-table mb-0">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Date de creation</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for technologie in technologies %}
+						<tr>
+							<td>{{ technologie.nom }}</td>
+							<td>{{ technologie.createdAt|date('d-m-Y à H:i') }}</td>
+							<td>
+								<button class="edit-btn" data-id="{{ technologie.id }}" data-name="{{ technologie.nom }}" data-bs-toggle="modal" data-bs-target="#editTechnologyModal">
+									<i class='bx bx-pencil eg-btn purple-btn'></i>
+								</button>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="3">Aucune technologie trouvée !</td>
+						</tr>
+					{% endfor %}
+
+
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+	 <script>
+				document.addEventListener('DOMContentLoaded', function () {
+			    const modal = document.getElementById('editTechnologyModal');
+			    const form = document.getElementById('edit-technology-form');
+			    const inputName = document.getElementById('technology-name');
+			
+			    document.querySelectorAll('.edit-btn').forEach(button => {
+			        button.addEventListener('click', function () {
+			            const technologyId = this.dataset.id;
+			            const technologyName = this.dataset.name;
+			
+			            // Préremplir les champs du formulaire
+			            inputName.value = technologyName;
+			
+			            // Modifier l'action du formulaire
+			            form.action = `/admin/technologie/${technologyId}/edit`; 
+			        });
+			    });
+			});
+			
+			</script>
+
+
+{% endblock %}

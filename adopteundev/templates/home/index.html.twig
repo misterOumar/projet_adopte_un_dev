@@ -1,111 +1,567 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Coming soon | AdopteUnDev!{% endblock %}
+{% block title %}Coming soon | AdopteUnDev!
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/slick-theme.css')}}">
+	<link rel="stylesheet" href="{{asset('assets/css/slick.css')}}">
+
+
+{% endblock %}
+
 
 {% block body %}
-<style>
-    body{
-  background: #EEE;
-  text-align: center;
-  
-  /*overflow: hidden;*/
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  cursor: default;
-}
 
-body:after{
-  content: "";
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MHB4IiBoZWlnaHQ9IjUwcHgiIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMjMuODQ2IiB5PSIwLjMzMSIgdHJhbnNmb3JtPSJtYXRyaXgoMC43MDczIC0wLjcwNjkgMC43MDY5IDAuNzA3MyAtMTAuNDM3MiAyNC45ODY3KSIgd2lkdGg9IjIuMjIxIiBoZWlnaHQ9IjQ5LjUzMiIvPjxyZWN0IHg9IjIzLjg0NSIgeT0iMC4zMzIiIHRyYW5zZm9ybT0ibWF0cml4KDAuNzA2OSAwLjcwNzMgLTAuNzA3MyAwLjcwNjkgMjUuMDY3NSAtMTAuMjk1MykiIHdpZHRoPSIyLjIyMSIgaGVpZ2h0PSI0OS41MzIiLz48L3N2Zz4=);
-  opacity: 0.020;
-  
-  /*width: 120%;
-  height: 120%;
-  animation: move 5s linear infinite;
-  top:-50px; left:-50px;*/
-  
-  top:0; left:0; bottom:0; right:0;
-  position: absolute;
-  z-index: -1;
-}
 
-/*@keyframes move {
-  to{
-    left: 0px;
-    top: 0px;
-  }
-}*/
+	<!-- ========== Hero Six Start============= -->
+	<div class="hero2">
+		<div class="hero-wapper">
+			<div class="container-fluid px-0">
+				<div class="row">
+					<div class="col-lg-7 d-flex align-items-center">
+						<div class="hero-content">
+							<h1>
+								Sélectionner la
+								<span>carrière idéale</span>
+								qui correspond parfaitement à
+								<span>vos talents</span>.
 
-#container{
-  top: 50%; left: 50%;
-  margin-top: -200px; /*-1/2 of height*/
-  margin-left: -125px; /*-1/2 of width*/
-  position: fixed;
-}
 
-#avatar{
-  border: white solid 7px;
-  box-shadow: 0px 1px 0px rgba(0,0,0,0.25);
-  /*box-shadow: 0px 2px 3px rgba(0,0,0,0.25);*/
-  /*transition: all 0.5s cubic-bezier(0.19,1.0,0.22,1.0);*/
-  border-radius: 50%;
-  animation: bounce cubic-bezier(0.19,1.0,0.22,1.0) 1.5s alternate infinite;
-  -webkit-animation: bounce cubic-bezier(0.19,1.0,0.22,1.0) 1.5s alternate infinite;
-  /*maxthon duplicate*/
-}
+							</h1>
+							<p>
+								Plus de
 
-@keyframes bounce {
-  to{
-    transform: translateY(-12px) scale(1.03);
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.15);
-  }
-}
-@-webkit-keyframes bounce { /*maxthon duplicate*/
-  to{
-    -webkit-transform: translateY(-12px) scale(1.03);
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.15);
-  }
-}
+								<span>2400</span>
 
-/*#avatar:hover{
-  transform: translateY(-7px) scale(1.05);
-  -webkit-transform: translateY(-7px) scale(1.05); /*maxthon
-  box-shadow: 0px 5px 10px rgba(0,0,0,0.15);
-}*/
+								offres d'emploi sont disponibles pour vous!</p>
+							<div class="job-search-area">
+								<form>
+									<div class="form-inner job-title">
+										<input type="text" placeholder="Lieux">
+									</div>
+									<div class="form-inner category">
+										<select class="select1">
+											<option value="0">Catégories</option>
+											<option value="1">UI/UX
+											</option>
+											<option value="2">Closed</option>
+											<option value="4">Closed</option>
+											<option value="5">Closed</option>
+										</select>
+									</div>
+									<div class="form-inner">
+										<button type="submit" class="primry-btn-2 "><img src="assets/images/icon/search-icon.svg" alt="">
+											Rechercher</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-5 d-flex justify-content-end">
+						<div class="banner-image-area">
+							<div class="banner-img-left">
+								<div class="banner-img1">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-01.png" alt="">
+								</div>
+								<div class="banner-img2">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-02.png" alt="">
+								</div>
+							</div>
+							<div class="banner-img-center">
+								<div class="banner-img3">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-03.png" alt="">
+								</div>
+								<div class="banner-img4">
+									<div class="user-area">
+										<ul>
+											<li><img src="assets/images/bg/user31.png" alt=""></li>
+											<li><img src="assets/images/bg/user32.png" alt=""></li>
+											<li><img src="assets/images/bg/user33.png" alt=""></li>
+											<li>
+												<div class="total-user">
+													<h6>21k</h6>
+												</div>
+											</li>
+										</ul>
+										<p>Personnes nous ont rejoint!</p>
+									</div>
+								</div>
+							</div>
+							<div class="banner-img-right">
+								<div class="banner-img5">
+									<div class="new-job-list">
+										<h3>2400+</h3>
+										<p>Nouveaux postes!</p>
+									</div>
+								</div>
+								<div class="banner-img6">
+									<img class="img-fluid" src="assets/images/bg/home2-banner-04.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ========== Hero Six End============= -->
 
-#text{
-  margin-top: 7px;
-}
+	{% include "home/_counter.html.twig" %}
 
-h1, p{
-  margin: 0;
-  padding: 0;
-  
-  font-family: Segoe UI, sans-serif;
-  font-weight: 100;
-  font-style: normal;
-  color: rgba(0,0,0,1);
-}
+	<!-- ========== Home Two Banner End============= -->
 
-h1{
-  color: rgba(1,106,154,0.75); /*#016A9A;*/
-  text-shadow: 0px 1px 0px rgba(255,255,255,1.0);
-}
 
-p{
-  color: rgba(0,0,0,0.25);
-  text-shadow: 0px 1px 0px rgba(255,255,255,0.75);
-}
-</style>
+	<!-- ========== Home Two Job list strat============= -->
+		{% if is_granted('ROLE_COMPANY') %}
+		<!-- ========== Home1 Top Recruiters area Start============= -->
+			<div class="home1-top-recruiters mb-120 mt-10"> <div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+							<h2>Développeurs
+								<span>en vedette</span>
+							</h2>
+							<p>
 
-<div class="example-wrapper">
-<div id="container">
-	<img src="https://pbs.twimg.com/profile_images/459505368234606592/nuxaaQoo_400x400.jpeg"  id="avatar" width=" 250" draggable=" false"/>
-		
-		  <div id="text">
-		    <h1>Adopte un dev …</h1>
-		    <p title=" (I guess)">(coming soon)</p></div></div>
+								Découvrez nos spécialistes les plus recherchés du moment.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="slick-wrapper">
+						<div id="slick1">
+							{% for developer in mostViewedDevelopers %}
 
-</div>
-{% endblock %}
+								<div class="slide-item">
+									<div class="recruters-card">
+										<div class="company-area">
+											<div class="logo">
+												{% set avatarDev = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+												<img src="{{asset('images/avatar/' ~ avatarDev)}}" alt="">
+
+											</div>
+											<div class="name-location">
+												<h5>
+													<a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">{{developer.nom}}</a>
+
+												</h5>
+												<p><img src="{{asset('assets/images/icon/location.svg')}}" alt="">
+													{{developer.ville}}</p>
+
+												<div class="reviews">{% set average = developer.getAverageRating() %}
+													{% set count = developer.getRatingsCount() %}
+
+													{% for i in 1..5 %}
+														{% if i <= average %}
+															<i class="bx bxs-star star-rating"></i>
+														{% elseif i <= average + 0.5 %}
+															<i class="bx bxs-star-half star-rating"></i>
+														{% else %}
+															<i class="bx bx-star star-rating"></i>
+														{% endif %}
+													{% endfor %}
+													<span>{{ average }}</span>
+													<span>({{ count }}
+														avis)</span>
+												</div>
+
+											</div>
+										</div>
+										<div class="job-details-vacancies">
+											<div class="apply-btn">
+												<a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">
+
+													<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir le profil</a>
+											</div>
+											<div class="vacancies">
+												<p>Vues:
+													<span>{{developer.getViewCount()}}
+													</span>
+
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							{% endfor %}
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home1 Top Recruiters area end============= -->
+
+		<!-- ========== Home1 Featured Start============= -->
+		<div class="home1-featured-area mb-120">
+			<div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+
+
+							<h2>Récents profils
+
+								<span>Devs</span>
+							</h2>
+							<p>découvrez de nouveaux talents prometteurs</p>
+
+
+						</div>
+						<div class="explore-btn">
+							<a href="{{path('app_dev_list')}}">Voir tous les devs
+
+								<span><img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt=""></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row g-4">
+					{% for developer in recentDevelopers %}
+
+						<div class="col-xl-4 col-lg-6">
+							<div class="feature-card">
+								<div class="company-area">
+									<div class="logo">
+										{% set avatarC = developer.user.avatar ? developer.user.avatar.reference : 'default-avatar.png'  %}
+										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a class="d-inline-block text-truncate" style="max-width: 250px;" href=" {{path('app_dev_details', {'uuid':developer.uuid} )}}">{{developer.nom}}</a>
+
+
+											</h5>
+											<p>{{developer.cat.nom}}</p>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul>
+										<li>
+											<img src="assets/images/icon/arrow2.svg" alt="">
+											<p>
+												<span class="title">Salaire:</span>
+												{{developer.salaireMin}}€/
+												<span class="time">Par mois</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Ville:</span>
+												<span>
+													{{developer.ville}}</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Expérience:</span>
+												<span>{{developer.experience}}
+													an(s)
+												</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="{{path('app_dev_details', {'uuid':developer.uuid})}}">
+											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Voir le profil</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home1 Featured end============= -->
+
+
+	{% else %}
+		<!-- ========== Home3 Top Company area Start============= -->
+		<div class="home3-top-company ">
+			<div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+							<h2>Les postes les plus
+								<span>Populaire</span>
+							</h2>
+							<p>
+								Les postes les plus consultés actuellement
+							</p>
+						</div>
+						<div class="explore-btn">
+							<a href="{{path('app_poste_list')}}">Voir plus
+								<span><img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt=""></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-center g-4">
+
+					{% for poste in mostPopularPosts %}
+
+						<div class="col-lg-4 col-md-6 col-sm-10">
+							<div class="top-company-card">
+								<div class="company-details">
+									<div class="name-location">
+										<h5>
+											<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}" class=" d-inline-block text-truncate" style="max-width: 300px;">{{poste.titre}}</a>
+
+
+										</h5>
+										<p><img src="{{asset('assets/images/icon/location.svg')}}" alt="">
+											{{poste.ville}},
+											{{poste.adresse}}
+										</p>
+									</div>
+									<div class="bookmark">
+										<i class="bi bi-bookmark"></i>
+									</div>
+								</div>
+								<div class="job-details-vacancies">
+									<div class="vacancies">
+										<p>Vues:
+											<span>{{poste.getViewCount()}}</span>
+
+										</p>
+									</div>
+									<div class="apply-btn">
+										<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}">
+											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>voir Details</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home3 Top Company area End============= -->
+
+		<!-- ========== Home1 Featured Start============= -->
+		<div class="home1-featured-area mb-120">
+			<div class="container">
+				<div class="row mb-60">
+					<div class="col-12 d-flex flex-wrap align-items-end justify-content-md-between justify-content-start gap-3">
+						<div class="section-title1">
+
+
+							<h2>Dernières
+								<span>Offres</span>
+								d'Emploi à la Une</h2>
+							<p>Choisissez votre métier de rêve et construisez un avenir radieux.</p>
+
+						</div>
+						<div class="explore-btn">
+							<a href="{{path('app_poste_list')}}">Voir toutes les offres
+
+								<span><img src="{{asset('assets/images/icon/explore-elliose.svg')}}" alt=""></span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row g-4">
+					{% for poste in recentPosts %}
+						<div class="col-xl-4 col-lg-6">
+							<div class="feature-card">
+								<div class="company-area">
+									<div class="logo">
+										{% set avatarC = poste.company.user.avatar ? poste.company.user.avatar.reference : 'default-avatar.png'  %}
+										<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+
+									</div>
+									<div class="company-details">
+										<div class="name-location">
+											<h5>
+												<a class="d-inline-block text-truncate" style="max-width: 250px;" href=" {{path('app_company_poste_details', {'uuid':poste.uuid} )}}">{{poste.titre}}</a>
+
+
+											</h5>
+											<p>{{poste.type}}</p>
+										</div>
+										<div class="bookmark">
+											<i class="bi bi-bookmark"></i>
+										</div>
+									</div>
+								</div>
+								<div class="job-discription">
+									<ul>
+										<li>
+											<img src="assets/images/icon/arrow2.svg" alt="">
+											<p>
+												<span class="title">Salaire:</span>
+												{{poste.salaireMin}}€/
+												<span class="time">Par mois</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Ville:</span>
+												<span>
+													{{poste.ville}}</span>
+											</p>
+										</li>
+										<li>
+											<img src="{{asset('assets/images/icon/arrow2.svg')}}" alt="">
+											<p>
+												<span class="title">Date limite:</span>
+												<span>
+													{{poste.dateLimite|date('d/m/Y')}}</span>
+											</p>
+										</li>
+									</ul>
+								</div>
+								<div class="job-type-apply">
+									<div class="apply-btn">
+										<a href="{{path('app_company_poste_details', {'uuid':poste.uuid})}}">
+											<span><img src="{{asset('assets/images/icon/apply-ellipse.svg')}}" alt=""></span>Postuler maintenant</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+		<!-- ========== Home1 Featured end============= -->
+
+	{% endif %}
+
+	<!-- ========== Home Two Working-Process Start============= -->
+	<div class="home2-working-process mb-120">
+		<div class="container">
+			<div class="row mb-60">
+				<div class="col-12 d-flex justify-content-center">
+					<div class="section-title1 ">
+						<h2 class="text-center">Comment fonctionne
+							<span>AdopteUnDev ?</span>
+						</h2>
+
+						<p>
+							AdopteUnDev est une plateforme innovante conçue pour aider les développeurs à trouver le poste de leurs rêves tout en favorisant les échanges entre recruteurs et candidats. Le fonctionnement de ce service est simple et efficace : les développeurs peuvent créer des profils détaillés où ils mettent en avant leurs compétences, leurs expériences et leurs objectifs professionnels. De leur côté, les entreprises peuvent également créer des annonces de postes à pourvoir, décrivant les compétences qu'elles recherchent et l'environnement de travail qu'elles offrent.
+
+						</p>
+						<br>
+						<p>
+							Grâce à un algorithme de correspondance intelligent, AdopteUnDev propose des suggestions d'emplois adaptés aux profils des développeurs. Cela permet de maximiser les chances de trouver un emploi qui non seulement répond aux attentes professionnelles, mais qui est également aligné avec les aspirations personnelles de chaque candidat.
+						</p>
+						<br>
+						<p>En intégrant des témoignages et des conseils d'experts du secteur, la plateforme offre également un accompagnement précieux pour ceux qui souhaitent se perfectionner ou se réorienter dans leur carrière. Que ce soit par le biais de formations, de webinars, ou de ressources sur le marché du travail, AdopteUnDev se positionne comme un partenaire clé pour construire un avenir professionnel radieux.
+						</p>
+						<br>
+
+
+						<p>
+							En somme, AdopteUnDev ne se limite pas à être un simple site d'emploi, mais devient un véritable écosystème où les développeurs peuvent s'épanouir, évoluer et réaliser leurs ambitions professionnelles.
+
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="row gy-5 justify-content-center">
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl">
+							<h4>01</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="{{ path('app_register') }}">Créer votre compte</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl">
+							<h4>02</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="#">Mettre à jour vos informations</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl">
+							<h4>03</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="#">Faire vos recherches</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="working-process-card2">
+						<div class="working-process-sl last">
+							<h4>04</h4>
+							<span></span>
+						</div>
+						<div class="working-process-content">
+							<h5>
+								<a href="#">Postuler ou Recruter</a>
+							</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		 <script>
+																											document.addEventListener("DOMContentLoaded", function () {
+																									    const counters = document.querySelectorAll(".stat-number");
+																									    counters.forEach(counter => {
+																									        const updateCount = () => {
+																									            const target = +counter.getAttribute("data-count");
+																									            const current = +counter.innerText;
+																									
+																									            const increment = target / 200; // Ajustez pour une vitesse optimale
+																									
+																									            if (current < target) {
+																									                counter.innerText = Math.ceil(current + increment);
+																									                setTimeout(updateCount, 10);
+																									            } else {
+																									                counter.innerText = target;
+																									            }
+																									        };
+																									
+																									        updateCount();
+																									    });
+																									});
+																										 </script>
+	{% endblock %}
+
+	{% block javascripts %}
+		 <script src="{{asset('assets/js/slick.js')}}"></script>
+
+
+	{% endblock %}

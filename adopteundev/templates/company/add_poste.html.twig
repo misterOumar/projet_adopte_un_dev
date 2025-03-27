@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ajouter un poste!
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/summernote.min.css')}}">
+{% endblock %}
+{% block body %}
+
+	{{ include('company/_form.html.twig') }}
+{% endblock %}
+{% block javascripts %}<script src="{{asset('assets/js/select2.min.js')}}"></script>
+<script src="{{asset('assets/js/summernote.min.js')}}"></script>
+{% endblock %}

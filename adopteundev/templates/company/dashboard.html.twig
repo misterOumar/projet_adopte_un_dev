@@ -1,0 +1,193 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Entreprise!
+{% endblock %}
+
+{% block body %}
+	<!-- ========== Dashboard Area end============= -->
+	<div class="dashboard-area company-dashboard pt-120 mb-120">
+		<div class="container">
+			<div class="row g-lg-4">
+				{% include "company/menu_company.html.twig" %}
+				<div class="col-lg-12">
+					<div class="dashboard-inner">
+						<div class="author-and-action-btn-area two mb-40">
+							<div class="author-area two">
+								<div class="author-img">
+									<img src="{{asset('images/avatar/' ~ avatar)}}" alt="">
+								</div>
+								<div class="author-content">
+									<span>Bonjour ,</span>
+									<h4>
+										{{company.nom}}
+									</h4>
+								</div>
+							</div>
+
+							<div class="action-btn-group">
+								<ul>
+									<li>
+										<a href="company-profile.html">
+											<span>
+												<img src="{{asset('assets/images/icon/edit2.svg')}}" alt=""></span>Edit Profile</a>
+									</li>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="counter-area">
+						<div class="row g-4 justify-content-center mb-30">
+							<div class="col-lg-3 col-sm-6">
+								<div class="counter-single">
+									<div class="counter-icon">
+										<img src="{{ asset('assets/images/icon/tt-applied.svg') }}" alt="image">
+									</div>
+									<div class="coundown">
+										<p>Mes Postes</p>
+										<div class="d-flex align-items-center">
+											<h3 class="odometer">
+												{{company.countPostes}}
+											</h3>
+											<span>+</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="counter-single three">
+									<div class="counter-icon">
+										<img src="{{asset('assets/images/icon/pending-icon.svg')}}" alt="image">
+									</div>
+									<div class="coundown">
+										<p>Candidatures</p>
+										<div class="d-flex align-items-center">
+											<h3 class="odometer">
+												{{totalCandidature}}
+
+											</h3>
+											<span>+</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="counter-single four">
+									<div class="counter-icon">
+										<img src="{{asset('assets/images/icon/follow-icon.svg')}}" alt="image">
+
+
+									</div>
+									<div class="coundown">
+										<p class="small-1">Candidatures Acceptées</p>
+										<div class="d-flex align-items-center">
+											<h3 class="odometer">
+												{{totalCandidatureAccepted}}
+
+											</h3>
+											<span>+</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="counter-single">
+									<div class="counter-icon">
+										<img src="{{asset('assets/images/icon/total-view-icon.svg')}}" alt="image">
+									</div>
+									<div class="coundown">
+										<p>
+											Vues de Postes</p>
+										<div class="d-flex align-items-center">
+											<h3 class="odometer">
+												{{totalView}}
+											</h3>
+											<span>+</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="new-applied-job-area">
+						<h5>Nouvelle liste de candidatures:</h5>
+						<div class="table-wrapper2">
+							<table class="eg-table table category-table mb-0">
+								<tbody>
+									{% if candidatures is not empty %}
+										{% for candidature in candidatures %}
+											<tr>
+												<td data-label="Nom du Candidat">
+													<div class="employee-info">
+														<div class="employee-img">
+															{% set avatarC = candidature.developer.user.avatar ? candidature.developer.user.avatar.reference : 'default-avatar.png'  %}
+															<img src="{{asset('images/avatar/' ~ avatarC)}}" alt="">
+														</div>
+														<div class="employee-content">
+															<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#candidatureModal{{ candidature.id }}">
+																{{ candidature.developer.nom }}
+																{{ candidature.developer.prenom }}
+															</button>
+															<span>
+																<img src="{{ asset('assets/images/icon/company-2.svg') }}" alt="">
+																{{ candidature.developer.cat.nom }}
+															</span>
+															<p>
+																<span>Candidaté :</span>
+																{{ candidature.date|time_diff }}
+															</p>
+														</div>
+													</div>
+												</td>
+												<td data-label="Résumé de carrière">
+													<div class="carrer-summary">
+														<h6>{{ candidature.poste.titre }}
+														</h6>
+														<ul>
+															<li>
+																<span>Experience:</span>
+																{{ candidature.developer.experience }}
+																an(s)
+															</li>
+															<li>
+																<span>Salaraire:</span>
+																{{ candidature.developer.salaireMin }}
+																/€ mois
+															</li>
+														</ul>
+													</div>
+												</td>
+												<td data-label="Actions">
+													<div class="action-btn-group">
+														<ul>
+															<li>
+																<button type="button" class="btn btn-secondary disabled">
+																	{{candidature.statut}}
+																</button>
+															</li>
+
+														</ul>
+													</div>
+												</td>
+											</tr>
+										{% endfor %}
+									{% else %}
+										<tr>
+											<td colspan="4" class="text-center">
+												<p>Aucune candidature n'a encore été reçue.</p>
+											</td>
+										</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- ========== Dashboard Area end============= -->
+{% endblock %}
