@@ -71,7 +71,7 @@ AdopteUnDev est une **application web** inspirée des réseaux de rencontres, co
 1. **Cloner le dépôt** :  
    ```bash  
    git clone git clone https://github.com/misterOumar/projet_adopte_un_dev.git
-
+  
 
 2. Lancer votre application docker desktop
 3. Ouvrir votre projet cloner avec votre éditeur de code
@@ -96,3 +96,24 @@ symfony server:start
 Ouvrir http://localhost:8080 dans votre navigateur.
 
 ## 📸 Captures d'écran
+| Page d'accueil  |
+|--------------------------------|
+| ![Home Page](screenshots/home-page-full.png) | 
+| Liste des postes | 
+| ![Liste Postes](screenshots/liste-postes.png) |
+| Liste des profiles | 
+| ![Liste Profiles](screenshots/liste-profiles.png) |
+| Tableau de bord Développeur | 
+| ![Dasboard developpeur](screenshots/dashboard-developpeur.png) |
+
+---
+## 📸 Vidéo complète de demo
+```bash 
+https://drive.google.com/file/d/1dl0wTL4sw_PkRIFEc00zeXkVbgmNKEQn/view
+```
+
+---
+## 💡 Un projet similaire à discuter ? Contactez-moi sur LinkedIn ou par mail : coulibalyoumarte@gmail.com !
+
+
+----
