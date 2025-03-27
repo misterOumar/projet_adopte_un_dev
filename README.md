@@ -60,11 +60,11 @@ AdopteUnDev est une **application web** inspirée des réseaux de rencontres, co
 
 
 
-## Membres du groupes:
-### 1. Blakimé Christianna
-### 2. Coulibaly Oumar
-### 3. Konan Évrard
-### 4. Saboutey Tettey Fabiola
+## 🧑‍💻👩‍💻Contributeurs:
+### **1. Blakimé Christianna**
+### **2. Coulibaly Oumar**
+### **3. Konan Évrard**
+### **4. Saboutey Tettey Fabiola**
 
 
 ## 📦 Installation  
@@ -92,4 +92,7 @@ composer install
 ```bash 
 symfony server:start
 ```
-7. Normalement si tout se passe bien vous devez voir le projet en local 😎
+7. Accéder à l'application :
+Ouvrir http://localhost:8080 dans votre navigateur.
+
+## 📸 Captures d'écran
